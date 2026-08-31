@@ -1,0 +1,1748 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "latent_shared": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1536,
+      "batch_size": 1
+    }
+  },
+  "clip_skip": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip",
+        0
+      ],
+      "lora_name": "Stella-Virigia-v1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, holding mirror, red mirror, mirror",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "p_lying_01_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, white bonnet, white cloak, frilled cloak, black dress, detached collar, black bowtie, red ribbon, cleavage, black gloves, white pantyhose, high heels, disembodied_penis, tan_penis, intact_clothing, exposed_cleavage, (penis_on_chest:1.2), embarrassed, looking_away, full_shot, lying, on_back, holding_breasts, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_lying_01_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_lying_01_resistencia",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_lying_01_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_lying_01_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_lying_01_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_lying_01_resistencia",
+      "images": [
+        "d_lying_01_resistencia",
+        0
+      ]
+    }
+  },
+  "p_lying_02_primer_ajuste": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, cleavage_press, hands_squeezing_breasts, penis_between_breasts, blushing, parted_lips, cowboy_shot, lying, on_back, holding_breasts, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_lying_02_primer_ajuste": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_lying_02_primer_ajuste",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_lying_02_primer_ajuste": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_lying_02_primer_ajuste",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_lying_02_primer_ajuste": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_lying_02_primer_ajuste",
+      "images": [
+        "d_lying_02_primer_ajuste",
+        0
+      ]
+    }
+  },
+  "p_lying_03_ritmo_friccion": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, paizuri, breast_smother, breasts_squeezing, rhythmic_motion, sweat_gleam, bouncing_breasts, medium_shot, lying, on_back, holding_breasts, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_lying_03_ritmo_friccion": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_lying_03_ritmo_friccion",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_lying_03_ritmo_friccion": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_lying_03_ritmo_friccion",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_lying_03_ritmo_friccion": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_lying_03_ritmo_friccion",
+      "images": [
+        "d_lying_03_ritmo_friccion",
+        0
+      ]
+    }
+  },
+  "p_lying_04_intenso": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, intense_paizuri, extreme_cleavage_squish, (saliva_on_breasts:1.2), heavy_blush, ahegao, medium_close-up, lying, on_back, holding_breasts, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_lying_04_intenso": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_lying_04_intenso",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_lying_04_intenso": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_lying_04_intenso",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_lying_04_intenso": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_lying_04_intenso",
+      "images": [
+        "d_lying_04_intenso",
+        0
+      ]
+    }
+  },
+  "p_lying_05_bukkake_climax": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, bukkake, cum_on_breasts, semen_between_breasts, cum_splatter, spasming, extreme_ahegao, heart_pupils, cowboy_shot, lying, on_back, holding_breasts, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_lying_05_bukkake_climax": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_lying_05_bukkake_climax",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_lying_05_bukkake_climax": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_lying_05_bukkake_climax",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_lying_05_bukkake_climax": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_lying_05_bukkake_climax",
+      "images": [
+        "d_lying_05_bukkake_climax",
+        0
+      ]
+    }
+  },
+  "p_lying_06_post_desgaste": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, covered_in_cum, milk_and_cum, blank_eyes, relaxed_hands, drool, close-up, lying, on_back, holding_breasts, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_lying_06_post_desgaste": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_lying_06_post_desgaste",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_lying_06_post_desgaste": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_lying_06_post_desgaste",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_lying_06_post_desgaste": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_lying_06_post_desgaste",
+      "images": [
+        "d_lying_06_post_desgaste",
+        0
+      ]
+    }
+  },
+  "p_lying_07_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, sleeping, exhausted, breasts_resting, cum_pool_on_chest, completely_nude, wide_shot, overhead_view, lying, on_back, holding_breasts, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_lying_07_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_lying_07_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_lying_07_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_lying_07_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_lying_07_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_lying_07_inconsciente",
+      "images": [
+        "d_lying_07_inconsciente",
+        0
+      ]
+    }
+  },
+  "p_kneeling_01_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, white bonnet, white cloak, frilled cloak, black dress, detached collar, black bowtie, red ribbon, cleavage, black gloves, white pantyhose, high heels, disembodied_penis, tan_penis, intact_clothing, exposed_cleavage, (penis_on_chest:1.2), embarrassed, looking_away, full_shot, kneeling, on_knees, squeezing_breasts, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_kneeling_01_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_kneeling_01_resistencia",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_kneeling_01_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_kneeling_01_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_kneeling_01_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_kneeling_01_resistencia",
+      "images": [
+        "d_kneeling_01_resistencia",
+        0
+      ]
+    }
+  },
+  "p_kneeling_02_primer_ajuste": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, cleavage_press, hands_squeezing_breasts, penis_between_breasts, blushing, parted_lips, cowboy_shot, kneeling, on_knees, squeezing_breasts, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_kneeling_02_primer_ajuste": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_kneeling_02_primer_ajuste",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_kneeling_02_primer_ajuste": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_kneeling_02_primer_ajuste",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_kneeling_02_primer_ajuste": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_kneeling_02_primer_ajuste",
+      "images": [
+        "d_kneeling_02_primer_ajuste",
+        0
+      ]
+    }
+  },
+  "p_kneeling_03_ritmo_friccion": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, paizuri, breast_smother, breasts_squeezing, rhythmic_motion, sweat_gleam, bouncing_breasts, medium_shot, kneeling, on_knees, squeezing_breasts, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_kneeling_03_ritmo_friccion": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_kneeling_03_ritmo_friccion",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_kneeling_03_ritmo_friccion": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_kneeling_03_ritmo_friccion",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_kneeling_03_ritmo_friccion": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_kneeling_03_ritmo_friccion",
+      "images": [
+        "d_kneeling_03_ritmo_friccion",
+        0
+      ]
+    }
+  },
+  "p_kneeling_04_intenso": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, intense_paizuri, extreme_cleavage_squish, (saliva_on_breasts:1.2), heavy_blush, ahegao, medium_close-up, kneeling, on_knees, squeezing_breasts, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_kneeling_04_intenso": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_kneeling_04_intenso",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_kneeling_04_intenso": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_kneeling_04_intenso",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_kneeling_04_intenso": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_kneeling_04_intenso",
+      "images": [
+        "d_kneeling_04_intenso",
+        0
+      ]
+    }
+  },
+  "p_kneeling_05_bukkake_climax": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, bukkake, cum_on_breasts, semen_between_breasts, cum_splatter, spasming, extreme_ahegao, heart_pupils, cowboy_shot, kneeling, on_knees, squeezing_breasts, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_kneeling_05_bukkake_climax": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_kneeling_05_bukkake_climax",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_kneeling_05_bukkake_climax": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_kneeling_05_bukkake_climax",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_kneeling_05_bukkake_climax": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_kneeling_05_bukkake_climax",
+      "images": [
+        "d_kneeling_05_bukkake_climax",
+        0
+      ]
+    }
+  },
+  "p_kneeling_06_post_desgaste": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, covered_in_cum, milk_and_cum, blank_eyes, relaxed_hands, drool, close-up, kneeling, on_knees, squeezing_breasts, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_kneeling_06_post_desgaste": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_kneeling_06_post_desgaste",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_kneeling_06_post_desgaste": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_kneeling_06_post_desgaste",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_kneeling_06_post_desgaste": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_kneeling_06_post_desgaste",
+      "images": [
+        "d_kneeling_06_post_desgaste",
+        0
+      ]
+    }
+  },
+  "p_kneeling_07_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, sleeping, exhausted, breasts_resting, cum_pool_on_chest, completely_nude, wide_shot, overhead_view, kneeling, on_knees, squeezing_breasts, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_kneeling_07_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_kneeling_07_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_kneeling_07_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_kneeling_07_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_kneeling_07_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_kneeling_07_inconsciente",
+      "images": [
+        "d_kneeling_07_inconsciente",
+        0
+      ]
+    }
+  },
+  "p_sitting_lap_01_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, white bonnet, white cloak, frilled cloak, black dress, detached collar, black bowtie, red ribbon, cleavage, black gloves, white pantyhose, high heels, disembodied_penis, tan_penis, intact_clothing, exposed_cleavage, (penis_on_chest:1.2), embarrassed, looking_away, full_shot, sitting_on_lap, lap_pillow, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_sitting_lap_01_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_sitting_lap_01_resistencia",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_sitting_lap_01_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_sitting_lap_01_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_sitting_lap_01_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_sitting_lap_01_resistencia",
+      "images": [
+        "d_sitting_lap_01_resistencia",
+        0
+      ]
+    }
+  },
+  "p_sitting_lap_02_primer_ajuste": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, cleavage_press, hands_squeezing_breasts, penis_between_breasts, blushing, parted_lips, cowboy_shot, sitting_on_lap, lap_pillow, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_sitting_lap_02_primer_ajuste": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_sitting_lap_02_primer_ajuste",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_sitting_lap_02_primer_ajuste": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_sitting_lap_02_primer_ajuste",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_sitting_lap_02_primer_ajuste": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_sitting_lap_02_primer_ajuste",
+      "images": [
+        "d_sitting_lap_02_primer_ajuste",
+        0
+      ]
+    }
+  },
+  "p_sitting_lap_03_ritmo_friccion": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, paizuri, breast_smother, breasts_squeezing, rhythmic_motion, sweat_gleam, bouncing_breasts, medium_shot, sitting_on_lap, lap_pillow, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_sitting_lap_03_ritmo_friccion": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_sitting_lap_03_ritmo_friccion",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_sitting_lap_03_ritmo_friccion": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_sitting_lap_03_ritmo_friccion",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_sitting_lap_03_ritmo_friccion": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_sitting_lap_03_ritmo_friccion",
+      "images": [
+        "d_sitting_lap_03_ritmo_friccion",
+        0
+      ]
+    }
+  },
+  "p_sitting_lap_04_intenso": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, intense_paizuri, extreme_cleavage_squish, (saliva_on_breasts:1.2), heavy_blush, ahegao, medium_close-up, sitting_on_lap, lap_pillow, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_sitting_lap_04_intenso": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_sitting_lap_04_intenso",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_sitting_lap_04_intenso": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_sitting_lap_04_intenso",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_sitting_lap_04_intenso": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_sitting_lap_04_intenso",
+      "images": [
+        "d_sitting_lap_04_intenso",
+        0
+      ]
+    }
+  },
+  "p_sitting_lap_05_bukkake_climax": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, bukkake, cum_on_breasts, semen_between_breasts, cum_splatter, spasming, extreme_ahegao, heart_pupils, cowboy_shot, sitting_on_lap, lap_pillow, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_sitting_lap_05_bukkake_climax": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_sitting_lap_05_bukkake_climax",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_sitting_lap_05_bukkake_climax": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_sitting_lap_05_bukkake_climax",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_sitting_lap_05_bukkake_climax": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_sitting_lap_05_bukkake_climax",
+      "images": [
+        "d_sitting_lap_05_bukkake_climax",
+        0
+      ]
+    }
+  },
+  "p_sitting_lap_06_post_desgaste": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, covered_in_cum, milk_and_cum, blank_eyes, relaxed_hands, drool, close-up, sitting_on_lap, lap_pillow, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_sitting_lap_06_post_desgaste": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_sitting_lap_06_post_desgaste",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_sitting_lap_06_post_desgaste": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_sitting_lap_06_post_desgaste",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_sitting_lap_06_post_desgaste": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_sitting_lap_06_post_desgaste",
+      "images": [
+        "d_sitting_lap_06_post_desgaste",
+        0
+      ]
+    }
+  },
+  "p_sitting_lap_07_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, sleeping, exhausted, breasts_resting, cum_pool_on_chest, completely_nude, wide_shot, overhead_view, sitting_on_lap, lap_pillow, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_sitting_lap_07_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_sitting_lap_07_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_sitting_lap_07_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_sitting_lap_07_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_sitting_lap_07_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_sitting_lap_07_inconsciente",
+      "images": [
+        "d_sitting_lap_07_inconsciente",
+        0
+      ]
+    }
+  },
+  "p_top_view_01_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, white bonnet, white cloak, frilled cloak, black dress, detached collar, black bowtie, red ribbon, cleavage, black gloves, white pantyhose, high heels, disembodied_penis, tan_penis, intact_clothing, exposed_cleavage, (penis_on_chest:1.2), embarrassed, looking_away, full_shot, from_above, overhead_view, cleavage_view, pov, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_top_view_01_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_top_view_01_resistencia",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_top_view_01_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_top_view_01_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_top_view_01_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_top_view_01_resistencia",
+      "images": [
+        "d_top_view_01_resistencia",
+        0
+      ]
+    }
+  },
+  "p_top_view_02_primer_ajuste": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, cleavage_press, hands_squeezing_breasts, penis_between_breasts, blushing, parted_lips, cowboy_shot, from_above, overhead_view, cleavage_view, pov, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_top_view_02_primer_ajuste": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_top_view_02_primer_ajuste",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_top_view_02_primer_ajuste": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_top_view_02_primer_ajuste",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_top_view_02_primer_ajuste": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_top_view_02_primer_ajuste",
+      "images": [
+        "d_top_view_02_primer_ajuste",
+        0
+      ]
+    }
+  },
+  "p_top_view_03_ritmo_friccion": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, paizuri, breast_smother, breasts_squeezing, rhythmic_motion, sweat_gleam, bouncing_breasts, medium_shot, from_above, overhead_view, cleavage_view, pov, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_top_view_03_ritmo_friccion": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_top_view_03_ritmo_friccion",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_top_view_03_ritmo_friccion": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_top_view_03_ritmo_friccion",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_top_view_03_ritmo_friccion": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_top_view_03_ritmo_friccion",
+      "images": [
+        "d_top_view_03_ritmo_friccion",
+        0
+      ]
+    }
+  },
+  "p_top_view_04_intenso": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, intense_paizuri, extreme_cleavage_squish, (saliva_on_breasts:1.2), heavy_blush, ahegao, medium_close-up, from_above, overhead_view, cleavage_view, pov, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_top_view_04_intenso": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_top_view_04_intenso",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_top_view_04_intenso": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_top_view_04_intenso",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_top_view_04_intenso": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_top_view_04_intenso",
+      "images": [
+        "d_top_view_04_intenso",
+        0
+      ]
+    }
+  },
+  "p_top_view_05_bukkake_climax": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, bukkake, cum_on_breasts, semen_between_breasts, cum_splatter, spasming, extreme_ahegao, heart_pupils, cowboy_shot, from_above, overhead_view, cleavage_view, pov, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_top_view_05_bukkake_climax": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_top_view_05_bukkake_climax",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_top_view_05_bukkake_climax": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_top_view_05_bukkake_climax",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_top_view_05_bukkake_climax": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_top_view_05_bukkake_climax",
+      "images": [
+        "d_top_view_05_bukkake_climax",
+        0
+      ]
+    }
+  },
+  "p_top_view_06_post_desgaste": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, covered_in_cum, milk_and_cum, blank_eyes, relaxed_hands, drool, close-up, from_above, overhead_view, cleavage_view, pov, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_top_view_06_post_desgaste": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_top_view_06_post_desgaste",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_top_view_06_post_desgaste": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_top_view_06_post_desgaste",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_top_view_06_post_desgaste": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_top_view_06_post_desgaste",
+      "images": [
+        "d_top_view_06_post_desgaste",
+        0
+      ]
+    }
+  },
+  "p_top_view_07_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, disembodied_penis, tan_penis, sleeping, exhausted, breasts_resting, cum_pool_on_chest, completely_nude, wide_shot, overhead_view, from_above, overhead_view, cleavage_view, pov, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_top_view_07_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_top_view_07_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_top_view_07_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_top_view_07_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_top_view_07_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_paizuri_top_view_07_inconsciente",
+      "images": [
+        "d_top_view_07_inconsciente",
+        0
+      ]
+    }
+  }
+}

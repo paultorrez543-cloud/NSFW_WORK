@@ -1,0 +1,422 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "lora_name": "lancelot_illustrious.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8
+    }
+  },
+  "lora_detail": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_comic",
+        0
+      ],
+      "clip": [
+        "lora_comic",
+        1
+      ],
+      "lora_name": "add-detail-xl.safetensors",
+      "strength_model": 0.2,
+      "strength_clip": 0.2
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "lowres, bad anatomy, bad eyes, deformed eyes, extra eyes, crossed eyes, bad hands, extra fingers, worst_quality, blurry, ugly, censored",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "10": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, lancelot, lancelot_skin1, hair_ornament, mole_under_mouth, red_lipstick, pantyhose, 1girl, pantyhose, hair_ornament, red_lipstick, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, standing_sex, against_wall, held_up, legs_around_waist, one_leg_up, wall_pin, lifted, triple_penetration, three_cocks, penis_presented, spitroast, imminent_triple, about_to_penetrate, nervous, anticipation, blush, sweat, (focus lines:1.1), (vibration lines:1.1), bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, volumetric_lighting, masterpiece, best_quality, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field, sharp_focus, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "11": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1216,
+      "height": 832,
+      "batch_size": 1
+    }
+  },
+  "12": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 13242,
+      "steps": 35,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "10",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "11",
+        0
+      ]
+    }
+  },
+  "13": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "12",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "14": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "lancelot_skin1_nude_tp_standing_inicio",
+      "images": [
+        "13",
+        0
+      ]
+    }
+  },
+  "15": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, lancelot, lancelot_skin1, hair_ornament, mole_under_mouth, red_lipstick, pantyhose, 1girl, pantyhose, hair_ornament, red_lipstick, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, standing_sex, against_wall, held_up, legs_around_waist, one_leg_up, wall_pin, lifted, triple_penetration, simultaneous_insertion, three_holes, tip_in_pussy, tip_in_ass, tip_in_mouth, first_insertion, stretching, pain, tears, gagging, (focus lines:1.1), (vibration lines:1.1), bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, volumetric_lighting, masterpiece, best_quality, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field, sharp_focus, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "16": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1216,
+      "height": 832,
+      "batch_size": 1
+    }
+  },
+  "17": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 13242,
+      "steps": 35,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "15",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "16",
+        0
+      ]
+    }
+  },
+  "18": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "17",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "19": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "lancelot_skin1_nude_tp_standing_entrada",
+      "images": [
+        "18",
+        0
+      ]
+    }
+  },
+  "20": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, lancelot, lancelot_skin1, hair_ornament, mole_under_mouth, red_lipstick, pantyhose, 1girl, pantyhose, hair_ornament, red_lipstick, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, standing_sex, against_wall, held_up, legs_around_waist, one_leg_up, wall_pin, lifted, triple_penetration, vaginal, anal, oral, deep, balls_deep, full_insertion, one_in_pussy, one_in_ass, one_in_mouth, mmf_threesome, thrusting, ahegao, rolled_back_eyes, drooling, forced_orgasm, (focus lines:1.1), (vibration lines:1.1), bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, volumetric_lighting, masterpiece, best_quality, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field, sharp_focus, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "21": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1216,
+      "height": 832,
+      "batch_size": 1
+    }
+  },
+  "22": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 13242,
+      "steps": 35,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "20",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "21",
+        0
+      ]
+    }
+  },
+  "23": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "22",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "24": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "lancelot_skin1_nude_tp_standing_penetrada",
+      "images": [
+        "23",
+        0
+      ]
+    }
+  },
+  "25": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, lancelot, lancelot_skin1, hair_ornament, mole_under_mouth, red_lipstick, pantyhose, 1girl, pantyhose, hair_ornament, red_lipstick, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, standing_sex, against_wall, held_up, legs_around_waist, one_leg_up, wall_pin, lifted, triple_penetration, climax, vaginal, anal, oral, cum, cum_in_pussy, cum_in_ass, cum_in_mouth, excessive_cum, ahegao, forced_orgasm, mind_break, convulsing, heavy_sweat, (focus lines:1.1), (vibration lines:1.1), bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, volumetric_lighting, masterpiece, best_quality, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field, sharp_focus, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "26": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1216,
+      "height": 832,
+      "batch_size": 1
+    }
+  },
+  "27": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 13242,
+      "steps": 35,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "25",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "26",
+        0
+      ]
+    }
+  },
+  "28": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "27",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "29": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "lancelot_skin1_nude_tp_standing_final",
+      "images": [
+        "28",
+        0
+      ]
+    }
+  },
+  "30": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, lancelot, lancelot_skin1, hair_ornament, mole_under_mouth, red_lipstick, pantyhose, 1girl, pantyhose, hair_ornament, red_lipstick, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, standing_sex, against_wall, held_up, legs_around_waist, one_leg_up, wall_pin, lifted, triple_penetration, climax_variant, after_sex, cum_in_pussy, cum_in_ass, cum_in_mouth, excessive_cum, ahegao, mind_break, heavy_sweat, ahegao, mind_break, (focus lines:1.1), (vibration lines:1.1), bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, volumetric_lighting, masterpiece, best_quality, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field, sharp_focus, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "31": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1216,
+      "height": 832,
+      "batch_size": 1
+    }
+  },
+  "32": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 13242,
+      "steps": 35,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "30",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "31",
+        0
+      ]
+    }
+  },
+  "33": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "32",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "34": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "lancelot_skin1_nude_tp_standing_xray",
+      "images": [
+        "33",
+        0
+      ]
+    }
+  },
+  "lora_face": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "Face_Detailed_v2.safetensors",
+      "strength_model": 0.6,
+      "strength_clip": 0.6
+    }
+  },
+  "lora_comic": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_face",
+        0
+      ],
+      "clip": [
+        "lora_face",
+        1
+      ],
+      "lora_name": "hentai_comic_generator.safetensors",
+      "strength_model": 0.08,
+      "strength_clip": 0.08
+    }
+  }
+}

@@ -1,0 +1,384 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "clip_skip": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip",
+        0
+      ],
+      "lora_name": "nelliel_parasol.safetensors",
+      "strength_model": 0.9,
+      "strength_clip": 1.0
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, text, signature, watermark, jpeg artifacts, monochrome, greyscale, deformed limbs",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "e_01_standing_shore": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "p_01_standing_shore": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_safe, nelliel_parasol, 1girl, solo, bleach, nelliel tu odelschwanck, green hair, long hair, ram skull, hollow mask on head, red facial stripe, large breasts, cheerful smile, japanese parasol, wagasa, holding parasol, open floral kimono robe, bikini top, cleavage, sarong, water splash, beach, ocean waves, summer sunlight, full body shot, standing in shallow water, masterpiece, best quality, highly detailed, vibrant colors",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_01_standing_shore": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424292,
+      "steps": 28,
+      "cfg": 6.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_01_standing_shore",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_01_standing_shore",
+        0
+      ]
+    }
+  },
+  "d_01_standing_shore": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_01_standing_shore",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_01_standing_shore": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Bleach/nelliel_parasol/01_standing_shore",
+      "images": [
+        "d_01_standing_shore",
+        0
+      ]
+    }
+  },
+  "e_02_closeup_portrait": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "p_02_closeup_portrait": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_safe, nelliel_parasol, 1girl, solo, bleach, nelliel tu odelschwanck, green hair, long hair, detailed face, beautiful eyes, ram skull, hollow mask on head, red facial stripe, large breasts, cheerful smile, japanese parasol, wagasa, holding parasol, open floral kimono robe, bikini top, cleavage, water splash, droplets, portrait, close-up, depth of field, masterpiece, best quality, ultra-detailed, soft sunlight",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_02_closeup_portrait": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424293,
+      "steps": 28,
+      "cfg": 6.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_02_closeup_portrait",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_02_closeup_portrait",
+        0
+      ]
+    }
+  },
+  "d_02_closeup_portrait": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_02_closeup_portrait",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_02_closeup_portrait": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Bleach/nelliel_parasol/02_closeup_portrait",
+      "images": [
+        "d_02_closeup_portrait",
+        0
+      ]
+    }
+  },
+  "e_03_splash_dynamic": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "p_03_splash_dynamic": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_safe, nelliel_parasol, 1girl, solo, bleach, nelliel tu odelschwanck, green hair, long hair, ram skull, hollow mask on head, red facial stripe, large breasts, cheerful smile, japanese parasol, wagasa, holding parasol, open floral kimono robe fluttering, bikini top, cleavage, sarong, dynamic water splash, splashing water, stepping in ocean, dynamic pose, medium shot, tropical beach background, sunlight reflections, masterpiece, best quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_03_splash_dynamic": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424294,
+      "steps": 28,
+      "cfg": 6.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_03_splash_dynamic",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_03_splash_dynamic",
+        0
+      ]
+    }
+  },
+  "d_03_splash_dynamic": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_03_splash_dynamic",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_03_splash_dynamic": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Bleach/nelliel_parasol/03_splash_dynamic",
+      "images": [
+        "d_03_splash_dynamic",
+        0
+      ]
+    }
+  },
+  "e_04_sunset_glow": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "p_04_sunset_glow": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_safe, nelliel_parasol, 1girl, solo, bleach, nelliel tu odelschwanck, green hair, ram skull, hollow mask on head, red facial stripe, large breasts, cheerful smile, japanese parasol, wagasa, holding parasol, open floral kimono robe, bikini top, cleavage, sarong, water splash, golden hour, sunset sky, warm lighting, rim lighting, glowing highlights, glittering water surface, masterpiece, best quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_04_sunset_glow": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424295,
+      "steps": 28,
+      "cfg": 6.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_04_sunset_glow",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_04_sunset_glow",
+        0
+      ]
+    }
+  },
+  "d_04_sunset_glow": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_04_sunset_glow",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_04_sunset_glow": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Bleach/nelliel_parasol/04_sunset_glow",
+      "images": [
+        "d_04_sunset_glow",
+        0
+      ]
+    }
+  },
+  "e_05_seashore_seated": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "p_05_seashore_seated": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_safe, nelliel_parasol, 1girl, solo, bleach, nelliel tu odelschwanck, green hair, ram skull, hollow mask on head, red facial stripe, large breasts, cheerful smile, japanese parasol, wagasa, holding parasol, open floral kimono robe, bikini top, cleavage, sarong, sitting on sand, gentle water splash, tropical beach, relaxing, looking at viewer, masterpiece, best quality, 8k resolution",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_05_seashore_seated": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424296,
+      "steps": 28,
+      "cfg": 6.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_05_seashore_seated",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_05_seashore_seated",
+        0
+      ]
+    }
+  },
+  "d_05_seashore_seated": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_05_seashore_seated",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_05_seashore_seated": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Bleach/nelliel_parasol/05_seashore_seated",
+      "images": [
+        "d_05_seashore_seated",
+        0
+      ]
+    }
+  }
+}

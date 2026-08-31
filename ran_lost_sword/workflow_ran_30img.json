@@ -1,0 +1,6460 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "rinIllusionRNSFW_v30.safetensors"
+    }
+  },
+  "latent_shared": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "clip_skip": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip",
+        0
+      ],
+      "lora_name": "lora_ran_lost_sword.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8
+    }
+  },
+  "lora_depth": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth",
+        0
+      ],
+      "clip": [
+        "lora_depth",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "clip": [
+        "lora_dp",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, (holding weapon:1.4), (weapon:1.4), (sword:1.4)",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_loader_cowgirl": {
+    "class_type": "ControlNetLoader",
+    "inputs": {
+      "control_net_name": "controlnet-depth-sdxl.safetensors"
+    }
+  },
+  "cn_image_cowgirl": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "control_poses/cowgirl.png"
+    }
+  },
+  "p_cowgirl_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), cowgirl_position, girl_on_top, straddling, front_view, scared, trembling, refusal, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_cowgirl_01_miedo": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_cowgirl_01_miedo",
+        0
+      ],
+      "control_net": [
+        "cn_loader_cowgirl",
+        0
+      ],
+      "image": [
+        "cn_image_cowgirl",
+        0
+      ]
+    }
+  },
+  "k_cowgirl_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_cowgirl_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_cowgirl_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_cowgirl_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_cowgirl_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_cowgirl_01_miedo",
+      "images": [
+        "d_cowgirl_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_cowgirl_01.5_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, torn_clothes, clothing_pull, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), cowgirl_position, girl_on_top, straddling, front_view, reluctant, struggling, clothing_lift, hand_grab, clothing_grab, blushing, nervous, sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_cowgirl_01.5_resistencia": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_cowgirl_01.5_resistencia",
+        0
+      ],
+      "control_net": [
+        "cn_loader_cowgirl",
+        0
+      ],
+      "image": [
+        "cn_image_cowgirl",
+        0
+      ]
+    }
+  },
+  "k_cowgirl_01.5_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_cowgirl_01.5_resistencia",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_cowgirl_01.5_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_cowgirl_01.5_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_cowgirl_01.5_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_cowgirl_01.5_resistencia",
+      "images": [
+        "d_cowgirl_01.5_resistencia",
+        0
+      ]
+    }
+  },
+  "p_cowgirl_02_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, breasts_exposed, clothing_undone, half-undressed, clothes_around_waist, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (tip_in_pussy:1.3), (first_insertion:1.2), cowgirl_position, girl_on_top, straddling, front_view, (pain:1.3), tears_streaming, screaming, sweat, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_cowgirl_02_dolor": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_cowgirl_02_dolor",
+        0
+      ],
+      "control_net": [
+        "cn_loader_cowgirl",
+        0
+      ],
+      "image": [
+        "cn_image_cowgirl",
+        0
+      ]
+    }
+  },
+  "k_cowgirl_02_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_cowgirl_02_dolor",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_cowgirl_02_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_cowgirl_02_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_cowgirl_02_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_cowgirl_02_dolor",
+      "images": [
+        "d_cowgirl_02_dolor",
+        0
+      ]
+    }
+  },
+  "p_cowgirl_03_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), cowgirl_position, girl_on_top, straddling, front_view, crying, defeated, broken_spirit, sweat_drops, drooling, (motion lines:1.4), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_cowgirl_03_quebranto": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_cowgirl_03_quebranto",
+        0
+      ],
+      "control_net": [
+        "cn_loader_cowgirl",
+        0
+      ],
+      "image": [
+        "cn_image_cowgirl",
+        0
+      ]
+    }
+  },
+  "k_cowgirl_03_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_cowgirl_03_quebranto",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_cowgirl_03_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_cowgirl_03_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_cowgirl_03_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_cowgirl_03_quebranto",
+      "images": [
+        "d_cowgirl_03_quebranto",
+        0
+      ]
+    }
+  },
+  "p_cowgirl_04_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.6), (balls_deep:1.4), cowgirl_position, girl_on_top, straddling, front_view, ahegao, heart_pupils, mind_break, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_cowgirl_04_ahegao": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_cowgirl_04_ahegao",
+        0
+      ],
+      "control_net": [
+        "cn_loader_cowgirl",
+        0
+      ],
+      "image": [
+        "cn_image_cowgirl",
+        0
+      ]
+    }
+  },
+  "k_cowgirl_04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_cowgirl_04_ahegao",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_cowgirl_04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_cowgirl_04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_cowgirl_04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_cowgirl_04_ahegao",
+      "images": [
+        "d_cowgirl_04_ahegao",
+        0
+      ]
+    }
+  },
+  "p_cowgirl_04.5_derrame": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), (vaginal_gaping:1.3), trembling_legs, panting, cowgirl_position, girl_on_top, straddling, front_view, blank_eyes, exhausted, cum_leak, leaking_semen, semen_drip, excessive_sweat, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_cowgirl_04.5_derrame": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_cowgirl_04.5_derrame",
+        0
+      ],
+      "control_net": [
+        "cn_loader_cowgirl",
+        0
+      ],
+      "image": [
+        "cn_image_cowgirl",
+        0
+      ]
+    }
+  },
+  "k_cowgirl_04.5_derrame": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_cowgirl_04.5_derrame",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_cowgirl_04.5_derrame": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_cowgirl_04.5_derrame",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_cowgirl_04.5_derrame": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_cowgirl_04.5_derrame",
+      "images": [
+        "d_cowgirl_04.5_derrame",
+        0
+      ]
+    }
+  },
+  "p_cowgirl_05_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (balls_deep:1.3), (gaping:1.4), cowgirl_position, girl_on_top, straddling, front_view, blank_eyes, thousand_yard_stare, semen_on_body, excessive_sweat, dried_tears, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_cowgirl_05_rota": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_cowgirl_05_rota",
+        0
+      ],
+      "control_net": [
+        "cn_loader_cowgirl",
+        0
+      ],
+      "image": [
+        "cn_image_cowgirl",
+        0
+      ]
+    }
+  },
+  "k_cowgirl_05_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_cowgirl_05_rota",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_cowgirl_05_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_cowgirl_05_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_cowgirl_05_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_cowgirl_05_rota",
+      "images": [
+        "d_cowgirl_05_rota",
+        0
+      ]
+    }
+  },
+  "p_cowgirl_06_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (after_sex:1.3), sleeping, cowgirl_position, girl_on_top, straddling, front_view, tears_streaming, semen_on_face, dried_tears, cum_pool, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_cowgirl_06_inconsciente": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_cowgirl_06_inconsciente",
+        0
+      ],
+      "control_net": [
+        "cn_loader_cowgirl",
+        0
+      ],
+      "image": [
+        "cn_image_cowgirl",
+        0
+      ]
+    }
+  },
+  "k_cowgirl_06_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_cowgirl_06_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_cowgirl_06_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_cowgirl_06_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_cowgirl_06_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_cowgirl_06_inconsciente",
+      "images": [
+        "d_cowgirl_06_inconsciente",
+        0
+      ]
+    }
+  },
+  "cn_loader_doggystyle": {
+    "class_type": "ControlNetLoader",
+    "inputs": {
+      "control_net_name": "controlnet-depth-sdxl.safetensors"
+    }
+  },
+  "cn_image_doggystyle": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "control_poses/doggystyle.png"
+    }
+  },
+  "p_doggystyle_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), doggystyle, from_behind, all_fours, front_view, scared, trembling, refusal, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_doggystyle_01_miedo": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_doggystyle_01_miedo",
+        0
+      ],
+      "control_net": [
+        "cn_loader_doggystyle",
+        0
+      ],
+      "image": [
+        "cn_image_doggystyle",
+        0
+      ]
+    }
+  },
+  "k_doggystyle_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_doggystyle_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_doggystyle_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_doggystyle_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_doggystyle_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_doggystyle_01_miedo",
+      "images": [
+        "d_doggystyle_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_doggystyle_01.5_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, torn_clothes, clothing_pull, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), doggystyle, from_behind, all_fours, front_view, reluctant, struggling, clothing_lift, hand_grab, clothing_grab, blushing, nervous, sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_doggystyle_01.5_resistencia": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_doggystyle_01.5_resistencia",
+        0
+      ],
+      "control_net": [
+        "cn_loader_doggystyle",
+        0
+      ],
+      "image": [
+        "cn_image_doggystyle",
+        0
+      ]
+    }
+  },
+  "k_doggystyle_01.5_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_doggystyle_01.5_resistencia",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_doggystyle_01.5_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_doggystyle_01.5_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_doggystyle_01.5_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_doggystyle_01.5_resistencia",
+      "images": [
+        "d_doggystyle_01.5_resistencia",
+        0
+      ]
+    }
+  },
+  "p_doggystyle_02_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, breasts_exposed, clothing_undone, half-undressed, clothes_around_waist, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (tip_in_pussy:1.3), (first_insertion:1.2), doggystyle, from_behind, all_fours, front_view, (pain:1.3), tears_streaming, screaming, sweat, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_doggystyle_02_dolor": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_doggystyle_02_dolor",
+        0
+      ],
+      "control_net": [
+        "cn_loader_doggystyle",
+        0
+      ],
+      "image": [
+        "cn_image_doggystyle",
+        0
+      ]
+    }
+  },
+  "k_doggystyle_02_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_doggystyle_02_dolor",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_doggystyle_02_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_doggystyle_02_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_doggystyle_02_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_doggystyle_02_dolor",
+      "images": [
+        "d_doggystyle_02_dolor",
+        0
+      ]
+    }
+  },
+  "p_doggystyle_03_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), doggystyle, from_behind, all_fours, front_view, crying, defeated, broken_spirit, sweat_drops, drooling, (motion lines:1.4), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_doggystyle_03_quebranto": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_doggystyle_03_quebranto",
+        0
+      ],
+      "control_net": [
+        "cn_loader_doggystyle",
+        0
+      ],
+      "image": [
+        "cn_image_doggystyle",
+        0
+      ]
+    }
+  },
+  "k_doggystyle_03_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_doggystyle_03_quebranto",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_doggystyle_03_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_doggystyle_03_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_doggystyle_03_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_doggystyle_03_quebranto",
+      "images": [
+        "d_doggystyle_03_quebranto",
+        0
+      ]
+    }
+  },
+  "p_doggystyle_04_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.6), (balls_deep:1.4), doggystyle, from_behind, all_fours, front_view, ahegao, heart_pupils, mind_break, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_doggystyle_04_ahegao": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_doggystyle_04_ahegao",
+        0
+      ],
+      "control_net": [
+        "cn_loader_doggystyle",
+        0
+      ],
+      "image": [
+        "cn_image_doggystyle",
+        0
+      ]
+    }
+  },
+  "k_doggystyle_04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_doggystyle_04_ahegao",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_doggystyle_04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_doggystyle_04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_doggystyle_04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_doggystyle_04_ahegao",
+      "images": [
+        "d_doggystyle_04_ahegao",
+        0
+      ]
+    }
+  },
+  "p_doggystyle_04.5_derrame": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), (vaginal_gaping:1.3), trembling_legs, panting, doggystyle, from_behind, all_fours, front_view, blank_eyes, exhausted, cum_leak, leaking_semen, semen_drip, excessive_sweat, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_doggystyle_04.5_derrame": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_doggystyle_04.5_derrame",
+        0
+      ],
+      "control_net": [
+        "cn_loader_doggystyle",
+        0
+      ],
+      "image": [
+        "cn_image_doggystyle",
+        0
+      ]
+    }
+  },
+  "k_doggystyle_04.5_derrame": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_doggystyle_04.5_derrame",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_doggystyle_04.5_derrame": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_doggystyle_04.5_derrame",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_doggystyle_04.5_derrame": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_doggystyle_04.5_derrame",
+      "images": [
+        "d_doggystyle_04.5_derrame",
+        0
+      ]
+    }
+  },
+  "p_doggystyle_05_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (balls_deep:1.3), (gaping:1.4), doggystyle, from_behind, all_fours, front_view, blank_eyes, thousand_yard_stare, semen_on_body, excessive_sweat, dried_tears, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_doggystyle_05_rota": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_doggystyle_05_rota",
+        0
+      ],
+      "control_net": [
+        "cn_loader_doggystyle",
+        0
+      ],
+      "image": [
+        "cn_image_doggystyle",
+        0
+      ]
+    }
+  },
+  "k_doggystyle_05_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_doggystyle_05_rota",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_doggystyle_05_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_doggystyle_05_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_doggystyle_05_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_doggystyle_05_rota",
+      "images": [
+        "d_doggystyle_05_rota",
+        0
+      ]
+    }
+  },
+  "p_doggystyle_06_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (after_sex:1.3), sleeping, doggystyle, from_behind, all_fours, front_view, tears_streaming, semen_on_face, dried_tears, cum_pool, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_doggystyle_06_inconsciente": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_doggystyle_06_inconsciente",
+        0
+      ],
+      "control_net": [
+        "cn_loader_doggystyle",
+        0
+      ],
+      "image": [
+        "cn_image_doggystyle",
+        0
+      ]
+    }
+  },
+  "k_doggystyle_06_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_doggystyle_06_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_doggystyle_06_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_doggystyle_06_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_doggystyle_06_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_doggystyle_06_inconsciente",
+      "images": [
+        "d_doggystyle_06_inconsciente",
+        0
+      ]
+    }
+  },
+  "cn_loader_missionary": {
+    "class_type": "ControlNetLoader",
+    "inputs": {
+      "control_net_name": "controlnet-depth-sdxl.safetensors"
+    }
+  },
+  "cn_image_missionary": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "control_poses/missionary.png"
+    }
+  },
+  "p_missionary_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), missionary_position, legs_up, spread_legs, front_view, scared, trembling, refusal, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_missionary_01_miedo": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_missionary_01_miedo",
+        0
+      ],
+      "control_net": [
+        "cn_loader_missionary",
+        0
+      ],
+      "image": [
+        "cn_image_missionary",
+        0
+      ]
+    }
+  },
+  "k_missionary_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_missionary_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_missionary_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_missionary_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_missionary_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_missionary_01_miedo",
+      "images": [
+        "d_missionary_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_missionary_01.5_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, torn_clothes, clothing_pull, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), missionary_position, legs_up, spread_legs, front_view, reluctant, struggling, clothing_lift, hand_grab, clothing_grab, blushing, nervous, sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_missionary_01.5_resistencia": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_missionary_01.5_resistencia",
+        0
+      ],
+      "control_net": [
+        "cn_loader_missionary",
+        0
+      ],
+      "image": [
+        "cn_image_missionary",
+        0
+      ]
+    }
+  },
+  "k_missionary_01.5_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_missionary_01.5_resistencia",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_missionary_01.5_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_missionary_01.5_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_missionary_01.5_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_missionary_01.5_resistencia",
+      "images": [
+        "d_missionary_01.5_resistencia",
+        0
+      ]
+    }
+  },
+  "p_missionary_02_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, breasts_exposed, clothing_undone, half-undressed, clothes_around_waist, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (tip_in_pussy:1.3), (first_insertion:1.2), missionary_position, legs_up, spread_legs, front_view, (pain:1.3), tears_streaming, screaming, sweat, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_missionary_02_dolor": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_missionary_02_dolor",
+        0
+      ],
+      "control_net": [
+        "cn_loader_missionary",
+        0
+      ],
+      "image": [
+        "cn_image_missionary",
+        0
+      ]
+    }
+  },
+  "k_missionary_02_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_missionary_02_dolor",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_missionary_02_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_missionary_02_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_missionary_02_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_missionary_02_dolor",
+      "images": [
+        "d_missionary_02_dolor",
+        0
+      ]
+    }
+  },
+  "p_missionary_03_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), missionary_position, legs_up, spread_legs, front_view, crying, defeated, broken_spirit, sweat_drops, drooling, (motion lines:1.4), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_missionary_03_quebranto": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_missionary_03_quebranto",
+        0
+      ],
+      "control_net": [
+        "cn_loader_missionary",
+        0
+      ],
+      "image": [
+        "cn_image_missionary",
+        0
+      ]
+    }
+  },
+  "k_missionary_03_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_missionary_03_quebranto",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_missionary_03_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_missionary_03_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_missionary_03_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_missionary_03_quebranto",
+      "images": [
+        "d_missionary_03_quebranto",
+        0
+      ]
+    }
+  },
+  "p_missionary_04_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.6), (balls_deep:1.4), missionary_position, legs_up, spread_legs, front_view, ahegao, heart_pupils, mind_break, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_missionary_04_ahegao": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_missionary_04_ahegao",
+        0
+      ],
+      "control_net": [
+        "cn_loader_missionary",
+        0
+      ],
+      "image": [
+        "cn_image_missionary",
+        0
+      ]
+    }
+  },
+  "k_missionary_04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_missionary_04_ahegao",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_missionary_04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_missionary_04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_missionary_04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_missionary_04_ahegao",
+      "images": [
+        "d_missionary_04_ahegao",
+        0
+      ]
+    }
+  },
+  "p_missionary_04.5_derrame": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), (vaginal_gaping:1.3), trembling_legs, panting, missionary_position, legs_up, spread_legs, front_view, blank_eyes, exhausted, cum_leak, leaking_semen, semen_drip, excessive_sweat, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_missionary_04.5_derrame": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_missionary_04.5_derrame",
+        0
+      ],
+      "control_net": [
+        "cn_loader_missionary",
+        0
+      ],
+      "image": [
+        "cn_image_missionary",
+        0
+      ]
+    }
+  },
+  "k_missionary_04.5_derrame": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_missionary_04.5_derrame",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_missionary_04.5_derrame": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_missionary_04.5_derrame",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_missionary_04.5_derrame": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_missionary_04.5_derrame",
+      "images": [
+        "d_missionary_04.5_derrame",
+        0
+      ]
+    }
+  },
+  "p_missionary_05_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (balls_deep:1.3), (gaping:1.4), missionary_position, legs_up, spread_legs, front_view, blank_eyes, thousand_yard_stare, semen_on_body, excessive_sweat, dried_tears, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_missionary_05_rota": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_missionary_05_rota",
+        0
+      ],
+      "control_net": [
+        "cn_loader_missionary",
+        0
+      ],
+      "image": [
+        "cn_image_missionary",
+        0
+      ]
+    }
+  },
+  "k_missionary_05_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_missionary_05_rota",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_missionary_05_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_missionary_05_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_missionary_05_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_missionary_05_rota",
+      "images": [
+        "d_missionary_05_rota",
+        0
+      ]
+    }
+  },
+  "p_missionary_06_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (after_sex:1.3), sleeping, missionary_position, legs_up, spread_legs, front_view, tears_streaming, semen_on_face, dried_tears, cum_pool, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_missionary_06_inconsciente": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_missionary_06_inconsciente",
+        0
+      ],
+      "control_net": [
+        "cn_loader_missionary",
+        0
+      ],
+      "image": [
+        "cn_image_missionary",
+        0
+      ]
+    }
+  },
+  "k_missionary_06_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_missionary_06_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_missionary_06_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_missionary_06_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_missionary_06_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_missionary_06_inconsciente",
+      "images": [
+        "d_missionary_06_inconsciente",
+        0
+      ]
+    }
+  },
+  "cn_loader_mating_press": {
+    "class_type": "ControlNetLoader",
+    "inputs": {
+      "control_net_name": "controlnet-depth-sdxl.safetensors"
+    }
+  },
+  "cn_image_mating_press": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "control_poses/mating_press.png"
+    }
+  },
+  "p_mating_press_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), mating_press, legs_above_head, folded, front_view, scared, trembling, refusal, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_mating_press_01_miedo": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_mating_press_01_miedo",
+        0
+      ],
+      "control_net": [
+        "cn_loader_mating_press",
+        0
+      ],
+      "image": [
+        "cn_image_mating_press",
+        0
+      ]
+    }
+  },
+  "k_mating_press_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_mating_press_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_mating_press_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_mating_press_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_mating_press_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_mating_press_01_miedo",
+      "images": [
+        "d_mating_press_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_mating_press_01.5_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, torn_clothes, clothing_pull, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), mating_press, legs_above_head, folded, front_view, reluctant, struggling, clothing_lift, hand_grab, clothing_grab, blushing, nervous, sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_mating_press_01.5_resistencia": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_mating_press_01.5_resistencia",
+        0
+      ],
+      "control_net": [
+        "cn_loader_mating_press",
+        0
+      ],
+      "image": [
+        "cn_image_mating_press",
+        0
+      ]
+    }
+  },
+  "k_mating_press_01.5_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_mating_press_01.5_resistencia",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_mating_press_01.5_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_mating_press_01.5_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_mating_press_01.5_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_mating_press_01.5_resistencia",
+      "images": [
+        "d_mating_press_01.5_resistencia",
+        0
+      ]
+    }
+  },
+  "p_mating_press_02_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, breasts_exposed, clothing_undone, half-undressed, clothes_around_waist, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (tip_in_pussy:1.3), (first_insertion:1.2), mating_press, legs_above_head, folded, front_view, (pain:1.3), tears_streaming, screaming, sweat, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_mating_press_02_dolor": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_mating_press_02_dolor",
+        0
+      ],
+      "control_net": [
+        "cn_loader_mating_press",
+        0
+      ],
+      "image": [
+        "cn_image_mating_press",
+        0
+      ]
+    }
+  },
+  "k_mating_press_02_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_mating_press_02_dolor",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_mating_press_02_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_mating_press_02_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_mating_press_02_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_mating_press_02_dolor",
+      "images": [
+        "d_mating_press_02_dolor",
+        0
+      ]
+    }
+  },
+  "p_mating_press_03_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), mating_press, legs_above_head, folded, front_view, crying, defeated, broken_spirit, sweat_drops, drooling, (motion lines:1.4), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_mating_press_03_quebranto": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_mating_press_03_quebranto",
+        0
+      ],
+      "control_net": [
+        "cn_loader_mating_press",
+        0
+      ],
+      "image": [
+        "cn_image_mating_press",
+        0
+      ]
+    }
+  },
+  "k_mating_press_03_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_mating_press_03_quebranto",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_mating_press_03_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_mating_press_03_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_mating_press_03_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_mating_press_03_quebranto",
+      "images": [
+        "d_mating_press_03_quebranto",
+        0
+      ]
+    }
+  },
+  "p_mating_press_04_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.6), (balls_deep:1.4), mating_press, legs_above_head, folded, front_view, ahegao, heart_pupils, mind_break, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_mating_press_04_ahegao": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_mating_press_04_ahegao",
+        0
+      ],
+      "control_net": [
+        "cn_loader_mating_press",
+        0
+      ],
+      "image": [
+        "cn_image_mating_press",
+        0
+      ]
+    }
+  },
+  "k_mating_press_04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_mating_press_04_ahegao",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_mating_press_04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_mating_press_04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_mating_press_04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_mating_press_04_ahegao",
+      "images": [
+        "d_mating_press_04_ahegao",
+        0
+      ]
+    }
+  },
+  "p_mating_press_04.5_derrame": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), (vaginal_gaping:1.3), trembling_legs, panting, mating_press, legs_above_head, folded, front_view, blank_eyes, exhausted, cum_leak, leaking_semen, semen_drip, excessive_sweat, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_mating_press_04.5_derrame": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_mating_press_04.5_derrame",
+        0
+      ],
+      "control_net": [
+        "cn_loader_mating_press",
+        0
+      ],
+      "image": [
+        "cn_image_mating_press",
+        0
+      ]
+    }
+  },
+  "k_mating_press_04.5_derrame": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_mating_press_04.5_derrame",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_mating_press_04.5_derrame": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_mating_press_04.5_derrame",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_mating_press_04.5_derrame": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_mating_press_04.5_derrame",
+      "images": [
+        "d_mating_press_04.5_derrame",
+        0
+      ]
+    }
+  },
+  "p_mating_press_05_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (balls_deep:1.3), (gaping:1.4), mating_press, legs_above_head, folded, front_view, blank_eyes, thousand_yard_stare, semen_on_body, excessive_sweat, dried_tears, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_mating_press_05_rota": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_mating_press_05_rota",
+        0
+      ],
+      "control_net": [
+        "cn_loader_mating_press",
+        0
+      ],
+      "image": [
+        "cn_image_mating_press",
+        0
+      ]
+    }
+  },
+  "k_mating_press_05_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_mating_press_05_rota",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_mating_press_05_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_mating_press_05_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_mating_press_05_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_mating_press_05_rota",
+      "images": [
+        "d_mating_press_05_rota",
+        0
+      ]
+    }
+  },
+  "p_mating_press_06_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (after_sex:1.3), sleeping, mating_press, legs_above_head, folded, front_view, tears_streaming, semen_on_face, dried_tears, cum_pool, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_mating_press_06_inconsciente": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_mating_press_06_inconsciente",
+        0
+      ],
+      "control_net": [
+        "cn_loader_mating_press",
+        0
+      ],
+      "image": [
+        "cn_image_mating_press",
+        0
+      ]
+    }
+  },
+  "k_mating_press_06_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_mating_press_06_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_mating_press_06_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_mating_press_06_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_mating_press_06_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_mating_press_06_inconsciente",
+      "images": [
+        "d_mating_press_06_inconsciente",
+        0
+      ]
+    }
+  },
+  "cn_loader_reverse_cowgirl": {
+    "class_type": "ControlNetLoader",
+    "inputs": {
+      "control_net_name": "controlnet-depth-sdxl.safetensors"
+    }
+  },
+  "cn_image_reverse_cowgirl": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "control_poses/reverse_cowgirl.png"
+    }
+  },
+  "p_reverse_cowgirl_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), reverse_cowgirl, girl_on_top, facing_away, front_view, scared, trembling, refusal, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_reverse_cowgirl_01_miedo": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_reverse_cowgirl_01_miedo",
+        0
+      ],
+      "control_net": [
+        "cn_loader_reverse_cowgirl",
+        0
+      ],
+      "image": [
+        "cn_image_reverse_cowgirl",
+        0
+      ]
+    }
+  },
+  "k_reverse_cowgirl_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_reverse_cowgirl_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reverse_cowgirl_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reverse_cowgirl_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reverse_cowgirl_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_reverse_cowgirl_01_miedo",
+      "images": [
+        "d_reverse_cowgirl_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_reverse_cowgirl_01.5_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, torn_clothes, clothing_pull, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), reverse_cowgirl, girl_on_top, facing_away, front_view, reluctant, struggling, clothing_lift, hand_grab, clothing_grab, blushing, nervous, sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_reverse_cowgirl_01.5_resistencia": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_reverse_cowgirl_01.5_resistencia",
+        0
+      ],
+      "control_net": [
+        "cn_loader_reverse_cowgirl",
+        0
+      ],
+      "image": [
+        "cn_image_reverse_cowgirl",
+        0
+      ]
+    }
+  },
+  "k_reverse_cowgirl_01.5_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_reverse_cowgirl_01.5_resistencia",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reverse_cowgirl_01.5_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reverse_cowgirl_01.5_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reverse_cowgirl_01.5_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_reverse_cowgirl_01.5_resistencia",
+      "images": [
+        "d_reverse_cowgirl_01.5_resistencia",
+        0
+      ]
+    }
+  },
+  "p_reverse_cowgirl_02_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, breasts_exposed, clothing_undone, half-undressed, clothes_around_waist, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (tip_in_pussy:1.3), (first_insertion:1.2), reverse_cowgirl, girl_on_top, facing_away, front_view, (pain:1.3), tears_streaming, screaming, sweat, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_reverse_cowgirl_02_dolor": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_reverse_cowgirl_02_dolor",
+        0
+      ],
+      "control_net": [
+        "cn_loader_reverse_cowgirl",
+        0
+      ],
+      "image": [
+        "cn_image_reverse_cowgirl",
+        0
+      ]
+    }
+  },
+  "k_reverse_cowgirl_02_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_reverse_cowgirl_02_dolor",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reverse_cowgirl_02_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reverse_cowgirl_02_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reverse_cowgirl_02_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_reverse_cowgirl_02_dolor",
+      "images": [
+        "d_reverse_cowgirl_02_dolor",
+        0
+      ]
+    }
+  },
+  "p_reverse_cowgirl_03_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), reverse_cowgirl, girl_on_top, facing_away, front_view, crying, defeated, broken_spirit, sweat_drops, drooling, (motion lines:1.4), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_reverse_cowgirl_03_quebranto": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_reverse_cowgirl_03_quebranto",
+        0
+      ],
+      "control_net": [
+        "cn_loader_reverse_cowgirl",
+        0
+      ],
+      "image": [
+        "cn_image_reverse_cowgirl",
+        0
+      ]
+    }
+  },
+  "k_reverse_cowgirl_03_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_reverse_cowgirl_03_quebranto",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reverse_cowgirl_03_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reverse_cowgirl_03_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reverse_cowgirl_03_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_reverse_cowgirl_03_quebranto",
+      "images": [
+        "d_reverse_cowgirl_03_quebranto",
+        0
+      ]
+    }
+  },
+  "p_reverse_cowgirl_04_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.6), (balls_deep:1.4), reverse_cowgirl, girl_on_top, facing_away, front_view, ahegao, heart_pupils, mind_break, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_reverse_cowgirl_04_ahegao": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_reverse_cowgirl_04_ahegao",
+        0
+      ],
+      "control_net": [
+        "cn_loader_reverse_cowgirl",
+        0
+      ],
+      "image": [
+        "cn_image_reverse_cowgirl",
+        0
+      ]
+    }
+  },
+  "k_reverse_cowgirl_04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_reverse_cowgirl_04_ahegao",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reverse_cowgirl_04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reverse_cowgirl_04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reverse_cowgirl_04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_reverse_cowgirl_04_ahegao",
+      "images": [
+        "d_reverse_cowgirl_04_ahegao",
+        0
+      ]
+    }
+  },
+  "p_reverse_cowgirl_04.5_derrame": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), (vaginal_gaping:1.3), trembling_legs, panting, reverse_cowgirl, girl_on_top, facing_away, front_view, blank_eyes, exhausted, cum_leak, leaking_semen, semen_drip, excessive_sweat, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_reverse_cowgirl_04.5_derrame": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_reverse_cowgirl_04.5_derrame",
+        0
+      ],
+      "control_net": [
+        "cn_loader_reverse_cowgirl",
+        0
+      ],
+      "image": [
+        "cn_image_reverse_cowgirl",
+        0
+      ]
+    }
+  },
+  "k_reverse_cowgirl_04.5_derrame": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_reverse_cowgirl_04.5_derrame",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reverse_cowgirl_04.5_derrame": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reverse_cowgirl_04.5_derrame",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reverse_cowgirl_04.5_derrame": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_reverse_cowgirl_04.5_derrame",
+      "images": [
+        "d_reverse_cowgirl_04.5_derrame",
+        0
+      ]
+    }
+  },
+  "p_reverse_cowgirl_05_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (balls_deep:1.3), (gaping:1.4), reverse_cowgirl, girl_on_top, facing_away, front_view, blank_eyes, thousand_yard_stare, semen_on_body, excessive_sweat, dried_tears, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_reverse_cowgirl_05_rota": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_reverse_cowgirl_05_rota",
+        0
+      ],
+      "control_net": [
+        "cn_loader_reverse_cowgirl",
+        0
+      ],
+      "image": [
+        "cn_image_reverse_cowgirl",
+        0
+      ]
+    }
+  },
+  "k_reverse_cowgirl_05_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_reverse_cowgirl_05_rota",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reverse_cowgirl_05_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reverse_cowgirl_05_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reverse_cowgirl_05_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_reverse_cowgirl_05_rota",
+      "images": [
+        "d_reverse_cowgirl_05_rota",
+        0
+      ]
+    }
+  },
+  "p_reverse_cowgirl_06_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (after_sex:1.3), sleeping, reverse_cowgirl, girl_on_top, facing_away, front_view, tears_streaming, semen_on_face, dried_tears, cum_pool, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_reverse_cowgirl_06_inconsciente": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_reverse_cowgirl_06_inconsciente",
+        0
+      ],
+      "control_net": [
+        "cn_loader_reverse_cowgirl",
+        0
+      ],
+      "image": [
+        "cn_image_reverse_cowgirl",
+        0
+      ]
+    }
+  },
+  "k_reverse_cowgirl_06_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_reverse_cowgirl_06_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reverse_cowgirl_06_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reverse_cowgirl_06_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reverse_cowgirl_06_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_reverse_cowgirl_06_inconsciente",
+      "images": [
+        "d_reverse_cowgirl_06_inconsciente",
+        0
+      ]
+    }
+  },
+  "cn_loader_paizuri": {
+    "class_type": "ControlNetLoader",
+    "inputs": {
+      "control_net_name": "controlnet-depth-sdxl.safetensors"
+    }
+  },
+  "cn_image_paizuri": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "control_poses/paizuri.png"
+    }
+  },
+  "p_paizuri_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), paizuri, breast_sex, frottage, close-up, front_view, penis_between_breasts, scared, trembling, refusal, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_paizuri_01_miedo": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_paizuri_01_miedo",
+        0
+      ],
+      "control_net": [
+        "cn_loader_paizuri",
+        0
+      ],
+      "image": [
+        "cn_image_paizuri",
+        0
+      ]
+    }
+  },
+  "k_paizuri_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_paizuri_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_paizuri_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_paizuri_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_paizuri_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_paizuri_01_miedo",
+      "images": [
+        "d_paizuri_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_paizuri_01.5_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, torn_clothes, clothing_pull, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), paizuri, breast_sex, frottage, close-up, front_view, penis_between_breasts, reluctant, struggling, clothing_lift, hand_grab, clothing_grab, blushing, nervous, sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_paizuri_01.5_resistencia": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_paizuri_01.5_resistencia",
+        0
+      ],
+      "control_net": [
+        "cn_loader_paizuri",
+        0
+      ],
+      "image": [
+        "cn_image_paizuri",
+        0
+      ]
+    }
+  },
+  "k_paizuri_01.5_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_paizuri_01.5_resistencia",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_paizuri_01.5_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_paizuri_01.5_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_paizuri_01.5_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_paizuri_01.5_resistencia",
+      "images": [
+        "d_paizuri_01.5_resistencia",
+        0
+      ]
+    }
+  },
+  "p_paizuri_02_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, breasts_exposed, clothing_undone, half-undressed, clothes_around_waist, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (tip_in_pussy:1.3), (first_insertion:1.2), paizuri, breast_sex, frottage, close-up, front_view, penis_between_breasts, (pain:1.3), tears_streaming, screaming, sweat, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_paizuri_02_dolor": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_paizuri_02_dolor",
+        0
+      ],
+      "control_net": [
+        "cn_loader_paizuri",
+        0
+      ],
+      "image": [
+        "cn_image_paizuri",
+        0
+      ]
+    }
+  },
+  "k_paizuri_02_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_paizuri_02_dolor",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_paizuri_02_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_paizuri_02_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_paizuri_02_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_paizuri_02_dolor",
+      "images": [
+        "d_paizuri_02_dolor",
+        0
+      ]
+    }
+  },
+  "p_paizuri_03_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), paizuri, breast_sex, cleavage, frottage, close-up, front_view, penis_between_breasts, crying, defeated, broken_spirit, sweat_drops, drooling, (motion lines:1.4), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_paizuri_03_quebranto": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_paizuri_03_quebranto",
+        0
+      ],
+      "control_net": [
+        "cn_loader_paizuri",
+        0
+      ],
+      "image": [
+        "cn_image_paizuri",
+        0
+      ]
+    }
+  },
+  "k_paizuri_03_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_paizuri_03_quebranto",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_paizuri_03_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_paizuri_03_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_paizuri_03_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_paizuri_03_quebranto",
+      "images": [
+        "d_paizuri_03_quebranto",
+        0
+      ]
+    }
+  },
+  "p_paizuri_04_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.6), (balls_deep:1.4), paizuri, breast_sex, cleavage, frottage, close-up, front_view, penis_between_breasts, ahegao, heart_pupils, mind_break, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_paizuri_04_ahegao": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_paizuri_04_ahegao",
+        0
+      ],
+      "control_net": [
+        "cn_loader_paizuri",
+        0
+      ],
+      "image": [
+        "cn_image_paizuri",
+        0
+      ]
+    }
+  },
+  "k_paizuri_04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_paizuri_04_ahegao",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_paizuri_04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_paizuri_04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_paizuri_04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_paizuri_04_ahegao",
+      "images": [
+        "d_paizuri_04_ahegao",
+        0
+      ]
+    }
+  },
+  "p_paizuri_04.5_derrame": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), (vaginal_gaping:1.3), trembling_legs, panting, paizuri, breast_sex, cleavage, frottage, close-up, front_view, penis_between_breasts, blank_eyes, exhausted, cum_leak, leaking_semen, semen_drip, excessive_sweat, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_paizuri_04.5_derrame": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_paizuri_04.5_derrame",
+        0
+      ],
+      "control_net": [
+        "cn_loader_paizuri",
+        0
+      ],
+      "image": [
+        "cn_image_paizuri",
+        0
+      ]
+    }
+  },
+  "k_paizuri_04.5_derrame": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_paizuri_04.5_derrame",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_paizuri_04.5_derrame": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_paizuri_04.5_derrame",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_paizuri_04.5_derrame": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_paizuri_04.5_derrame",
+      "images": [
+        "d_paizuri_04.5_derrame",
+        0
+      ]
+    }
+  },
+  "p_paizuri_05_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (balls_deep:1.3), (gaping:1.4), paizuri, breast_sex, cleavage, frottage, close-up, front_view, penis_between_breasts, blank_eyes, thousand_yard_stare, semen_on_body, excessive_sweat, dried_tears, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_paizuri_05_rota": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_paizuri_05_rota",
+        0
+      ],
+      "control_net": [
+        "cn_loader_paizuri",
+        0
+      ],
+      "image": [
+        "cn_image_paizuri",
+        0
+      ]
+    }
+  },
+  "k_paizuri_05_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_paizuri_05_rota",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_paizuri_05_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_paizuri_05_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_paizuri_05_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_paizuri_05_rota",
+      "images": [
+        "d_paizuri_05_rota",
+        0
+      ]
+    }
+  },
+  "p_paizuri_06_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (after_sex:1.3), sleeping, paizuri, breast_sex, cleavage, frottage, close-up, front_view, penis_between_breasts, tears_streaming, semen_on_face, dried_tears, cum_pool, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_paizuri_06_inconsciente": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_paizuri_06_inconsciente",
+        0
+      ],
+      "control_net": [
+        "cn_loader_paizuri",
+        0
+      ],
+      "image": [
+        "cn_image_paizuri",
+        0
+      ]
+    }
+  },
+  "k_paizuri_06_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_paizuri_06_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_paizuri_06_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_paizuri_06_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_paizuri_06_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_paizuri_06_inconsciente",
+      "images": [
+        "d_paizuri_06_inconsciente",
+        0
+      ]
+    }
+  },
+  "cn_loader_standing_sex": {
+    "class_type": "ControlNetLoader",
+    "inputs": {
+      "control_net_name": "controlnet-depth-sdxl.safetensors"
+    }
+  },
+  "cn_image_standing_sex": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "control_poses/standing_sex.png"
+    }
+  },
+  "p_standing_sex_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), standing_sex, wall_sex, lifted_legs, holding_legs, elevated, front_view, scared, trembling, refusal, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_standing_sex_01_miedo": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_standing_sex_01_miedo",
+        0
+      ],
+      "control_net": [
+        "cn_loader_standing_sex",
+        0
+      ],
+      "image": [
+        "cn_image_standing_sex",
+        0
+      ]
+    }
+  },
+  "k_standing_sex_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_standing_sex_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_standing_sex_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_standing_sex_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_standing_sex_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_standing_sex_01_miedo",
+      "images": [
+        "d_standing_sex_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_standing_sex_01.5_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, torn_clothes, clothing_pull, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), standing_sex, wall_sex, lifted_legs, holding_legs, elevated, front_view, reluctant, struggling, clothing_lift, hand_grab, clothing_grab, blushing, nervous, sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_standing_sex_01.5_resistencia": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_standing_sex_01.5_resistencia",
+        0
+      ],
+      "control_net": [
+        "cn_loader_standing_sex",
+        0
+      ],
+      "image": [
+        "cn_image_standing_sex",
+        0
+      ]
+    }
+  },
+  "k_standing_sex_01.5_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_standing_sex_01.5_resistencia",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_standing_sex_01.5_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_standing_sex_01.5_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_standing_sex_01.5_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_standing_sex_01.5_resistencia",
+      "images": [
+        "d_standing_sex_01.5_resistencia",
+        0
+      ]
+    }
+  },
+  "p_standing_sex_02_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, breasts_exposed, clothing_undone, half-undressed, clothes_around_waist, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (tip_in_pussy:1.3), (first_insertion:1.2), standing_sex, wall_sex, lifted_legs, holding_legs, elevated, front_view, (pain:1.3), tears_streaming, screaming, sweat, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_standing_sex_02_dolor": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_standing_sex_02_dolor",
+        0
+      ],
+      "control_net": [
+        "cn_loader_standing_sex",
+        0
+      ],
+      "image": [
+        "cn_image_standing_sex",
+        0
+      ]
+    }
+  },
+  "k_standing_sex_02_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_standing_sex_02_dolor",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_standing_sex_02_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_standing_sex_02_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_standing_sex_02_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_standing_sex_02_dolor",
+      "images": [
+        "d_standing_sex_02_dolor",
+        0
+      ]
+    }
+  },
+  "p_standing_sex_03_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), standing_sex, wall_sex, lifted_legs, holding_legs, elevated, front_view, crying, defeated, broken_spirit, sweat_drops, drooling, (motion lines:1.4), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_standing_sex_03_quebranto": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_standing_sex_03_quebranto",
+        0
+      ],
+      "control_net": [
+        "cn_loader_standing_sex",
+        0
+      ],
+      "image": [
+        "cn_image_standing_sex",
+        0
+      ]
+    }
+  },
+  "k_standing_sex_03_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_standing_sex_03_quebranto",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_standing_sex_03_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_standing_sex_03_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_standing_sex_03_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_standing_sex_03_quebranto",
+      "images": [
+        "d_standing_sex_03_quebranto",
+        0
+      ]
+    }
+  },
+  "p_standing_sex_04_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.6), (balls_deep:1.4), standing_sex, wall_sex, lifted_legs, holding_legs, elevated, front_view, ahegao, heart_pupils, mind_break, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_standing_sex_04_ahegao": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_standing_sex_04_ahegao",
+        0
+      ],
+      "control_net": [
+        "cn_loader_standing_sex",
+        0
+      ],
+      "image": [
+        "cn_image_standing_sex",
+        0
+      ]
+    }
+  },
+  "k_standing_sex_04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_standing_sex_04_ahegao",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_standing_sex_04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_standing_sex_04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_standing_sex_04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_standing_sex_04_ahegao",
+      "images": [
+        "d_standing_sex_04_ahegao",
+        0
+      ]
+    }
+  },
+  "p_standing_sex_04.5_derrame": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), (vaginal_gaping:1.3), trembling_legs, panting, standing_sex, wall_sex, lifted_legs, holding_legs, elevated, front_view, blank_eyes, exhausted, cum_leak, leaking_semen, semen_drip, excessive_sweat, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_standing_sex_04.5_derrame": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_standing_sex_04.5_derrame",
+        0
+      ],
+      "control_net": [
+        "cn_loader_standing_sex",
+        0
+      ],
+      "image": [
+        "cn_image_standing_sex",
+        0
+      ]
+    }
+  },
+  "k_standing_sex_04.5_derrame": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_standing_sex_04.5_derrame",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_standing_sex_04.5_derrame": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_standing_sex_04.5_derrame",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_standing_sex_04.5_derrame": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_standing_sex_04.5_derrame",
+      "images": [
+        "d_standing_sex_04.5_derrame",
+        0
+      ]
+    }
+  },
+  "p_standing_sex_05_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (balls_deep:1.3), (gaping:1.4), standing_sex, wall_sex, lifted_legs, holding_legs, elevated, front_view, blank_eyes, thousand_yard_stare, semen_on_body, excessive_sweat, dried_tears, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_standing_sex_05_rota": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_standing_sex_05_rota",
+        0
+      ],
+      "control_net": [
+        "cn_loader_standing_sex",
+        0
+      ],
+      "image": [
+        "cn_image_standing_sex",
+        0
+      ]
+    }
+  },
+  "k_standing_sex_05_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_standing_sex_05_rota",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_standing_sex_05_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_standing_sex_05_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_standing_sex_05_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_standing_sex_05_rota",
+      "images": [
+        "d_standing_sex_05_rota",
+        0
+      ]
+    }
+  },
+  "p_standing_sex_06_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (after_sex:1.3), sleeping, standing_sex, wall_sex, lifted_legs, holding_legs, elevated, front_view, tears_streaming, semen_on_face, dried_tears, cum_pool, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_standing_sex_06_inconsciente": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_standing_sex_06_inconsciente",
+        0
+      ],
+      "control_net": [
+        "cn_loader_standing_sex",
+        0
+      ],
+      "image": [
+        "cn_image_standing_sex",
+        0
+      ]
+    }
+  },
+  "k_standing_sex_06_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_standing_sex_06_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_standing_sex_06_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_standing_sex_06_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_standing_sex_06_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_standing_sex_06_inconsciente",
+      "images": [
+        "d_standing_sex_06_inconsciente",
+        0
+      ]
+    }
+  },
+  "cn_loader_bent_over": {
+    "class_type": "ControlNetLoader",
+    "inputs": {
+      "control_net_name": "controlnet-depth-sdxl.safetensors"
+    }
+  },
+  "cn_image_bent_over": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "control_poses/bent_over.png"
+    }
+  },
+  "p_bent_over_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), bent_over, table_sex, hands_on_table, from_behind, back_arch, rear_view, scared, trembling, refusal, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_bent_over_01_miedo": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_bent_over_01_miedo",
+        0
+      ],
+      "control_net": [
+        "cn_loader_bent_over",
+        0
+      ],
+      "image": [
+        "cn_image_bent_over",
+        0
+      ]
+    }
+  },
+  "k_bent_over_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_bent_over_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bent_over_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bent_over_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bent_over_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_bent_over_01_miedo",
+      "images": [
+        "d_bent_over_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_bent_over_01.5_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, torn_clothes, clothing_pull, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), bent_over, table_sex, hands_on_table, from_behind, back_arch, rear_view, reluctant, struggling, clothing_lift, hand_grab, clothing_grab, blushing, nervous, sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_bent_over_01.5_resistencia": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_bent_over_01.5_resistencia",
+        0
+      ],
+      "control_net": [
+        "cn_loader_bent_over",
+        0
+      ],
+      "image": [
+        "cn_image_bent_over",
+        0
+      ]
+    }
+  },
+  "k_bent_over_01.5_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_bent_over_01.5_resistencia",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bent_over_01.5_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bent_over_01.5_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bent_over_01.5_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_bent_over_01.5_resistencia",
+      "images": [
+        "d_bent_over_01.5_resistencia",
+        0
+      ]
+    }
+  },
+  "p_bent_over_02_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, breasts_exposed, clothing_undone, half-undressed, clothes_around_waist, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (tip_in_pussy:1.3), (first_insertion:1.2), bent_over, table_sex, hands_on_table, from_behind, back_arch, rear_view, (pain:1.3), tears_streaming, screaming, sweat, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_bent_over_02_dolor": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_bent_over_02_dolor",
+        0
+      ],
+      "control_net": [
+        "cn_loader_bent_over",
+        0
+      ],
+      "image": [
+        "cn_image_bent_over",
+        0
+      ]
+    }
+  },
+  "k_bent_over_02_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_bent_over_02_dolor",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bent_over_02_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bent_over_02_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bent_over_02_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_bent_over_02_dolor",
+      "images": [
+        "d_bent_over_02_dolor",
+        0
+      ]
+    }
+  },
+  "p_bent_over_03_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), bent_over, table_sex, hands_on_table, from_behind, back_arch, rear_view, crying, defeated, broken_spirit, sweat_drops, drooling, (motion lines:1.4), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_bent_over_03_quebranto": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_bent_over_03_quebranto",
+        0
+      ],
+      "control_net": [
+        "cn_loader_bent_over",
+        0
+      ],
+      "image": [
+        "cn_image_bent_over",
+        0
+      ]
+    }
+  },
+  "k_bent_over_03_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_bent_over_03_quebranto",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bent_over_03_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bent_over_03_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bent_over_03_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_bent_over_03_quebranto",
+      "images": [
+        "d_bent_over_03_quebranto",
+        0
+      ]
+    }
+  },
+  "p_bent_over_04_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.6), (balls_deep:1.4), bent_over, table_sex, hands_on_table, from_behind, back_arch, rear_view, ahegao, heart_pupils, mind_break, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_bent_over_04_ahegao": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_bent_over_04_ahegao",
+        0
+      ],
+      "control_net": [
+        "cn_loader_bent_over",
+        0
+      ],
+      "image": [
+        "cn_image_bent_over",
+        0
+      ]
+    }
+  },
+  "k_bent_over_04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_bent_over_04_ahegao",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bent_over_04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bent_over_04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bent_over_04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_bent_over_04_ahegao",
+      "images": [
+        "d_bent_over_04_ahegao",
+        0
+      ]
+    }
+  },
+  "p_bent_over_04.5_derrame": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), (vaginal_gaping:1.3), trembling_legs, panting, bent_over, table_sex, hands_on_table, from_behind, back_arch, rear_view, blank_eyes, exhausted, cum_leak, leaking_semen, semen_drip, excessive_sweat, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_bent_over_04.5_derrame": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_bent_over_04.5_derrame",
+        0
+      ],
+      "control_net": [
+        "cn_loader_bent_over",
+        0
+      ],
+      "image": [
+        "cn_image_bent_over",
+        0
+      ]
+    }
+  },
+  "k_bent_over_04.5_derrame": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_bent_over_04.5_derrame",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bent_over_04.5_derrame": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bent_over_04.5_derrame",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bent_over_04.5_derrame": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_bent_over_04.5_derrame",
+      "images": [
+        "d_bent_over_04.5_derrame",
+        0
+      ]
+    }
+  },
+  "p_bent_over_05_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (balls_deep:1.3), (gaping:1.4), bent_over, table_sex, hands_on_table, from_behind, back_arch, rear_view, blank_eyes, thousand_yard_stare, semen_on_body, excessive_sweat, dried_tears, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_bent_over_05_rota": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_bent_over_05_rota",
+        0
+      ],
+      "control_net": [
+        "cn_loader_bent_over",
+        0
+      ],
+      "image": [
+        "cn_image_bent_over",
+        0
+      ]
+    }
+  },
+  "k_bent_over_05_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_bent_over_05_rota",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bent_over_05_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bent_over_05_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bent_over_05_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_bent_over_05_rota",
+      "images": [
+        "d_bent_over_05_rota",
+        0
+      ]
+    }
+  },
+  "p_bent_over_06_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (after_sex:1.3), sleeping, bent_over, table_sex, hands_on_table, from_behind, back_arch, rear_view, tears_streaming, semen_on_face, dried_tears, cum_pool, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_bent_over_06_inconsciente": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_bent_over_06_inconsciente",
+        0
+      ],
+      "control_net": [
+        "cn_loader_bent_over",
+        0
+      ],
+      "image": [
+        "cn_image_bent_over",
+        0
+      ]
+    }
+  },
+  "k_bent_over_06_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_bent_over_06_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bent_over_06_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bent_over_06_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bent_over_06_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_bent_over_06_inconsciente",
+      "images": [
+        "d_bent_over_06_inconsciente",
+        0
+      ]
+    }
+  },
+  "cn_loader_seated_sex": {
+    "class_type": "ControlNetLoader",
+    "inputs": {
+      "control_net_name": "controlnet-depth-sdxl.safetensors"
+    }
+  },
+  "cn_image_seated_sex": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "control_poses/seated_sex.png"
+    }
+  },
+  "p_seated_sex_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), seated_sex, lotus_position, face-to-face, hugging, intimate, front_view, scared, trembling, refusal, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_seated_sex_01_miedo": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_seated_sex_01_miedo",
+        0
+      ],
+      "control_net": [
+        "cn_loader_seated_sex",
+        0
+      ],
+      "image": [
+        "cn_image_seated_sex",
+        0
+      ]
+    }
+  },
+  "k_seated_sex_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_seated_sex_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_seated_sex_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_seated_sex_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_seated_sex_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_seated_sex_01_miedo",
+      "images": [
+        "d_seated_sex_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_seated_sex_01.5_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, torn_clothes, clothing_pull, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), seated_sex, lotus_position, face-to-face, hugging, intimate, front_view, reluctant, struggling, clothing_lift, hand_grab, clothing_grab, blushing, nervous, sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_seated_sex_01.5_resistencia": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_seated_sex_01.5_resistencia",
+        0
+      ],
+      "control_net": [
+        "cn_loader_seated_sex",
+        0
+      ],
+      "image": [
+        "cn_image_seated_sex",
+        0
+      ]
+    }
+  },
+  "k_seated_sex_01.5_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_seated_sex_01.5_resistencia",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_seated_sex_01.5_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_seated_sex_01.5_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_seated_sex_01.5_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_seated_sex_01.5_resistencia",
+      "images": [
+        "d_seated_sex_01.5_resistencia",
+        0
+      ]
+    }
+  },
+  "p_seated_sex_02_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, breasts_exposed, clothing_undone, half-undressed, clothes_around_waist, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (tip_in_pussy:1.3), (first_insertion:1.2), seated_sex, lotus_position, face-to-face, hugging, intimate, front_view, (pain:1.3), tears_streaming, screaming, sweat, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_seated_sex_02_dolor": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_seated_sex_02_dolor",
+        0
+      ],
+      "control_net": [
+        "cn_loader_seated_sex",
+        0
+      ],
+      "image": [
+        "cn_image_seated_sex",
+        0
+      ]
+    }
+  },
+  "k_seated_sex_02_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_seated_sex_02_dolor",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_seated_sex_02_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_seated_sex_02_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_seated_sex_02_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_seated_sex_02_dolor",
+      "images": [
+        "d_seated_sex_02_dolor",
+        0
+      ]
+    }
+  },
+  "p_seated_sex_03_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), seated_sex, lotus_position, face-to-face, hugging, intimate, front_view, crying, defeated, broken_spirit, sweat_drops, drooling, (motion lines:1.4), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_seated_sex_03_quebranto": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_seated_sex_03_quebranto",
+        0
+      ],
+      "control_net": [
+        "cn_loader_seated_sex",
+        0
+      ],
+      "image": [
+        "cn_image_seated_sex",
+        0
+      ]
+    }
+  },
+  "k_seated_sex_03_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_seated_sex_03_quebranto",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_seated_sex_03_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_seated_sex_03_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_seated_sex_03_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_seated_sex_03_quebranto",
+      "images": [
+        "d_seated_sex_03_quebranto",
+        0
+      ]
+    }
+  },
+  "p_seated_sex_04_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.6), (balls_deep:1.4), seated_sex, lotus_position, face-to-face, hugging, intimate, front_view, ahegao, heart_pupils, mind_break, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_seated_sex_04_ahegao": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_seated_sex_04_ahegao",
+        0
+      ],
+      "control_net": [
+        "cn_loader_seated_sex",
+        0
+      ],
+      "image": [
+        "cn_image_seated_sex",
+        0
+      ]
+    }
+  },
+  "k_seated_sex_04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_seated_sex_04_ahegao",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_seated_sex_04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_seated_sex_04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_seated_sex_04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_seated_sex_04_ahegao",
+      "images": [
+        "d_seated_sex_04_ahegao",
+        0
+      ]
+    }
+  },
+  "p_seated_sex_04.5_derrame": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), (vaginal_gaping:1.3), trembling_legs, panting, seated_sex, lotus_position, face-to-face, hugging, intimate, front_view, blank_eyes, exhausted, cum_leak, leaking_semen, semen_drip, excessive_sweat, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_seated_sex_04.5_derrame": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_seated_sex_04.5_derrame",
+        0
+      ],
+      "control_net": [
+        "cn_loader_seated_sex",
+        0
+      ],
+      "image": [
+        "cn_image_seated_sex",
+        0
+      ]
+    }
+  },
+  "k_seated_sex_04.5_derrame": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_seated_sex_04.5_derrame",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_seated_sex_04.5_derrame": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_seated_sex_04.5_derrame",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_seated_sex_04.5_derrame": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_seated_sex_04.5_derrame",
+      "images": [
+        "d_seated_sex_04.5_derrame",
+        0
+      ]
+    }
+  },
+  "p_seated_sex_05_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (balls_deep:1.3), (gaping:1.4), seated_sex, lotus_position, face-to-face, hugging, intimate, front_view, blank_eyes, thousand_yard_stare, semen_on_body, excessive_sweat, dried_tears, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_seated_sex_05_rota": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_seated_sex_05_rota",
+        0
+      ],
+      "control_net": [
+        "cn_loader_seated_sex",
+        0
+      ],
+      "image": [
+        "cn_image_seated_sex",
+        0
+      ]
+    }
+  },
+  "k_seated_sex_05_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_seated_sex_05_rota",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_seated_sex_05_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_seated_sex_05_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_seated_sex_05_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_seated_sex_05_rota",
+      "images": [
+        "d_seated_sex_05_rota",
+        0
+      ]
+    }
+  },
+  "p_seated_sex_06_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (after_sex:1.3), sleeping, seated_sex, lotus_position, face-to-face, hugging, intimate, front_view, tears_streaming, semen_on_face, dried_tears, cum_pool, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_seated_sex_06_inconsciente": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_seated_sex_06_inconsciente",
+        0
+      ],
+      "control_net": [
+        "cn_loader_seated_sex",
+        0
+      ],
+      "image": [
+        "cn_image_seated_sex",
+        0
+      ]
+    }
+  },
+  "k_seated_sex_06_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_seated_sex_06_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_seated_sex_06_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_seated_sex_06_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_seated_sex_06_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_seated_sex_06_inconsciente",
+      "images": [
+        "d_seated_sex_06_inconsciente",
+        0
+      ]
+    }
+  },
+  "cn_loader_spooning": {
+    "class_type": "ControlNetLoader",
+    "inputs": {
+      "control_net_name": "controlnet-depth-sdxl.safetensors"
+    }
+  },
+  "cn_image_spooning": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "control_poses/spooning.png"
+    }
+  },
+  "p_spooning_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), spooning, side_lying_position, penetration_from_behind, side_view, scared, trembling, refusal, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_spooning_01_miedo": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_spooning_01_miedo",
+        0
+      ],
+      "control_net": [
+        "cn_loader_spooning",
+        0
+      ],
+      "image": [
+        "cn_image_spooning",
+        0
+      ]
+    }
+  },
+  "k_spooning_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_spooning_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_spooning_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_spooning_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_spooning_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_spooning_01_miedo",
+      "images": [
+        "d_spooning_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_spooning_01.5_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, torn_clothes, clothing_pull, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.3), spooning, side_lying_position, penetration_from_behind, side_view, reluctant, struggling, clothing_lift, hand_grab, clothing_grab, blushing, nervous, sweat, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_spooning_01.5_resistencia": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_spooning_01.5_resistencia",
+        0
+      ],
+      "control_net": [
+        "cn_loader_spooning",
+        0
+      ],
+      "image": [
+        "cn_image_spooning",
+        0
+      ]
+    }
+  },
+  "k_spooning_01.5_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_spooning_01.5_resistencia",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_spooning_01.5_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_spooning_01.5_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_spooning_01.5_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_spooning_01.5_resistencia",
+      "images": [
+        "d_spooning_01.5_resistencia",
+        0
+      ]
+    }
+  },
+  "p_spooning_02_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, breasts_exposed, clothing_undone, half-undressed, clothes_around_waist, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (tip_in_pussy:1.3), (first_insertion:1.2), spooning, side_lying_position, penetration_from_behind, side_view, (pain:1.3), tears_streaming, screaming, sweat, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_spooning_02_dolor": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_spooning_02_dolor",
+        0
+      ],
+      "control_net": [
+        "cn_loader_spooning",
+        0
+      ],
+      "image": [
+        "cn_image_spooning",
+        0
+      ]
+    }
+  },
+  "k_spooning_02_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_spooning_02_dolor",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_spooning_02_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_spooning_02_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_spooning_02_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_spooning_02_dolor",
+      "images": [
+        "d_spooning_02_dolor",
+        0
+      ]
+    }
+  },
+  "p_spooning_03_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), spooning, side_lying_position, penetration_from_behind, side_view, crying, defeated, broken_spirit, sweat_drops, drooling, (motion lines:1.4), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_spooning_03_quebranto": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_spooning_03_quebranto",
+        0
+      ],
+      "control_net": [
+        "cn_loader_spooning",
+        0
+      ],
+      "image": [
+        "cn_image_spooning",
+        0
+      ]
+    }
+  },
+  "k_spooning_03_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_spooning_03_quebranto",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_spooning_03_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_spooning_03_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_spooning_03_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_spooning_03_quebranto",
+      "images": [
+        "d_spooning_03_quebranto",
+        0
+      ]
+    }
+  },
+  "p_spooning_04_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.6), (balls_deep:1.4), spooning, side_lying_position, penetration_from_behind, side_view, ahegao, heart_pupils, mind_break, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_spooning_04_ahegao": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_spooning_04_ahegao",
+        0
+      ],
+      "control_net": [
+        "cn_loader_spooning",
+        0
+      ],
+      "image": [
+        "cn_image_spooning",
+        0
+      ]
+    }
+  },
+  "k_spooning_04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_spooning_04_ahegao",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_spooning_04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_spooning_04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_spooning_04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_spooning_04_ahegao",
+      "images": [
+        "d_spooning_04_ahegao",
+        0
+      ]
+    }
+  },
+  "p_spooning_04.5_derrame": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), (vaginal_gaping:1.3), trembling_legs, panting, spooning, side_lying_position, penetration_from_behind, side_view, blank_eyes, exhausted, cum_leak, leaking_semen, semen_drip, excessive_sweat, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_spooning_04.5_derrame": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_spooning_04.5_derrame",
+        0
+      ],
+      "control_net": [
+        "cn_loader_spooning",
+        0
+      ],
+      "image": [
+        "cn_image_spooning",
+        0
+      ]
+    }
+  },
+  "k_spooning_04.5_derrame": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_spooning_04.5_derrame",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_spooning_04.5_derrame": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_spooning_04.5_derrame",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_spooning_04.5_derrame": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_spooning_04.5_derrame",
+      "images": [
+        "d_spooning_04.5_derrame",
+        0
+      ]
+    }
+  },
+  "p_spooning_05_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (balls_deep:1.3), (gaping:1.4), spooning, side_lying_position, penetration_from_behind, side_view, blank_eyes, thousand_yard_stare, semen_on_body, excessive_sweat, dried_tears, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_spooning_05_rota": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_spooning_05_rota",
+        0
+      ],
+      "control_net": [
+        "cn_loader_spooning",
+        0
+      ],
+      "image": [
+        "cn_image_spooning",
+        0
+      ]
+    }
+  },
+  "k_spooning_05_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_spooning_05_rota",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_spooning_05_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_spooning_05_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_spooning_05_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_spooning_05_rota",
+      "images": [
+        "d_spooning_05_rota",
+        0
+      ]
+    }
+  },
+  "p_spooning_06_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, discarded clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (after_sex:1.3), sleeping, spooning, side_lying_position, penetration_from_behind, side_view, tears_streaming, semen_on_face, dried_tears, cum_pool, dimly_lit, dark_ambiance, (dark lighting:1.4), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "cn_apply_spooning_06_inconsciente": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "strength": 0.9,
+      "conditioning": [
+        "p_spooning_06_inconsciente",
+        0
+      ],
+      "control_net": [
+        "cn_loader_spooning",
+        0
+      ],
+      "image": [
+        "cn_image_spooning",
+        0
+      ]
+    }
+  },
+  "k_spooning_06_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "cn_apply_spooning_06_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_spooning_06_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_spooning_06_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_spooning_06_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ran_spooning_06_inconsciente",
+      "images": [
+        "d_spooning_06_inconsciente",
+        0
+      ]
+    }
+  }
+}

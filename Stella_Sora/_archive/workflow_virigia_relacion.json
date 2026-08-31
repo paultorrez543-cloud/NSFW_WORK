@@ -1,0 +1,1524 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "latent_shared": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1536,
+      "batch_size": 1
+    }
+  },
+  "clip_skip": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip",
+        0
+      ],
+      "lora_name": "Stella-Virigia-v1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth",
+        0
+      ],
+      "clip": [
+        "lora_depth",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, holding mirror, red mirror, mirror",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "p_01_encuentro": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, first_meeting, eye_contact, blush, shy, standing, white dress, outdoors, daylight, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_01_encuentro": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_01_encuentro",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_01_encuentro": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_01_encuentro",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_01_encuentro": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_01_encuentro",
+      "images": [
+        "d_01_encuentro",
+        0
+      ]
+    }
+  },
+  "p_02_coqueteo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, flirting, smiling, leaning_closer, blush, white dress, outdoors, wind, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_02_coqueteo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_02_coqueteo",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_02_coqueteo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_02_coqueteo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_02_coqueteo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_02_coqueteo",
+      "images": [
+        "d_02_coqueteo",
+        0
+      ]
+    }
+  },
+  "p_03_caminata": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, holding_hands, walking_together, nervous, white dress, outdoors, sunset, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_03_caminata": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_03_caminata",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_03_caminata": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_03_caminata",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_03_caminata": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_03_caminata",
+      "images": [
+        "d_03_caminata",
+        0
+      ]
+    }
+  },
+  "p_04_cita": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, date, restaurant, talking, smiling, white dress, indoors, warm_lighting, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_04_cita": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_04_cita",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_04_cita": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_04_cita",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_04_cita": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_04_cita",
+      "images": [
+        "d_04_cita",
+        0
+      ]
+    }
+  },
+  "p_05_cercania": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, arm_around_shoulder, leaning, blush, white dress, indoors, couch, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_05_cercania": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_05_cercania",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_05_cercania": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_05_cercania",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_05_cercania": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_05_cercania",
+      "images": [
+        "d_05_cercania",
+        0
+      ]
+    }
+  },
+  "p_06_primer_beso": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, first_kiss, embracing, closed_eyes, blush, white dress, indoors, romantic, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_06_primer_beso": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_06_primer_beso",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_06_primer_beso": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_06_primer_beso",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_06_primer_beso": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_06_primer_beso",
+      "images": [
+        "d_06_primer_beso",
+        0
+      ]
+    }
+  },
+  "p_07_besos": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, kissing, groping, clothes_shift, blush, black dress, bedroom, dim_lighting, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_07_besos": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_07_besos",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_07_besos": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_07_besos",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_07_besos": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_07_besos",
+      "images": [
+        "d_07_besos",
+        0
+      ]
+    }
+  },
+  "p_08_desnudando": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, undressing, shirt_lift, skin_contact, nervous, exposed_shoulders, bedroom, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_08_desnudando": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_08_desnudando",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_08_desnudando": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_08_desnudando",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_08_desnudando": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_08_desnudando",
+      "images": [
+        "d_08_desnudando",
+        0
+      ]
+    }
+  },
+  "p_09_expuesta": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, nude, covering_self, shy, exposed, breasts, bedroom, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_09_expuesta": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_09_expuesta",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_09_expuesta": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_09_expuesta",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_09_expuesta": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_09_expuesta",
+      "images": [
+        "d_09_expuesta",
+        0
+      ]
+    }
+  },
+  "p_10_primera_vez": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, first_time, missionary_position, gentle, nervous, nude, bed, (imminent penetration:1.2), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_10_primera_vez": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_10_primera_vez",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_10_primera_vez": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_10_primera_vez",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_10_primera_vez": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_10_primera_vez",
+      "images": [
+        "d_10_primera_vez",
+        0
+      ]
+    }
+  },
+  "p_11_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, defloration, (pain:1.3), tears_streaming, clinging, nude, bed, tip_in_pussy, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_11_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_11_dolor",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_11_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_11_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_11_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_11_dolor",
+      "images": [
+        "d_11_dolor",
+        0
+      ]
+    }
+  },
+  "p_12_primer_orgasmo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, first_orgasm, moaning, pleasure, hugging, nude, bed, (deep penetration:1.3), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_12_primer_orgasmo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_12_primer_orgasmo",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_12_primer_orgasmo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_12_primer_orgasmo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_12_primer_orgasmo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_12_primer_orgasmo",
+      "images": [
+        "d_12_primer_orgasmo",
+        0
+      ]
+    }
+  },
+  "p_13_cowgirl": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, cowgirl_position, girl_on_top, confident, nude, bed, (deep penetration:1.4), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_13_cowgirl": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_13_cowgirl",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_13_cowgirl": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_13_cowgirl",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_13_cowgirl": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_13_cowgirl",
+      "images": [
+        "d_13_cowgirl",
+        0
+      ]
+    }
+  },
+  "p_14_doggystyle": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, doggystyle, from_behind, mutual_pleasure, moaning, nude, bed, (deep penetration:1.4), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_14_doggystyle": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_14_doggystyle",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_14_doggystyle": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_14_doggystyle",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_14_doggystyle": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_14_doggystyle",
+      "images": [
+        "d_14_doggystyle",
+        0
+      ]
+    }
+  },
+  "p_15_juguetona": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, riding, playful, smiling, sweat, nude, bed, (deep penetration:1.5), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_15_juguetona": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_15_juguetona",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_15_juguetona": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_15_juguetona",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_15_juguetona": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_15_juguetona",
+      "images": [
+        "d_15_juguetona",
+        0
+      ]
+    }
+  },
+  "p_16_atada": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, bondage, tied_up, blindfold, excited, nude, bed, ropes, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_16_atada": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_16_atada",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_16_atada": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_16_atada",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_16_atada": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_16_atada",
+      "images": [
+        "d_16_atada",
+        0
+      ]
+    }
+  },
+  "p_17_juguetes": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, sex_toy, vibrator, masturbation, aroused, nude, bed, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_17_juguetes": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_17_juguetes",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_17_juguetes": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_17_juguetes",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_17_juguetes": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_17_juguetes",
+      "images": [
+        "d_17_juguetes",
+        0
+      ]
+    }
+  },
+  "p_18_rol": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, roleplay, costume, submissive, collar, nude, bed, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_18_rol": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_18_rol",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_18_rol": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_18_rol",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_18_rol": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_18_rol",
+      "images": [
+        "d_18_rol",
+        0
+      ]
+    }
+  },
+  "p_19_pasional": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, passionate, rough_sex, intense, ahegao, nude, bed, (deep penetration:1.5), balls_deep, (motion lines:1.4), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_19_pasional": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_19_pasional",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_19_pasional": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_19_pasional",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_19_pasional": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_19_pasional",
+      "images": [
+        "d_19_pasional",
+        0
+      ]
+    }
+  },
+  "p_20_creampie": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, creampie, mind_break, heart_pupils, excessive_sweat, nude, bed, balls_deep, (motion lines:1.5), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_20_creampie": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_20_creampie",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_20_creampie": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_20_creampie",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_20_creampie": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_20_creampie",
+      "images": [
+        "d_20_creampie",
+        0
+      ]
+    }
+  },
+  "p_21_agotada": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, orgasm, exhausted, excessive_sweat, tongue_out, nude, bed, after_sex, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_21_agotada": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_21_agotada",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_21_agotada": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_21_agotada",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_21_agotada": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_21_agotada",
+      "images": [
+        "d_21_agotada",
+        0
+      ]
+    }
+  },
+  "p_22_casados": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, wedding_ring, married, loving, gentle_sex, nude, bed, missionary_position, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_22_casados": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_22_casados",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_22_casados": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_22_casados",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_22_casados": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_22_casados",
+      "images": [
+        "d_22_casados",
+        0
+      ]
+    }
+  },
+  "p_23_manana": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, morning_after, domestic, cuddling, disheveled, nude, bed, sunlight, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_23_manana": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_23_manana",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_23_manana": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_23_manana",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_23_manana": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_23_manana",
+      "images": [
+        "d_23_manana",
+        0
+      ]
+    }
+  },
+  "p_24_dormidos": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, afterglow, embracing, satisfied, sleeping, nude, bed, peaceful, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_24_dormidos": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_24_dormidos",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_24_dormidos": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_24_dormidos",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_24_dormidos": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_relacion_24_dormidos",
+      "images": [
+        "d_24_dormidos",
+        0
+      ]
+    }
+  }
+}

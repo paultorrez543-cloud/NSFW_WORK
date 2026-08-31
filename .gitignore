@@ -1,0 +1,43 @@
+# Model weights & Checkpoints (Heavy Binaries)
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.onnx
+*.engine
+
+# Heavy image / video upscales & outputs
+*_upscayl*
+*.mp4
+*.mkv
+*.avi
+*.mov
+*.webm
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
+
+# Environments
+env/
+venv/
+.venv/
+ENV/
+
+# System & OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Output directories & Temporary scratchpads
+output/
+temp/
+scratch/
+.tempmediaStorage/

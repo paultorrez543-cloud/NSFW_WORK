@@ -1,0 +1,1900 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "latent_shared": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1536,
+      "batch_size": 1
+    }
+  },
+  "clip_skip": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip",
+        0
+      ],
+      "lora_name": "Stella-Virigia-v1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth",
+        0
+      ],
+      "clip": [
+        "lora_depth",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "clip": [
+        "lora_dp",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, holding mirror, red mirror, mirror",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "p_cowgirl_01_clase": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, cowgirl_position, girl_on_top, straddling, front_view, student_uniform, attentive, innocent, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_cowgirl_01_clase": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_cowgirl_01_clase",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_cowgirl_01_clase": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_cowgirl_01_clase",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_cowgirl_01_clase": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_cowgirl_01_clase",
+      "images": [
+        "d_cowgirl_01_clase",
+        0
+      ]
+    }
+  },
+  "p_cowgirl_02_asesoria": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), cowgirl_position, girl_on_top, straddling, front_view, after_school, close, blush, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_cowgirl_02_asesoria": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_cowgirl_02_asesoria",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_cowgirl_02_asesoria": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_cowgirl_02_asesoria",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_cowgirl_02_asesoria": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_cowgirl_02_asesoria",
+      "images": [
+        "d_cowgirl_02_asesoria",
+        0
+      ]
+    }
+  },
+  "p_cowgirl_03_tocando": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, about_to_penetrate, cowgirl_position, girl_on_top, straddling, front_view, inappropriate_touch, nervous, frozen, sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_cowgirl_03_tocando": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_cowgirl_03_tocando",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_cowgirl_03_tocando": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_cowgirl_03_tocando",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_cowgirl_03_tocando": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_cowgirl_03_tocando",
+      "images": [
+        "d_cowgirl_03_tocando",
+        0
+      ]
+    }
+  },
+  "p_cowgirl_04_rendida": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), cowgirl_position, girl_on_top, straddling, front_view, surrendering, moaning, forbidden, sweat, drooling, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_cowgirl_04_rendida": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_cowgirl_04_rendida",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_cowgirl_04_rendida": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_cowgirl_04_rendida",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_cowgirl_04_rendida": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_cowgirl_04_rendida",
+      "images": [
+        "d_cowgirl_04_rendida",
+        0
+      ]
+    }
+  },
+  "p_cowgirl_05_adicta": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), balls_deep, cowgirl_position, girl_on_top, straddling, front_view, secret_affair, eager, passionate, ahegao, excessive_sweat, (motion lines:1.4), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_cowgirl_05_adicta": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_cowgirl_05_adicta",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_cowgirl_05_adicta": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_cowgirl_05_adicta",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_cowgirl_05_adicta": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_cowgirl_05_adicta",
+      "images": [
+        "d_cowgirl_05_adicta",
+        0
+      ]
+    }
+  },
+  "p_cowgirl_06_calificada": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, cowgirl_position, girl_on_top, straddling, front_view, graded, cum_covered, ruined_uniform, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_cowgirl_06_calificada": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_cowgirl_06_calificada",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_cowgirl_06_calificada": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_cowgirl_06_calificada",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_cowgirl_06_calificada": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_cowgirl_06_calificada",
+      "images": [
+        "d_cowgirl_06_calificada",
+        0
+      ]
+    }
+  },
+  "p_doggystyle_01_clase": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, doggystyle, from_behind, all_fours, front_view, student_uniform, attentive, innocent, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_doggystyle_01_clase": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_doggystyle_01_clase",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_doggystyle_01_clase": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_doggystyle_01_clase",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_doggystyle_01_clase": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_doggystyle_01_clase",
+      "images": [
+        "d_doggystyle_01_clase",
+        0
+      ]
+    }
+  },
+  "p_doggystyle_02_asesoria": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), doggystyle, from_behind, all_fours, front_view, after_school, close, blush, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_doggystyle_02_asesoria": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_doggystyle_02_asesoria",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_doggystyle_02_asesoria": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_doggystyle_02_asesoria",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_doggystyle_02_asesoria": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_doggystyle_02_asesoria",
+      "images": [
+        "d_doggystyle_02_asesoria",
+        0
+      ]
+    }
+  },
+  "p_doggystyle_03_tocando": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, about_to_penetrate, doggystyle, from_behind, all_fours, front_view, inappropriate_touch, nervous, frozen, sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_doggystyle_03_tocando": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_doggystyle_03_tocando",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_doggystyle_03_tocando": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_doggystyle_03_tocando",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_doggystyle_03_tocando": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_doggystyle_03_tocando",
+      "images": [
+        "d_doggystyle_03_tocando",
+        0
+      ]
+    }
+  },
+  "p_doggystyle_04_rendida": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), doggystyle, from_behind, all_fours, front_view, surrendering, moaning, forbidden, sweat, drooling, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_doggystyle_04_rendida": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_doggystyle_04_rendida",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_doggystyle_04_rendida": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_doggystyle_04_rendida",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_doggystyle_04_rendida": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_doggystyle_04_rendida",
+      "images": [
+        "d_doggystyle_04_rendida",
+        0
+      ]
+    }
+  },
+  "p_doggystyle_05_adicta": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), balls_deep, doggystyle, from_behind, all_fours, front_view, secret_affair, eager, passionate, ahegao, excessive_sweat, (motion lines:1.4), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_doggystyle_05_adicta": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_doggystyle_05_adicta",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_doggystyle_05_adicta": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_doggystyle_05_adicta",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_doggystyle_05_adicta": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_doggystyle_05_adicta",
+      "images": [
+        "d_doggystyle_05_adicta",
+        0
+      ]
+    }
+  },
+  "p_doggystyle_06_calificada": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, doggystyle, from_behind, all_fours, front_view, graded, cum_covered, ruined_uniform, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_doggystyle_06_calificada": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_doggystyle_06_calificada",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_doggystyle_06_calificada": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_doggystyle_06_calificada",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_doggystyle_06_calificada": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_doggystyle_06_calificada",
+      "images": [
+        "d_doggystyle_06_calificada",
+        0
+      ]
+    }
+  },
+  "p_missionary_01_clase": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, missionary_position, legs_up, spread_legs, front_view, student_uniform, attentive, innocent, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_missionary_01_clase": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_missionary_01_clase",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_missionary_01_clase": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_missionary_01_clase",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_missionary_01_clase": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_missionary_01_clase",
+      "images": [
+        "d_missionary_01_clase",
+        0
+      ]
+    }
+  },
+  "p_missionary_02_asesoria": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), missionary_position, legs_up, spread_legs, front_view, after_school, close, blush, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_missionary_02_asesoria": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_missionary_02_asesoria",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_missionary_02_asesoria": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_missionary_02_asesoria",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_missionary_02_asesoria": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_missionary_02_asesoria",
+      "images": [
+        "d_missionary_02_asesoria",
+        0
+      ]
+    }
+  },
+  "p_missionary_03_tocando": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, about_to_penetrate, missionary_position, legs_up, spread_legs, front_view, inappropriate_touch, nervous, frozen, sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_missionary_03_tocando": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_missionary_03_tocando",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_missionary_03_tocando": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_missionary_03_tocando",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_missionary_03_tocando": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_missionary_03_tocando",
+      "images": [
+        "d_missionary_03_tocando",
+        0
+      ]
+    }
+  },
+  "p_missionary_04_rendida": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), missionary_position, legs_up, spread_legs, front_view, surrendering, moaning, forbidden, sweat, drooling, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_missionary_04_rendida": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_missionary_04_rendida",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_missionary_04_rendida": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_missionary_04_rendida",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_missionary_04_rendida": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_missionary_04_rendida",
+      "images": [
+        "d_missionary_04_rendida",
+        0
+      ]
+    }
+  },
+  "p_missionary_05_adicta": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), balls_deep, missionary_position, legs_up, spread_legs, front_view, secret_affair, eager, passionate, ahegao, excessive_sweat, (motion lines:1.4), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_missionary_05_adicta": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_missionary_05_adicta",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_missionary_05_adicta": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_missionary_05_adicta",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_missionary_05_adicta": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_missionary_05_adicta",
+      "images": [
+        "d_missionary_05_adicta",
+        0
+      ]
+    }
+  },
+  "p_missionary_06_calificada": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, missionary_position, legs_up, spread_legs, front_view, graded, cum_covered, ruined_uniform, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_missionary_06_calificada": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_missionary_06_calificada",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_missionary_06_calificada": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_missionary_06_calificada",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_missionary_06_calificada": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_missionary_06_calificada",
+      "images": [
+        "d_missionary_06_calificada",
+        0
+      ]
+    }
+  },
+  "p_mating_press_01_clase": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, mating_press, legs_above_head, folded, front_view, student_uniform, attentive, innocent, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_mating_press_01_clase": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_mating_press_01_clase",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_mating_press_01_clase": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_mating_press_01_clase",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_mating_press_01_clase": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_mating_press_01_clase",
+      "images": [
+        "d_mating_press_01_clase",
+        0
+      ]
+    }
+  },
+  "p_mating_press_02_asesoria": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), mating_press, legs_above_head, folded, front_view, after_school, close, blush, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_mating_press_02_asesoria": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_mating_press_02_asesoria",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_mating_press_02_asesoria": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_mating_press_02_asesoria",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_mating_press_02_asesoria": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_mating_press_02_asesoria",
+      "images": [
+        "d_mating_press_02_asesoria",
+        0
+      ]
+    }
+  },
+  "p_mating_press_03_tocando": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, about_to_penetrate, mating_press, legs_above_head, folded, front_view, inappropriate_touch, nervous, frozen, sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_mating_press_03_tocando": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_mating_press_03_tocando",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_mating_press_03_tocando": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_mating_press_03_tocando",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_mating_press_03_tocando": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_mating_press_03_tocando",
+      "images": [
+        "d_mating_press_03_tocando",
+        0
+      ]
+    }
+  },
+  "p_mating_press_04_rendida": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), mating_press, legs_above_head, folded, front_view, surrendering, moaning, forbidden, sweat, drooling, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_mating_press_04_rendida": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_mating_press_04_rendida",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_mating_press_04_rendida": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_mating_press_04_rendida",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_mating_press_04_rendida": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_mating_press_04_rendida",
+      "images": [
+        "d_mating_press_04_rendida",
+        0
+      ]
+    }
+  },
+  "p_mating_press_05_adicta": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), balls_deep, mating_press, legs_above_head, folded, front_view, secret_affair, eager, passionate, ahegao, excessive_sweat, (motion lines:1.4), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_mating_press_05_adicta": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_mating_press_05_adicta",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_mating_press_05_adicta": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_mating_press_05_adicta",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_mating_press_05_adicta": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_mating_press_05_adicta",
+      "images": [
+        "d_mating_press_05_adicta",
+        0
+      ]
+    }
+  },
+  "p_mating_press_06_calificada": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, mating_press, legs_above_head, folded, front_view, graded, cum_covered, ruined_uniform, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_mating_press_06_calificada": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_mating_press_06_calificada",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_mating_press_06_calificada": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_mating_press_06_calificada",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_mating_press_06_calificada": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_mating_press_06_calificada",
+      "images": [
+        "d_mating_press_06_calificada",
+        0
+      ]
+    }
+  },
+  "p_reverse_cowgirl_01_clase": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, reverse_cowgirl, girl_on_top, facing_away, front_view, student_uniform, attentive, innocent, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_reverse_cowgirl_01_clase": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_reverse_cowgirl_01_clase",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reverse_cowgirl_01_clase": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reverse_cowgirl_01_clase",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reverse_cowgirl_01_clase": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_reverse_cowgirl_01_clase",
+      "images": [
+        "d_reverse_cowgirl_01_clase",
+        0
+      ]
+    }
+  },
+  "p_reverse_cowgirl_02_asesoria": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), reverse_cowgirl, girl_on_top, facing_away, front_view, after_school, close, blush, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_reverse_cowgirl_02_asesoria": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_reverse_cowgirl_02_asesoria",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reverse_cowgirl_02_asesoria": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reverse_cowgirl_02_asesoria",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reverse_cowgirl_02_asesoria": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_reverse_cowgirl_02_asesoria",
+      "images": [
+        "d_reverse_cowgirl_02_asesoria",
+        0
+      ]
+    }
+  },
+  "p_reverse_cowgirl_03_tocando": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, about_to_penetrate, reverse_cowgirl, girl_on_top, facing_away, front_view, inappropriate_touch, nervous, frozen, sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_reverse_cowgirl_03_tocando": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_reverse_cowgirl_03_tocando",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reverse_cowgirl_03_tocando": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reverse_cowgirl_03_tocando",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reverse_cowgirl_03_tocando": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_reverse_cowgirl_03_tocando",
+      "images": [
+        "d_reverse_cowgirl_03_tocando",
+        0
+      ]
+    }
+  },
+  "p_reverse_cowgirl_04_rendida": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), reverse_cowgirl, girl_on_top, facing_away, front_view, surrendering, moaning, forbidden, sweat, drooling, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_reverse_cowgirl_04_rendida": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_reverse_cowgirl_04_rendida",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reverse_cowgirl_04_rendida": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reverse_cowgirl_04_rendida",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reverse_cowgirl_04_rendida": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_reverse_cowgirl_04_rendida",
+      "images": [
+        "d_reverse_cowgirl_04_rendida",
+        0
+      ]
+    }
+  },
+  "p_reverse_cowgirl_05_adicta": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), balls_deep, reverse_cowgirl, girl_on_top, facing_away, front_view, secret_affair, eager, passionate, ahegao, excessive_sweat, (motion lines:1.4), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_reverse_cowgirl_05_adicta": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_reverse_cowgirl_05_adicta",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reverse_cowgirl_05_adicta": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reverse_cowgirl_05_adicta",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reverse_cowgirl_05_adicta": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_reverse_cowgirl_05_adicta",
+      "images": [
+        "d_reverse_cowgirl_05_adicta",
+        0
+      ]
+    }
+  },
+  "p_reverse_cowgirl_06_calificada": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, reverse_cowgirl, girl_on_top, facing_away, front_view, graded, cum_covered, ruined_uniform, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_reverse_cowgirl_06_calificada": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_reverse_cowgirl_06_calificada",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reverse_cowgirl_06_calificada": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reverse_cowgirl_06_calificada",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reverse_cowgirl_06_calificada": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_profesora_reverse_cowgirl_06_calificada",
+      "images": [
+        "d_reverse_cowgirl_06_calificada",
+        0
+      ]
+    }
+  }
+}

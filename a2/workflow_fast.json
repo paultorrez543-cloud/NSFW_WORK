@@ -1,0 +1,935 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoaderModelOnly",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "lora_name": "a2_nier_illustrious.safetensors",
+      "strength_model": 1
+    }
+  },
+  "lora_comic": {
+    "class_type": "LoraLoaderModelOnly",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "lora_name": "hentai_comic_generator.safetensors",
+      "strength_model": 0.6
+    }
+  },
+  "lora_detail": {
+    "class_type": "LoraLoaderModelOnly",
+    "inputs": {
+      "model": [
+        "lora_comic",
+        0
+      ],
+      "lora_name": "add-detail-xl.safetensors",
+      "strength_model": 1.2
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "stand, full body standing, Character illustration, text_bubbles, speech_bubble, dialogue, onomatopoeia, japanese_text, english_text, white_box, text_box, letter, word, clothed, dress, clothes, outfit, lowres, bad_anatomy, bad_hands, extra_fingers, worst_quality, blurry, ugly, censored, mosaic, watermark, text, male_face, male_head, male_eyes, male_hair, male_beard, shiny_skin, wet_skin, glossy, plastic, doll_joints, mannequin, blended_features, flat_colors, simple_background, 3d_render, cgi, ai_generated, smooth, airbrushed, perfect_anatomy, flawless_skin, bloom, glowing, masterpiece, best_quality, absurdres, ultra_detailed",
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "10": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a2, android, mole under mouth, medium breasts, blue eyes, white hair, hair over one eye, long hair, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, lying, on_back, legs_up, spread_legs, held_down, both_erect, penis_presented, penis_on_pussy, penis_on_anus, imminent_double, about_to_penetrate, nervous, blush, sweat, Hentai comic style, multi-view, 3-5 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "11": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "12": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "10",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "11",
+        0
+      ]
+    }
+  },
+  "13": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "12",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "14": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "a2_fast_missionary",
+      "images": [
+        "13",
+        0
+      ]
+    }
+  },
+  "15": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a2, android, mole under mouth, medium breasts, blue eyes, white hair, hair over one eye, long hair, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, cowgirl_position, girl_on_top, straddling, both_erect, penis_presented, imminent_double, about_to_penetrate, nervous, blush, sweat, Hentai comic style, multi-view, 3-5 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "16": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "17": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "15",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "16",
+        0
+      ]
+    }
+  },
+  "18": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "17",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "19": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "a2_fast_cowgirl",
+      "images": [
+        "18",
+        0
+      ]
+    }
+  },
+  "20": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a2, android, mole under mouth, medium breasts, blue eyes, white hair, hair over one eye, long hair, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, doggystyle, from_behind, arched_back, hands_on_hips, both_erect, penis_presented, imminent_double, about_to_penetrate, nervous, blush, sweat, Hentai comic style, multi-view, 3-5 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "21": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "22": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "20",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "21",
+        0
+      ]
+    }
+  },
+  "23": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "22",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "24": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "a2_fast_doggystyle",
+      "images": [
+        "23",
+        0
+      ]
+    }
+  },
+  "25": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a2, android, mole under mouth, medium breasts, blue eyes, white hair, hair over one eye, long hair, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, piledriver, inverted, legs_up, upside_down, both_erect, penis_presented, imminent_double, about_to_penetrate, nervous, blush, sweat, Hentai comic style, multi-view, 3-5 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "26": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "27": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "25",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "26",
+        0
+      ]
+    }
+  },
+  "28": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "27",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "29": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "a2_fast_piledriver",
+      "images": [
+        "28",
+        0
+      ]
+    }
+  },
+  "30": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a2, android, mole under mouth, medium breasts, blue eyes, white hair, hair over one eye, long hair, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, prone_bone, lying, on_stomach, from_behind, legs_closed, both_erect, penis_presented, imminent_double, about_to_penetrate, nervous, blush, sweat, Hentai comic style, multi-view, 3-5 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "31": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "32": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "30",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "31",
+        0
+      ]
+    }
+  },
+  "33": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "32",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "34": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "a2_fast_prone_bone",
+      "images": [
+        "33",
+        0
+      ]
+    }
+  },
+  "35": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a2, android, mole under mouth, medium breasts, blue eyes, white hair, hair over one eye, long hair, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, standing_sex, against_wall, held_up, legs_around_waist, both_erect, penis_presented, imminent_double, about_to_penetrate, nervous, blush, sweat, Hentai comic style, multi-view, 3-5 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "36": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "37": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "35",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "36",
+        0
+      ]
+    }
+  },
+  "38": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "37",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "39": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "a2_fast_standing",
+      "images": [
+        "38",
+        0
+      ]
+    }
+  },
+  "40": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a2, android, mole under mouth, medium breasts, blue eyes, white hair, hair over one eye, long hair, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, reverse_cowgirl, cowgirl_position, girl_on_top, facing_away, looking_back, both_erect, penis_presented, imminent_double, about_to_penetrate, nervous, blush, sweat, Hentai comic style, multi-view, 3-5 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "41": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "42": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "40",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "41",
+        0
+      ]
+    }
+  },
+  "43": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "42",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "44": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "a2_fast_reverse_cowgirl",
+      "images": [
+        "43",
+        0
+      ]
+    }
+  },
+  "45": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a2, android, mole under mouth, medium breasts, blue eyes, white hair, hair over one eye, long hair, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, spooning, spoon_position, lying, on_side, from_behind, legs_together, both_erect, penis_presented, imminent_double, about_to_penetrate, nervous, blush, sweat, Hentai comic style, multi-view, 3-5 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "46": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "47": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "45",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "46",
+        0
+      ]
+    }
+  },
+  "48": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "47",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "49": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "a2_fast_spooning",
+      "images": [
+        "48",
+        0
+      ]
+    }
+  },
+  "50": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a2, android, mole under mouth, medium breasts, blue eyes, white hair, hair over one eye, long hair, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, full_nelson, nelson_position, restrained, legs_folded, held_up, pinned, both_erect, penis_presented, imminent_double, about_to_penetrate, nervous, blush, sweat, Hentai comic style, multi-view, 3-5 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "51": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "52": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "50",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "51",
+        0
+      ]
+    }
+  },
+  "53": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "52",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "54": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "a2_fast_full_nelson",
+      "images": [
+        "53",
+        0
+      ]
+    }
+  },
+  "55": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a2, android, mole under mouth, medium breasts, blue eyes, white hair, hair over one eye, long hair, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, mating_press, folded, shoulders_pressed, legs_on_shoulders, pinned, deep, both_erect, penis_presented, imminent_double, about_to_penetrate, nervous, blush, sweat, Hentai comic style, multi-view, 3-5 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "56": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "57": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "55",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "56",
+        0
+      ]
+    }
+  },
+  "58": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "57",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "59": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "a2_fast_mating_press",
+      "images": [
+        "58",
+        0
+      ]
+    }
+  },
+  "60": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a2, android, mole under mouth, medium breasts, blue eyes, white hair, hair over one eye, long hair, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, fellatio, blowjob, oral, penis_in_mouth, facefuck, deepthroat, on_knees, looking_up, penis_presented, imminent, nervous, blush, sweat, Hentai comic style, multi-view, 3-5 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "61": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "62": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "60",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "61",
+        0
+      ]
+    }
+  },
+  "63": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "62",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "64": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "a2_fast_oral",
+      "images": [
+        "63",
+        0
+      ]
+    }
+  },
+  "65": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a2, android, mole under mouth, medium breasts, blue eyes, white hair, hair over one eye, long hair, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, paizuri, titfuck, between_breasts, breast_sandwich, penis_between_breasts, penis_presented, imminent, nervous, blush, sweat, Hentai comic style, multi-view, 3-5 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "66": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "67": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "65",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "66",
+        0
+      ]
+    }
+  },
+  "68": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "67",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "69": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "a2_fast_paizuri",
+      "images": [
+        "68",
+        0
+      ]
+    }
+  },
+  "70": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "a2, android, mole under mouth, medium breasts, blue eyes, white hair, hair over one eye, long hair, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, sitting_on_lap, sitting_position, lap_sex, straddling_sitting, chair, arms_around_neck, both_erect, penis_presented, imminent_double, about_to_penetrate, nervous, blush, sweat, Hentai comic style, multi-view, 3-5 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "71": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "72": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "70",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "71",
+        0
+      ]
+    }
+  },
+  "73": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "72",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "74": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "a2_fast_sitting",
+      "images": [
+        "73",
+        0
+      ]
+    }
+  }
+}

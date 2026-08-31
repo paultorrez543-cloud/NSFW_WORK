@@ -1,0 +1,629 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "lora_name": "belsey_lostsword.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8
+    }
+  },
+  "lora_face": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "Face_Detailed_v2.safetensors",
+      "strength_model": 0.85,
+      "strength_clip": 0.85
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "lowres, bad anatomy, bad eyes, deformed eyes, crossed eyes, bad hands, extra fingers, worst_quality, blurry, ugly, thick lines, lineart",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "p100": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, micro bikini, elbow gloves, thighhighs, red cape, cowgirl_position, girl_on_top, straddling, solo, looking down, confident, blush, simple background, dark background, gradient background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "e100": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "k100": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 43647511,
+      "steps": 35,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "p100",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e100",
+        0
+      ]
+    }
+  },
+  "d100": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k100",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "base": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_scene/00_base",
+      "images": [
+        "d100",
+        0
+      ]
+    }
+  },
+  "200": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, micro bikini, elbow gloves, thighhighs, red cape, cowgirl_position, girl_on_top, straddling, both_erect, penis_presented, penis_on_pussy, about_to_penetrate, eye_contact, tension, motion_lines, speed_lines, heart_symbol, clothes_lift, bikini_lift, clothing_shift, still_clothed, bikini_still_on, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, clothes_lift, bikini_lift, clothing_shift, still_clothed, bikini_still_on, simple background, dark background, gradient background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "201": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "base",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "202": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 25,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "simple",
+      "denoise": 0.55,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "200",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "201",
+        0
+      ]
+    }
+  },
+  "203": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "202",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "204": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_scene/01_inminente",
+      "images": [
+        "203",
+        0
+      ]
+    }
+  },
+  "205": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, micro bikini, elbow gloves, thighhighs, red cape, cowgirl_position, girl_on_top, straddling, vaginal, tip_in_pussy, shallow_insertion, just_the_tip, barely_inserted, stretching, pain, tears, speed_lines, impact_lines, bikini_pulled_aside, underwear_aside, partially_clothed, bikini_still_partially_on, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bikini_pulled_aside, underwear_aside, partially_clothed, bikini_still_partially_on, simple background, dark background, gradient background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "206": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "base",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "207": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 25,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "simple",
+      "denoise": 0.55,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "205",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "206",
+        0
+      ]
+    }
+  },
+  "208": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "207",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "209": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_scene/02_punta",
+      "images": [
+        "208",
+        0
+      ]
+    }
+  },
+  "210": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, micro bikini, elbow gloves, thighhighs, red cape, cowgirl_position, girl_on_top, straddling, vaginal, full_insertion, half_inserted, midway_depth, ahegao, motion_lines, depth_lines, aah, bikini_removed, top_off, topless, naked_torso, panties_only, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bikini_removed, top_off, topless, naked_torso, panties_only, simple background, dark background, gradient background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "211": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "base",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "212": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 25,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "simple",
+      "denoise": 0.55,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "210",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "211",
+        0
+      ]
+    }
+  },
+  "213": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "212",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "214": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_scene/03_entrada_total",
+      "images": [
+        "213",
+        0
+      ]
+    }
+  },
+  "215": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, micro bikini, elbow gloves, thighhighs, red cape, cowgirl_position, girl_on_top, straddling, vaginal, in_and_out, varying_depth, thrusting, bouncing, sweating, ahegao, drooling, motion_lines, speed_lines, plap, squish, aah, completely_nude, naked, clothes_discarded, bikini_on_floor, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, completely_nude, naked, clothes_discarded, bikini_on_floor, simple background, dark background, gradient background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "216": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "base",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "217": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 25,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "simple",
+      "denoise": 0.55,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "215",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "216",
+        0
+      ]
+    }
+  },
+  "218": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "217",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "219": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_scene/04_movimiento",
+      "images": [
+        "218",
+        0
+      ]
+    }
+  },
+  "220": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, micro bikini, elbow gloves, thighhighs, red cape, cowgirl_position, girl_on_top, straddling, vaginal, balls_deep, fully_sheathed, climax, female_orgasm, convulsing, arched_back, ahegao, forced_orgasm, squirting, motion_lines, aah, scream, completely_nude, naked, sweaty_nude, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, completely_nude, naked, sweaty_nude, simple background, dark background, gradient background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "221": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "base",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "222": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 25,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "simple",
+      "denoise": 0.55,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "220",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "221",
+        0
+      ]
+    }
+  },
+  "223": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "222",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "224": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_scene/05_cum_ella",
+      "images": [
+        "223",
+        0
+      ]
+    }
+  },
+  "225": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, micro bikini, elbow gloves, thighhighs, red cape, cowgirl_position, girl_on_top, straddling, climax, simultaneous_orgasm, x-ray, internal_shot, cum_in_pussy, internal_cumshot, both_ahegao, mind_break, internal_lines, aah, completely_nude, naked, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, completely_nude, naked, simple background, dark background, gradient background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "226": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "base",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "227": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 25,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "simple",
+      "denoise": 0.55,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "225",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "226",
+        0
+      ]
+    }
+  },
+  "228": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "227",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "229": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_scene/06_xray",
+      "images": [
+        "228",
+        0
+      ]
+    }
+  },
+  "230": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, micro bikini, elbow gloves, thighhighs, red cape, cowgirl_position, girl_on_top, straddling, after_sex, cum_on_face, cum_on_body, excessive_cum, bukkake, ahegao, mind_break, exhausted, splatter_lines, drip_lines, completely_nude, naked, cum_on_naked_body, simple background, dark background, gradient background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "231": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "base",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "232": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 25,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "simple",
+      "denoise": 0.55,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "230",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "231",
+        0
+      ]
+    }
+  },
+  "233": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "232",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "234": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_scene/07_bukkake",
+      "images": [
+        "233",
+        0
+      ]
+    }
+  }
+}

@@ -1,0 +1,7102 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "illustrious-xl-v0.1.safetensors"
+    },
+    "_meta": {
+      "title": "Base Model (Illustrious XL)"
+    }
+  },
+  "2": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "clip": [
+        "1",
+        1
+      ],
+      "lora_name": "lora_ran_lost_sword.safetensors",
+      "strength_model": 0.85,
+      "strength_clip": 1.0
+    },
+    "_meta": {
+      "title": "LoRA Ran"
+    }
+  },
+  "3": {
+    "class_type": "ControlNetLoader",
+    "inputs": {
+      "control_net_name": "controlnet-depth-sdxl-1.0.safetensors"
+    },
+    "_meta": {
+      "title": "ControlNet Depth Loader"
+    }
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra fingers, watermark, signature, artist name, mutated hands, poorly drawn hands, poorly drawn face, disfigured, deformed, malformed limbs, missing limbs, extra limbs, bright background, white background, flat lighting, sunny, overexposed"
+    },
+    "_meta": {
+      "title": "Negative Prompt Master"
+    }
+  },
+  "5": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, cowgirl_position, straddling, girl_on_top, sitting_on_partner, front_view, thighs, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, seductive smile, blush, looking at viewer, flirting, playful, teasing, parted_lips, blushing, no_penetration, teasing_pose, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P01 - Seducci\u00f3n y Teasing (Ropa Completa / Sin Pene) (Prompt)"
+    }
+  },
+  "6": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "P01 - Latent"
+    }
+  },
+  "7": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "5",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424349,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P01 - KSampler 01_seduccion"
+    }
+  },
+  "8": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "7",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P01 - VAE Decode 01_seduccion"
+    }
+  },
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "8",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/01_cowgirl/01_seduccion"
+    },
+    "_meta": {
+      "title": "P01 - Save 01_seduccion"
+    }
+  },
+  "10": {
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "inputs": {
+      "image": [
+        "8",
+        0
+      ],
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 1024
+    },
+    "_meta": {
+      "title": "P01 - Depth Preprocessor (Pose 3D Map)"
+    }
+  },
+  "11": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, cowgirl_position, straddling, girl_on_top, sitting_on_partner, front_view, thighs, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, blushing deeply, heavy_breathing, parted_lips, moaning, excited, anticipation, lust, (imminent penetration:1.3), tip_touching, teasing, thigh_contact, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P01 - Preliminares y Contacto Inminente (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "12": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "11",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "10",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P01 - Apply ControlNet Depth (02_preliminares)"
+    }
+  },
+  "13": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "12",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424351,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P01 - KSampler 02_preliminares"
+    }
+  },
+  "14": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "13",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P01 - VAE Decode 02_preliminares"
+    }
+  },
+  "15": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "14",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/01_cowgirl/02_preliminares"
+    },
+    "_meta": {
+      "title": "P01 - Save 02_preliminares"
+    }
+  },
+  "16": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, cowgirl_position, straddling, girl_on_top, sitting_on_partner, front_view, thighs, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, pleasure, tears_of_pleasure, blushing, open_mouth, heavy_breathing, panting, moaning, (tip_in_pussy:1.4), (first_insertion:1.3), stretching, (motion lines:1.3), disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P01 - Pasi\u00f3n y Primera Inserci\u00f3n (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "17": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "16",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "10",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P01 - Apply ControlNet Depth (03_primera_insercion)"
+    }
+  },
+  "18": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "17",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424352,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P01 - KSampler 03_primera_insercion"
+    }
+  },
+  "19": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "18",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P01 - VAE Decode 03_primera_insercion"
+    }
+  },
+  "20": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "19",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/01_cowgirl/03_primera_insercion"
+    },
+    "_meta": {
+      "title": "P01 - Save 03_primera_insercion"
+    }
+  },
+  "21": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, cowgirl_position, straddling, girl_on_top, sitting_on_partner, front_view, thighs, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, ecstasy, intense_pleasure, ahegao, heart_pupils, drooling, open_mouth, excessive_sweat, eye_contact, (deep penetration:1.6), (balls_deep:1.4), (creampie:1.3), (motion lines:1.5), impact_lines, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P01 - \u00c9xtasis, Cl\u00edmax y Corrida (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "22": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "21",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "10",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P01 - Apply ControlNet Depth (04_extasis)"
+    }
+  },
+  "23": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "22",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424353,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P01 - KSampler 04_extasis"
+    }
+  },
+  "24": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "23",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P01 - VAE Decode 04_extasis"
+    }
+  },
+  "25": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "24",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/01_cowgirl/04_extasis"
+    },
+    "_meta": {
+      "title": "P01 - Save 04_extasis"
+    }
+  },
+  "26": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, cowgirl_position, straddling, girl_on_top, sitting_on_partner, front_view, thighs, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, afterglow, satisfied, gentle_smile, blushing, heavy_breathing, sweat, relaxed, exhausted_smile, (after_sex:1.3), (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), semen_drip, semen_on_body, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P01 - Afterglow y Placer Satisfecho (Totalmente Desnuda) (Prompt)"
+    }
+  },
+  "27": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "26",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "10",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P01 - Apply ControlNet Depth (05_afterglow)"
+    }
+  },
+  "28": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "27",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424354,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P01 - KSampler 05_afterglow"
+    }
+  },
+  "29": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "28",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P01 - VAE Decode 05_afterglow"
+    }
+  },
+  "30": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "29",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/01_cowgirl/05_afterglow"
+    },
+    "_meta": {
+      "title": "P01 - Save 05_afterglow"
+    }
+  },
+  "31": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, reverse_cowgirl, reverse_cowgirl_position, girl_on_top, facing_away, back_view, ass_focus, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, seductive smile, blush, looking at viewer, flirting, playful, teasing, parted_lips, blushing, no_penetration, teasing_pose, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P02 - Seducci\u00f3n y Teasing (Ropa Completa / Sin Pene) (Prompt)"
+    }
+  },
+  "32": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "P02 - Latent"
+    }
+  },
+  "33": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "31",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "32",
+        0
+      ],
+      "seed": 42424449,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P02 - KSampler 01_seduccion"
+    }
+  },
+  "34": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "33",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P02 - VAE Decode 01_seduccion"
+    }
+  },
+  "35": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "34",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/02_reverse_cowgirl/01_seduccion"
+    },
+    "_meta": {
+      "title": "P02 - Save 01_seduccion"
+    }
+  },
+  "36": {
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "inputs": {
+      "image": [
+        "34",
+        0
+      ],
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 1024
+    },
+    "_meta": {
+      "title": "P02 - Depth Preprocessor (Pose 3D Map)"
+    }
+  },
+  "37": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, reverse_cowgirl, reverse_cowgirl_position, girl_on_top, facing_away, back_view, ass_focus, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, blushing deeply, heavy_breathing, parted_lips, moaning, excited, anticipation, lust, (imminent penetration:1.3), tip_touching, teasing, thigh_contact, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P02 - Preliminares y Contacto Inminente (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "38": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "37",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "36",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P02 - Apply ControlNet Depth (02_preliminares)"
+    }
+  },
+  "39": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "38",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "32",
+        0
+      ],
+      "seed": 42424451,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P02 - KSampler 02_preliminares"
+    }
+  },
+  "40": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "39",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P02 - VAE Decode 02_preliminares"
+    }
+  },
+  "41": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "40",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/02_reverse_cowgirl/02_preliminares"
+    },
+    "_meta": {
+      "title": "P02 - Save 02_preliminares"
+    }
+  },
+  "42": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, reverse_cowgirl, reverse_cowgirl_position, girl_on_top, facing_away, back_view, ass_focus, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, pleasure, tears_of_pleasure, blushing, open_mouth, heavy_breathing, panting, moaning, (tip_in_pussy:1.4), (first_insertion:1.3), stretching, (motion lines:1.3), disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P02 - Pasi\u00f3n y Primera Inserci\u00f3n (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "43": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "42",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "36",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P02 - Apply ControlNet Depth (03_primera_insercion)"
+    }
+  },
+  "44": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "43",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "32",
+        0
+      ],
+      "seed": 42424452,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P02 - KSampler 03_primera_insercion"
+    }
+  },
+  "45": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "44",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P02 - VAE Decode 03_primera_insercion"
+    }
+  },
+  "46": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "45",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/02_reverse_cowgirl/03_primera_insercion"
+    },
+    "_meta": {
+      "title": "P02 - Save 03_primera_insercion"
+    }
+  },
+  "47": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, reverse_cowgirl, reverse_cowgirl_position, girl_on_top, facing_away, back_view, ass_focus, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, ecstasy, intense_pleasure, ahegao, heart_pupils, drooling, open_mouth, excessive_sweat, eye_contact, (deep penetration:1.6), (balls_deep:1.4), (creampie:1.3), (motion lines:1.5), impact_lines, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P02 - \u00c9xtasis, Cl\u00edmax y Corrida (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "48": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "47",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "36",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P02 - Apply ControlNet Depth (04_extasis)"
+    }
+  },
+  "49": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "48",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "32",
+        0
+      ],
+      "seed": 42424453,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P02 - KSampler 04_extasis"
+    }
+  },
+  "50": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "49",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P02 - VAE Decode 04_extasis"
+    }
+  },
+  "51": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "50",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/02_reverse_cowgirl/04_extasis"
+    },
+    "_meta": {
+      "title": "P02 - Save 04_extasis"
+    }
+  },
+  "52": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, reverse_cowgirl, reverse_cowgirl_position, girl_on_top, facing_away, back_view, ass_focus, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, afterglow, satisfied, gentle_smile, blushing, heavy_breathing, sweat, relaxed, exhausted_smile, (after_sex:1.3), (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), semen_drip, semen_on_body, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P02 - Afterglow y Placer Satisfecho (Totalmente Desnuda) (Prompt)"
+    }
+  },
+  "53": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "52",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "36",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P02 - Apply ControlNet Depth (05_afterglow)"
+    }
+  },
+  "54": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "53",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "32",
+        0
+      ],
+      "seed": 42424454,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P02 - KSampler 05_afterglow"
+    }
+  },
+  "55": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "54",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P02 - VAE Decode 05_afterglow"
+    }
+  },
+  "56": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "55",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/02_reverse_cowgirl/05_afterglow"
+    },
+    "_meta": {
+      "title": "P02 - Save 05_afterglow"
+    }
+  },
+  "57": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, doggystyle, from_behind, all_fours, arched_back, back_view, ass_focus, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, seductive smile, blush, looking at viewer, flirting, playful, teasing, parted_lips, blushing, no_penetration, teasing_pose, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P03 - Seducci\u00f3n y Teasing (Ropa Completa / Sin Pene) (Prompt)"
+    }
+  },
+  "58": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "P03 - Latent"
+    }
+  },
+  "59": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "57",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "58",
+        0
+      ],
+      "seed": 42424549,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P03 - KSampler 01_seduccion"
+    }
+  },
+  "60": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "59",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P03 - VAE Decode 01_seduccion"
+    }
+  },
+  "61": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "60",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/03_doggystyle/01_seduccion"
+    },
+    "_meta": {
+      "title": "P03 - Save 01_seduccion"
+    }
+  },
+  "62": {
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "inputs": {
+      "image": [
+        "60",
+        0
+      ],
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 1024
+    },
+    "_meta": {
+      "title": "P03 - Depth Preprocessor (Pose 3D Map)"
+    }
+  },
+  "63": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, doggystyle, from_behind, all_fours, arched_back, back_view, ass_focus, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, blushing deeply, heavy_breathing, parted_lips, moaning, excited, anticipation, lust, (imminent penetration:1.3), tip_touching, teasing, thigh_contact, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P03 - Preliminares y Contacto Inminente (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "64": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "63",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "62",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P03 - Apply ControlNet Depth (02_preliminares)"
+    }
+  },
+  "65": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "64",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "58",
+        0
+      ],
+      "seed": 42424551,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P03 - KSampler 02_preliminares"
+    }
+  },
+  "66": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "65",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P03 - VAE Decode 02_preliminares"
+    }
+  },
+  "67": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "66",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/03_doggystyle/02_preliminares"
+    },
+    "_meta": {
+      "title": "P03 - Save 02_preliminares"
+    }
+  },
+  "68": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, doggystyle, from_behind, all_fours, arched_back, back_view, ass_focus, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, pleasure, tears_of_pleasure, blushing, open_mouth, heavy_breathing, panting, moaning, (tip_in_pussy:1.4), (first_insertion:1.3), stretching, (motion lines:1.3), disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P03 - Pasi\u00f3n y Primera Inserci\u00f3n (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "69": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "68",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "62",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P03 - Apply ControlNet Depth (03_primera_insercion)"
+    }
+  },
+  "70": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "69",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "58",
+        0
+      ],
+      "seed": 42424552,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P03 - KSampler 03_primera_insercion"
+    }
+  },
+  "71": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "70",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P03 - VAE Decode 03_primera_insercion"
+    }
+  },
+  "72": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "71",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/03_doggystyle/03_primera_insercion"
+    },
+    "_meta": {
+      "title": "P03 - Save 03_primera_insercion"
+    }
+  },
+  "73": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, doggystyle, from_behind, all_fours, arched_back, back_view, ass_focus, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, ecstasy, intense_pleasure, ahegao, heart_pupils, drooling, open_mouth, excessive_sweat, eye_contact, (deep penetration:1.6), (balls_deep:1.4), (creampie:1.3), (motion lines:1.5), impact_lines, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P03 - \u00c9xtasis, Cl\u00edmax y Corrida (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "74": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "73",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "62",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P03 - Apply ControlNet Depth (04_extasis)"
+    }
+  },
+  "75": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "74",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "58",
+        0
+      ],
+      "seed": 42424553,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P03 - KSampler 04_extasis"
+    }
+  },
+  "76": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "75",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P03 - VAE Decode 04_extasis"
+    }
+  },
+  "77": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "76",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/03_doggystyle/04_extasis"
+    },
+    "_meta": {
+      "title": "P03 - Save 04_extasis"
+    }
+  },
+  "78": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, doggystyle, from_behind, all_fours, arched_back, back_view, ass_focus, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, afterglow, satisfied, gentle_smile, blushing, heavy_breathing, sweat, relaxed, exhausted_smile, (after_sex:1.3), (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), semen_drip, semen_on_body, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P03 - Afterglow y Placer Satisfecho (Totalmente Desnuda) (Prompt)"
+    }
+  },
+  "79": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "78",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "62",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P03 - Apply ControlNet Depth (05_afterglow)"
+    }
+  },
+  "80": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "79",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "58",
+        0
+      ],
+      "seed": 42424554,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P03 - KSampler 05_afterglow"
+    }
+  },
+  "81": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "80",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P03 - VAE Decode 05_afterglow"
+    }
+  },
+  "82": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "81",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/03_doggystyle/05_afterglow"
+    },
+    "_meta": {
+      "title": "P03 - Save 05_afterglow"
+    }
+  },
+  "83": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, missionary_position, lying_on_back, legs_spread, spread_legs, legs_up, front_view, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, seductive smile, blush, looking at viewer, flirting, playful, teasing, parted_lips, blushing, no_penetration, teasing_pose, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P04 - Seducci\u00f3n y Teasing (Ropa Completa / Sin Pene) (Prompt)"
+    }
+  },
+  "84": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "P04 - Latent"
+    }
+  },
+  "85": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "83",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "84",
+        0
+      ],
+      "seed": 42424649,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P04 - KSampler 01_seduccion"
+    }
+  },
+  "86": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "85",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P04 - VAE Decode 01_seduccion"
+    }
+  },
+  "87": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "86",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/04_missionary/01_seduccion"
+    },
+    "_meta": {
+      "title": "P04 - Save 01_seduccion"
+    }
+  },
+  "88": {
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "inputs": {
+      "image": [
+        "86",
+        0
+      ],
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 1024
+    },
+    "_meta": {
+      "title": "P04 - Depth Preprocessor (Pose 3D Map)"
+    }
+  },
+  "89": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, missionary_position, lying_on_back, legs_spread, spread_legs, legs_up, front_view, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, blushing deeply, heavy_breathing, parted_lips, moaning, excited, anticipation, lust, (imminent penetration:1.3), tip_touching, teasing, thigh_contact, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P04 - Preliminares y Contacto Inminente (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "90": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "89",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "88",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P04 - Apply ControlNet Depth (02_preliminares)"
+    }
+  },
+  "91": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "90",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "84",
+        0
+      ],
+      "seed": 42424651,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P04 - KSampler 02_preliminares"
+    }
+  },
+  "92": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "91",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P04 - VAE Decode 02_preliminares"
+    }
+  },
+  "93": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "92",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/04_missionary/02_preliminares"
+    },
+    "_meta": {
+      "title": "P04 - Save 02_preliminares"
+    }
+  },
+  "94": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, missionary_position, lying_on_back, legs_spread, spread_legs, legs_up, front_view, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, pleasure, tears_of_pleasure, blushing, open_mouth, heavy_breathing, panting, moaning, (tip_in_pussy:1.4), (first_insertion:1.3), stretching, (motion lines:1.3), disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P04 - Pasi\u00f3n y Primera Inserci\u00f3n (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "95": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "94",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "88",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P04 - Apply ControlNet Depth (03_primera_insercion)"
+    }
+  },
+  "96": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "95",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "84",
+        0
+      ],
+      "seed": 42424652,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P04 - KSampler 03_primera_insercion"
+    }
+  },
+  "97": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "96",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P04 - VAE Decode 03_primera_insercion"
+    }
+  },
+  "98": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "97",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/04_missionary/03_primera_insercion"
+    },
+    "_meta": {
+      "title": "P04 - Save 03_primera_insercion"
+    }
+  },
+  "99": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, missionary_position, lying_on_back, legs_spread, spread_legs, legs_up, front_view, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, ecstasy, intense_pleasure, ahegao, heart_pupils, drooling, open_mouth, excessive_sweat, eye_contact, (deep penetration:1.6), (balls_deep:1.4), (creampie:1.3), (motion lines:1.5), impact_lines, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P04 - \u00c9xtasis, Cl\u00edmax y Corrida (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "100": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "99",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "88",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P04 - Apply ControlNet Depth (04_extasis)"
+    }
+  },
+  "101": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "100",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "84",
+        0
+      ],
+      "seed": 42424653,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P04 - KSampler 04_extasis"
+    }
+  },
+  "102": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "101",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P04 - VAE Decode 04_extasis"
+    }
+  },
+  "103": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "102",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/04_missionary/04_extasis"
+    },
+    "_meta": {
+      "title": "P04 - Save 04_extasis"
+    }
+  },
+  "104": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, missionary_position, lying_on_back, legs_spread, spread_legs, legs_up, front_view, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, afterglow, satisfied, gentle_smile, blushing, heavy_breathing, sweat, relaxed, exhausted_smile, (after_sex:1.3), (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), semen_drip, semen_on_body, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P04 - Afterglow y Placer Satisfecho (Totalmente Desnuda) (Prompt)"
+    }
+  },
+  "105": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "104",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "88",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P04 - Apply ControlNet Depth (05_afterglow)"
+    }
+  },
+  "106": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "105",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "84",
+        0
+      ],
+      "seed": 42424654,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P04 - KSampler 05_afterglow"
+    }
+  },
+  "107": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "106",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P04 - VAE Decode 05_afterglow"
+    }
+  },
+  "108": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "107",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/04_missionary/05_afterglow"
+    },
+    "_meta": {
+      "title": "P04 - Save 05_afterglow"
+    }
+  },
+  "109": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, mating_press, folded, legs_above_head, knees_to_chest, front_view, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, seductive smile, blush, looking at viewer, flirting, playful, teasing, parted_lips, blushing, no_penetration, teasing_pose, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P05 - Seducci\u00f3n y Teasing (Ropa Completa / Sin Pene) (Prompt)"
+    }
+  },
+  "110": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "P05 - Latent"
+    }
+  },
+  "111": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "109",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "110",
+        0
+      ],
+      "seed": 42424749,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P05 - KSampler 01_seduccion"
+    }
+  },
+  "112": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "111",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P05 - VAE Decode 01_seduccion"
+    }
+  },
+  "113": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "112",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/05_mating_press/01_seduccion"
+    },
+    "_meta": {
+      "title": "P05 - Save 01_seduccion"
+    }
+  },
+  "114": {
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "inputs": {
+      "image": [
+        "112",
+        0
+      ],
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 1024
+    },
+    "_meta": {
+      "title": "P05 - Depth Preprocessor (Pose 3D Map)"
+    }
+  },
+  "115": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, mating_press, folded, legs_above_head, knees_to_chest, front_view, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, blushing deeply, heavy_breathing, parted_lips, moaning, excited, anticipation, lust, (imminent penetration:1.3), tip_touching, teasing, thigh_contact, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P05 - Preliminares y Contacto Inminente (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "116": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "115",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "114",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P05 - Apply ControlNet Depth (02_preliminares)"
+    }
+  },
+  "117": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "116",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "110",
+        0
+      ],
+      "seed": 42424751,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P05 - KSampler 02_preliminares"
+    }
+  },
+  "118": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "117",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P05 - VAE Decode 02_preliminares"
+    }
+  },
+  "119": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "118",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/05_mating_press/02_preliminares"
+    },
+    "_meta": {
+      "title": "P05 - Save 02_preliminares"
+    }
+  },
+  "120": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, mating_press, folded, legs_above_head, knees_to_chest, front_view, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, pleasure, tears_of_pleasure, blushing, open_mouth, heavy_breathing, panting, moaning, (tip_in_pussy:1.4), (first_insertion:1.3), stretching, (motion lines:1.3), disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P05 - Pasi\u00f3n y Primera Inserci\u00f3n (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "121": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "120",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "114",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P05 - Apply ControlNet Depth (03_primera_insercion)"
+    }
+  },
+  "122": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "121",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "110",
+        0
+      ],
+      "seed": 42424752,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P05 - KSampler 03_primera_insercion"
+    }
+  },
+  "123": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "122",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P05 - VAE Decode 03_primera_insercion"
+    }
+  },
+  "124": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "123",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/05_mating_press/03_primera_insercion"
+    },
+    "_meta": {
+      "title": "P05 - Save 03_primera_insercion"
+    }
+  },
+  "125": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, mating_press, folded, legs_above_head, knees_to_chest, front_view, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, ecstasy, intense_pleasure, ahegao, heart_pupils, drooling, open_mouth, excessive_sweat, eye_contact, (deep penetration:1.6), (balls_deep:1.4), (creampie:1.3), (motion lines:1.5), impact_lines, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P05 - \u00c9xtasis, Cl\u00edmax y Corrida (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "126": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "125",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "114",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P05 - Apply ControlNet Depth (04_extasis)"
+    }
+  },
+  "127": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "126",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "110",
+        0
+      ],
+      "seed": 42424753,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P05 - KSampler 04_extasis"
+    }
+  },
+  "128": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "127",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P05 - VAE Decode 04_extasis"
+    }
+  },
+  "129": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "128",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/05_mating_press/04_extasis"
+    },
+    "_meta": {
+      "title": "P05 - Save 04_extasis"
+    }
+  },
+  "130": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, mating_press, folded, legs_above_head, knees_to_chest, front_view, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, afterglow, satisfied, gentle_smile, blushing, heavy_breathing, sweat, relaxed, exhausted_smile, (after_sex:1.3), (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), semen_drip, semen_on_body, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P05 - Afterglow y Placer Satisfecho (Totalmente Desnuda) (Prompt)"
+    }
+  },
+  "131": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "130",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "114",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P05 - Apply ControlNet Depth (05_afterglow)"
+    }
+  },
+  "132": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "131",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "110",
+        0
+      ],
+      "seed": 42424754,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P05 - KSampler 05_afterglow"
+    }
+  },
+  "133": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "132",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P05 - VAE Decode 05_afterglow"
+    }
+  },
+  "134": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "133",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/05_mating_press/05_afterglow"
+    },
+    "_meta": {
+      "title": "P05 - Save 05_afterglow"
+    }
+  },
+  "135": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, prone_bone, lying_on_stomach, from_behind, arched_back, ass_focus, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, seductive smile, blush, looking at viewer, flirting, playful, teasing, parted_lips, blushing, no_penetration, teasing_pose, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P06 - Seducci\u00f3n y Teasing (Ropa Completa / Sin Pene) (Prompt)"
+    }
+  },
+  "136": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "P06 - Latent"
+    }
+  },
+  "137": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "135",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "136",
+        0
+      ],
+      "seed": 42424849,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P06 - KSampler 01_seduccion"
+    }
+  },
+  "138": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "137",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P06 - VAE Decode 01_seduccion"
+    }
+  },
+  "139": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "138",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/06_prone_bone/01_seduccion"
+    },
+    "_meta": {
+      "title": "P06 - Save 01_seduccion"
+    }
+  },
+  "140": {
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "inputs": {
+      "image": [
+        "138",
+        0
+      ],
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 1024
+    },
+    "_meta": {
+      "title": "P06 - Depth Preprocessor (Pose 3D Map)"
+    }
+  },
+  "141": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, prone_bone, lying_on_stomach, from_behind, arched_back, ass_focus, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, blushing deeply, heavy_breathing, parted_lips, moaning, excited, anticipation, lust, (imminent penetration:1.3), tip_touching, teasing, thigh_contact, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P06 - Preliminares y Contacto Inminente (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "142": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "141",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "140",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P06 - Apply ControlNet Depth (02_preliminares)"
+    }
+  },
+  "143": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "142",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "136",
+        0
+      ],
+      "seed": 42424851,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P06 - KSampler 02_preliminares"
+    }
+  },
+  "144": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "143",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P06 - VAE Decode 02_preliminares"
+    }
+  },
+  "145": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "144",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/06_prone_bone/02_preliminares"
+    },
+    "_meta": {
+      "title": "P06 - Save 02_preliminares"
+    }
+  },
+  "146": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, prone_bone, lying_on_stomach, from_behind, arched_back, ass_focus, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, pleasure, tears_of_pleasure, blushing, open_mouth, heavy_breathing, panting, moaning, (tip_in_pussy:1.4), (first_insertion:1.3), stretching, (motion lines:1.3), disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P06 - Pasi\u00f3n y Primera Inserci\u00f3n (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "147": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "146",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "140",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P06 - Apply ControlNet Depth (03_primera_insercion)"
+    }
+  },
+  "148": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "147",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "136",
+        0
+      ],
+      "seed": 42424852,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P06 - KSampler 03_primera_insercion"
+    }
+  },
+  "149": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "148",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P06 - VAE Decode 03_primera_insercion"
+    }
+  },
+  "150": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "149",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/06_prone_bone/03_primera_insercion"
+    },
+    "_meta": {
+      "title": "P06 - Save 03_primera_insercion"
+    }
+  },
+  "151": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, prone_bone, lying_on_stomach, from_behind, arched_back, ass_focus, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, ecstasy, intense_pleasure, ahegao, heart_pupils, drooling, open_mouth, excessive_sweat, eye_contact, (deep penetration:1.6), (balls_deep:1.4), (creampie:1.3), (motion lines:1.5), impact_lines, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P06 - \u00c9xtasis, Cl\u00edmax y Corrida (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "152": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "151",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "140",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P06 - Apply ControlNet Depth (04_extasis)"
+    }
+  },
+  "153": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "152",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "136",
+        0
+      ],
+      "seed": 42424853,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P06 - KSampler 04_extasis"
+    }
+  },
+  "154": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "153",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P06 - VAE Decode 04_extasis"
+    }
+  },
+  "155": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "154",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/06_prone_bone/04_extasis"
+    },
+    "_meta": {
+      "title": "P06 - Save 04_extasis"
+    }
+  },
+  "156": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, prone_bone, lying_on_stomach, from_behind, arched_back, ass_focus, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, afterglow, satisfied, gentle_smile, blushing, heavy_breathing, sweat, relaxed, exhausted_smile, (after_sex:1.3), (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), semen_drip, semen_on_body, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P06 - Afterglow y Placer Satisfecho (Totalmente Desnuda) (Prompt)"
+    }
+  },
+  "157": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "156",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "140",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P06 - Apply ControlNet Depth (05_afterglow)"
+    }
+  },
+  "158": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "157",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "136",
+        0
+      ],
+      "seed": 42424854,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P06 - KSampler 05_afterglow"
+    }
+  },
+  "159": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "158",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P06 - VAE Decode 05_afterglow"
+    }
+  },
+  "160": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "159",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/06_prone_bone/05_afterglow"
+    },
+    "_meta": {
+      "title": "P06 - Save 05_afterglow"
+    }
+  },
+  "161": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, spooning, spooning_position, lying_on_side, from_behind, side_view, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, seductive smile, blush, looking at viewer, flirting, playful, teasing, parted_lips, blushing, no_penetration, teasing_pose, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P07 - Seducci\u00f3n y Teasing (Ropa Completa / Sin Pene) (Prompt)"
+    }
+  },
+  "162": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "P07 - Latent"
+    }
+  },
+  "163": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "161",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "162",
+        0
+      ],
+      "seed": 42424949,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P07 - KSampler 01_seduccion"
+    }
+  },
+  "164": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "163",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P07 - VAE Decode 01_seduccion"
+    }
+  },
+  "165": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "164",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/07_spooning/01_seduccion"
+    },
+    "_meta": {
+      "title": "P07 - Save 01_seduccion"
+    }
+  },
+  "166": {
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "inputs": {
+      "image": [
+        "164",
+        0
+      ],
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 1024
+    },
+    "_meta": {
+      "title": "P07 - Depth Preprocessor (Pose 3D Map)"
+    }
+  },
+  "167": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, spooning, spooning_position, lying_on_side, from_behind, side_view, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, blushing deeply, heavy_breathing, parted_lips, moaning, excited, anticipation, lust, (imminent penetration:1.3), tip_touching, teasing, thigh_contact, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P07 - Preliminares y Contacto Inminente (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "168": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "167",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "166",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P07 - Apply ControlNet Depth (02_preliminares)"
+    }
+  },
+  "169": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "168",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "162",
+        0
+      ],
+      "seed": 42424951,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P07 - KSampler 02_preliminares"
+    }
+  },
+  "170": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "169",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P07 - VAE Decode 02_preliminares"
+    }
+  },
+  "171": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "170",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/07_spooning/02_preliminares"
+    },
+    "_meta": {
+      "title": "P07 - Save 02_preliminares"
+    }
+  },
+  "172": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, spooning, spooning_position, lying_on_side, from_behind, side_view, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, pleasure, tears_of_pleasure, blushing, open_mouth, heavy_breathing, panting, moaning, (tip_in_pussy:1.4), (first_insertion:1.3), stretching, (motion lines:1.3), disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P07 - Pasi\u00f3n y Primera Inserci\u00f3n (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "173": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "172",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "166",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P07 - Apply ControlNet Depth (03_primera_insercion)"
+    }
+  },
+  "174": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "173",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "162",
+        0
+      ],
+      "seed": 42424952,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P07 - KSampler 03_primera_insercion"
+    }
+  },
+  "175": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "174",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P07 - VAE Decode 03_primera_insercion"
+    }
+  },
+  "176": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "175",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/07_spooning/03_primera_insercion"
+    },
+    "_meta": {
+      "title": "P07 - Save 03_primera_insercion"
+    }
+  },
+  "177": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, spooning, spooning_position, lying_on_side, from_behind, side_view, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, ecstasy, intense_pleasure, ahegao, heart_pupils, drooling, open_mouth, excessive_sweat, eye_contact, (deep penetration:1.6), (balls_deep:1.4), (creampie:1.3), (motion lines:1.5), impact_lines, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P07 - \u00c9xtasis, Cl\u00edmax y Corrida (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "178": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "177",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "166",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P07 - Apply ControlNet Depth (04_extasis)"
+    }
+  },
+  "179": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "178",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "162",
+        0
+      ],
+      "seed": 42424953,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P07 - KSampler 04_extasis"
+    }
+  },
+  "180": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "179",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P07 - VAE Decode 04_extasis"
+    }
+  },
+  "181": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "180",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/07_spooning/04_extasis"
+    },
+    "_meta": {
+      "title": "P07 - Save 04_extasis"
+    }
+  },
+  "182": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, spooning, spooning_position, lying_on_side, from_behind, side_view, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, afterglow, satisfied, gentle_smile, blushing, heavy_breathing, sweat, relaxed, exhausted_smile, (after_sex:1.3), (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), semen_drip, semen_on_body, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P07 - Afterglow y Placer Satisfecho (Totalmente Desnuda) (Prompt)"
+    }
+  },
+  "183": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "182",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "166",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P07 - Apply ControlNet Depth (05_afterglow)"
+    }
+  },
+  "184": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "183",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "162",
+        0
+      ],
+      "seed": 42424954,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P07 - KSampler 05_afterglow"
+    }
+  },
+  "185": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "184",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P07 - VAE Decode 05_afterglow"
+    }
+  },
+  "186": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "185",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/07_spooning/05_afterglow"
+    },
+    "_meta": {
+      "title": "P07 - Save 05_afterglow"
+    }
+  },
+  "187": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, standing_sex, standing, lifted, against_wall, leg_wrap, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, seductive smile, blush, looking at viewer, flirting, playful, teasing, parted_lips, blushing, no_penetration, teasing_pose, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P08 - Seducci\u00f3n y Teasing (Ropa Completa / Sin Pene) (Prompt)"
+    }
+  },
+  "188": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "P08 - Latent"
+    }
+  },
+  "189": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "187",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "188",
+        0
+      ],
+      "seed": 42425049,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P08 - KSampler 01_seduccion"
+    }
+  },
+  "190": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "189",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P08 - VAE Decode 01_seduccion"
+    }
+  },
+  "191": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "190",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/08_standing_sex/01_seduccion"
+    },
+    "_meta": {
+      "title": "P08 - Save 01_seduccion"
+    }
+  },
+  "192": {
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "inputs": {
+      "image": [
+        "190",
+        0
+      ],
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 1024
+    },
+    "_meta": {
+      "title": "P08 - Depth Preprocessor (Pose 3D Map)"
+    }
+  },
+  "193": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, standing_sex, standing, lifted, against_wall, leg_wrap, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, blushing deeply, heavy_breathing, parted_lips, moaning, excited, anticipation, lust, (imminent penetration:1.3), tip_touching, teasing, thigh_contact, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P08 - Preliminares y Contacto Inminente (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "194": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "193",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "192",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P08 - Apply ControlNet Depth (02_preliminares)"
+    }
+  },
+  "195": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "194",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "188",
+        0
+      ],
+      "seed": 42425051,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P08 - KSampler 02_preliminares"
+    }
+  },
+  "196": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "195",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P08 - VAE Decode 02_preliminares"
+    }
+  },
+  "197": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "196",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/08_standing_sex/02_preliminares"
+    },
+    "_meta": {
+      "title": "P08 - Save 02_preliminares"
+    }
+  },
+  "198": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, standing_sex, standing, lifted, against_wall, leg_wrap, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, pleasure, tears_of_pleasure, blushing, open_mouth, heavy_breathing, panting, moaning, (tip_in_pussy:1.4), (first_insertion:1.3), stretching, (motion lines:1.3), disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P08 - Pasi\u00f3n y Primera Inserci\u00f3n (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "199": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "198",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "192",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P08 - Apply ControlNet Depth (03_primera_insercion)"
+    }
+  },
+  "200": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "199",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "188",
+        0
+      ],
+      "seed": 42425052,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P08 - KSampler 03_primera_insercion"
+    }
+  },
+  "201": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "200",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P08 - VAE Decode 03_primera_insercion"
+    }
+  },
+  "202": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "201",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/08_standing_sex/03_primera_insercion"
+    },
+    "_meta": {
+      "title": "P08 - Save 03_primera_insercion"
+    }
+  },
+  "203": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, standing_sex, standing, lifted, against_wall, leg_wrap, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, ecstasy, intense_pleasure, ahegao, heart_pupils, drooling, open_mouth, excessive_sweat, eye_contact, (deep penetration:1.6), (balls_deep:1.4), (creampie:1.3), (motion lines:1.5), impact_lines, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P08 - \u00c9xtasis, Cl\u00edmax y Corrida (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "204": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "203",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "192",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P08 - Apply ControlNet Depth (04_extasis)"
+    }
+  },
+  "205": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "204",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "188",
+        0
+      ],
+      "seed": 42425053,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P08 - KSampler 04_extasis"
+    }
+  },
+  "206": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "205",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P08 - VAE Decode 04_extasis"
+    }
+  },
+  "207": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "206",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/08_standing_sex/04_extasis"
+    },
+    "_meta": {
+      "title": "P08 - Save 04_extasis"
+    }
+  },
+  "208": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, standing_sex, standing, lifted, against_wall, leg_wrap, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, afterglow, satisfied, gentle_smile, blushing, heavy_breathing, sweat, relaxed, exhausted_smile, (after_sex:1.3), (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), semen_drip, semen_on_body, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P08 - Afterglow y Placer Satisfecho (Totalmente Desnuda) (Prompt)"
+    }
+  },
+  "209": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "208",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "192",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P08 - Apply ControlNet Depth (05_afterglow)"
+    }
+  },
+  "210": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "209",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "188",
+        0
+      ],
+      "seed": 42425054,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P08 - KSampler 05_afterglow"
+    }
+  },
+  "211": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "210",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P08 - VAE Decode 05_afterglow"
+    }
+  },
+  "212": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "211",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/08_standing_sex/05_afterglow"
+    },
+    "_meta": {
+      "title": "P08 - Save 05_afterglow"
+    }
+  },
+  "213": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, bent_over, bent_over_furniture, leaning_forward, ass_up, on_table, desk, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, seductive smile, blush, looking at viewer, flirting, playful, teasing, parted_lips, blushing, no_penetration, teasing_pose, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P09 - Seducci\u00f3n y Teasing (Ropa Completa / Sin Pene) (Prompt)"
+    }
+  },
+  "214": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "P09 - Latent"
+    }
+  },
+  "215": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "213",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "214",
+        0
+      ],
+      "seed": 42425149,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P09 - KSampler 01_seduccion"
+    }
+  },
+  "216": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "215",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P09 - VAE Decode 01_seduccion"
+    }
+  },
+  "217": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "216",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/09_bent_over/01_seduccion"
+    },
+    "_meta": {
+      "title": "P09 - Save 01_seduccion"
+    }
+  },
+  "218": {
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "inputs": {
+      "image": [
+        "216",
+        0
+      ],
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 1024
+    },
+    "_meta": {
+      "title": "P09 - Depth Preprocessor (Pose 3D Map)"
+    }
+  },
+  "219": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, bent_over, bent_over_furniture, leaning_forward, ass_up, on_table, desk, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, blushing deeply, heavy_breathing, parted_lips, moaning, excited, anticipation, lust, (imminent penetration:1.3), tip_touching, teasing, thigh_contact, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P09 - Preliminares y Contacto Inminente (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "220": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "219",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "218",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P09 - Apply ControlNet Depth (02_preliminares)"
+    }
+  },
+  "221": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "220",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "214",
+        0
+      ],
+      "seed": 42425151,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P09 - KSampler 02_preliminares"
+    }
+  },
+  "222": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "221",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P09 - VAE Decode 02_preliminares"
+    }
+  },
+  "223": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "222",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/09_bent_over/02_preliminares"
+    },
+    "_meta": {
+      "title": "P09 - Save 02_preliminares"
+    }
+  },
+  "224": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, bent_over, bent_over_furniture, leaning_forward, ass_up, on_table, desk, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, pleasure, tears_of_pleasure, blushing, open_mouth, heavy_breathing, panting, moaning, (tip_in_pussy:1.4), (first_insertion:1.3), stretching, (motion lines:1.3), disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P09 - Pasi\u00f3n y Primera Inserci\u00f3n (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "225": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "224",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "218",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P09 - Apply ControlNet Depth (03_primera_insercion)"
+    }
+  },
+  "226": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "225",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "214",
+        0
+      ],
+      "seed": 42425152,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P09 - KSampler 03_primera_insercion"
+    }
+  },
+  "227": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "226",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P09 - VAE Decode 03_primera_insercion"
+    }
+  },
+  "228": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "227",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/09_bent_over/03_primera_insercion"
+    },
+    "_meta": {
+      "title": "P09 - Save 03_primera_insercion"
+    }
+  },
+  "229": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, bent_over, bent_over_furniture, leaning_forward, ass_up, on_table, desk, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, ecstasy, intense_pleasure, ahegao, heart_pupils, drooling, open_mouth, excessive_sweat, eye_contact, (deep penetration:1.6), (balls_deep:1.4), (creampie:1.3), (motion lines:1.5), impact_lines, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P09 - \u00c9xtasis, Cl\u00edmax y Corrida (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "230": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "229",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "218",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P09 - Apply ControlNet Depth (04_extasis)"
+    }
+  },
+  "231": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "230",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "214",
+        0
+      ],
+      "seed": 42425153,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P09 - KSampler 04_extasis"
+    }
+  },
+  "232": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "231",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P09 - VAE Decode 04_extasis"
+    }
+  },
+  "233": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "232",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/09_bent_over/04_extasis"
+    },
+    "_meta": {
+      "title": "P09 - Save 04_extasis"
+    }
+  },
+  "234": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, bent_over, bent_over_furniture, leaning_forward, ass_up, on_table, desk, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, afterglow, satisfied, gentle_smile, blushing, heavy_breathing, sweat, relaxed, exhausted_smile, (after_sex:1.3), (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), semen_drip, semen_on_body, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P09 - Afterglow y Placer Satisfecho (Totalmente Desnuda) (Prompt)"
+    }
+  },
+  "235": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "234",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "218",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P09 - Apply ControlNet Depth (05_afterglow)"
+    }
+  },
+  "236": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "235",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "214",
+        0
+      ],
+      "seed": 42425154,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P09 - KSampler 05_afterglow"
+    }
+  },
+  "237": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "236",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P09 - VAE Decode 05_afterglow"
+    }
+  },
+  "238": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "237",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/09_bent_over/05_afterglow"
+    },
+    "_meta": {
+      "title": "P09 - Save 05_afterglow"
+    }
+  },
+  "239": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, seated_sex, sitting, lap_sit, face_to_face, hugging, embrace, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, seductive smile, blush, looking at viewer, flirting, playful, teasing, parted_lips, blushing, no_penetration, teasing_pose, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P10 - Seducci\u00f3n y Teasing (Ropa Completa / Sin Pene) (Prompt)"
+    }
+  },
+  "240": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "P10 - Latent"
+    }
+  },
+  "241": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "239",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "240",
+        0
+      ],
+      "seed": 42425249,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P10 - KSampler 01_seduccion"
+    }
+  },
+  "242": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "241",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P10 - VAE Decode 01_seduccion"
+    }
+  },
+  "243": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "242",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/10_seated_sex/01_seduccion"
+    },
+    "_meta": {
+      "title": "P10 - Save 01_seduccion"
+    }
+  },
+  "244": {
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "inputs": {
+      "image": [
+        "242",
+        0
+      ],
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 1024
+    },
+    "_meta": {
+      "title": "P10 - Depth Preprocessor (Pose 3D Map)"
+    }
+  },
+  "245": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, seated_sex, sitting, lap_sit, face_to_face, hugging, embrace, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, blushing deeply, heavy_breathing, parted_lips, moaning, excited, anticipation, lust, (imminent penetration:1.3), tip_touching, teasing, thigh_contact, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P10 - Preliminares y Contacto Inminente (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "246": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "245",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "244",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P10 - Apply ControlNet Depth (02_preliminares)"
+    }
+  },
+  "247": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "246",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "240",
+        0
+      ],
+      "seed": 42425251,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P10 - KSampler 02_preliminares"
+    }
+  },
+  "248": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "247",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P10 - VAE Decode 02_preliminares"
+    }
+  },
+  "249": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "248",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/10_seated_sex/02_preliminares"
+    },
+    "_meta": {
+      "title": "P10 - Save 02_preliminares"
+    }
+  },
+  "250": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, seated_sex, sitting, lap_sit, face_to_face, hugging, embrace, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, pleasure, tears_of_pleasure, blushing, open_mouth, heavy_breathing, panting, moaning, (tip_in_pussy:1.4), (first_insertion:1.3), stretching, (motion lines:1.3), disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P10 - Pasi\u00f3n y Primera Inserci\u00f3n (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "251": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "250",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "244",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P10 - Apply ControlNet Depth (03_primera_insercion)"
+    }
+  },
+  "252": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "251",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "240",
+        0
+      ],
+      "seed": 42425252,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P10 - KSampler 03_primera_insercion"
+    }
+  },
+  "253": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "252",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P10 - VAE Decode 03_primera_insercion"
+    }
+  },
+  "254": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "253",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/10_seated_sex/03_primera_insercion"
+    },
+    "_meta": {
+      "title": "P10 - Save 03_primera_insercion"
+    }
+  },
+  "255": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, seated_sex, sitting, lap_sit, face_to_face, hugging, embrace, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, ecstasy, intense_pleasure, ahegao, heart_pupils, drooling, open_mouth, excessive_sweat, eye_contact, (deep penetration:1.6), (balls_deep:1.4), (creampie:1.3), (motion lines:1.5), impact_lines, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P10 - \u00c9xtasis, Cl\u00edmax y Corrida (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "256": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "255",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "244",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P10 - Apply ControlNet Depth (04_extasis)"
+    }
+  },
+  "257": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "256",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "240",
+        0
+      ],
+      "seed": 42425253,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P10 - KSampler 04_extasis"
+    }
+  },
+  "258": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "257",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P10 - VAE Decode 04_extasis"
+    }
+  },
+  "259": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "258",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/10_seated_sex/04_extasis"
+    },
+    "_meta": {
+      "title": "P10 - Save 04_extasis"
+    }
+  },
+  "260": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, seated_sex, sitting, lap_sit, face_to_face, hugging, embrace, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, afterglow, satisfied, gentle_smile, blushing, heavy_breathing, sweat, relaxed, exhausted_smile, (after_sex:1.3), (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), semen_drip, semen_on_body, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P10 - Afterglow y Placer Satisfecho (Totalmente Desnuda) (Prompt)"
+    }
+  },
+  "261": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "260",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "244",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P10 - Apply ControlNet Depth (05_afterglow)"
+    }
+  },
+  "262": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "261",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "240",
+        0
+      ],
+      "seed": 42425254,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P10 - KSampler 05_afterglow"
+    }
+  },
+  "263": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "262",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P10 - VAE Decode 05_afterglow"
+    }
+  },
+  "264": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "263",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/10_seated_sex/05_afterglow"
+    },
+    "_meta": {
+      "title": "P10 - Save 05_afterglow"
+    }
+  },
+  "265": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, piledriver, upside_down, legs_up, folded, vertical_penetration, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, seductive smile, blush, looking at viewer, flirting, playful, teasing, parted_lips, blushing, no_penetration, teasing_pose, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P11 - Seducci\u00f3n y Teasing (Ropa Completa / Sin Pene) (Prompt)"
+    }
+  },
+  "266": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "P11 - Latent"
+    }
+  },
+  "267": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "265",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "266",
+        0
+      ],
+      "seed": 42425349,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P11 - KSampler 01_seduccion"
+    }
+  },
+  "268": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "267",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P11 - VAE Decode 01_seduccion"
+    }
+  },
+  "269": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "268",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/11_piledriver/01_seduccion"
+    },
+    "_meta": {
+      "title": "P11 - Save 01_seduccion"
+    }
+  },
+  "270": {
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "inputs": {
+      "image": [
+        "268",
+        0
+      ],
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 1024
+    },
+    "_meta": {
+      "title": "P11 - Depth Preprocessor (Pose 3D Map)"
+    }
+  },
+  "271": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, piledriver, upside_down, legs_up, folded, vertical_penetration, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, blushing deeply, heavy_breathing, parted_lips, moaning, excited, anticipation, lust, (imminent penetration:1.3), tip_touching, teasing, thigh_contact, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P11 - Preliminares y Contacto Inminente (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "272": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "271",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "270",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P11 - Apply ControlNet Depth (02_preliminares)"
+    }
+  },
+  "273": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "272",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "266",
+        0
+      ],
+      "seed": 42425351,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P11 - KSampler 02_preliminares"
+    }
+  },
+  "274": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "273",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P11 - VAE Decode 02_preliminares"
+    }
+  },
+  "275": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "274",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/11_piledriver/02_preliminares"
+    },
+    "_meta": {
+      "title": "P11 - Save 02_preliminares"
+    }
+  },
+  "276": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, piledriver, upside_down, legs_up, folded, vertical_penetration, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, pleasure, tears_of_pleasure, blushing, open_mouth, heavy_breathing, panting, moaning, (tip_in_pussy:1.4), (first_insertion:1.3), stretching, (motion lines:1.3), disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P11 - Pasi\u00f3n y Primera Inserci\u00f3n (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "277": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "276",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "270",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P11 - Apply ControlNet Depth (03_primera_insercion)"
+    }
+  },
+  "278": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "277",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "266",
+        0
+      ],
+      "seed": 42425352,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P11 - KSampler 03_primera_insercion"
+    }
+  },
+  "279": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "278",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P11 - VAE Decode 03_primera_insercion"
+    }
+  },
+  "280": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "279",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/11_piledriver/03_primera_insercion"
+    },
+    "_meta": {
+      "title": "P11 - Save 03_primera_insercion"
+    }
+  },
+  "281": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, piledriver, upside_down, legs_up, folded, vertical_penetration, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, ecstasy, intense_pleasure, ahegao, heart_pupils, drooling, open_mouth, excessive_sweat, eye_contact, (deep penetration:1.6), (balls_deep:1.4), (creampie:1.3), (motion lines:1.5), impact_lines, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P11 - \u00c9xtasis, Cl\u00edmax y Corrida (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "282": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "281",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "270",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P11 - Apply ControlNet Depth (04_extasis)"
+    }
+  },
+  "283": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "282",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "266",
+        0
+      ],
+      "seed": 42425353,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P11 - KSampler 04_extasis"
+    }
+  },
+  "284": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "283",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P11 - VAE Decode 04_extasis"
+    }
+  },
+  "285": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "284",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/11_piledriver/04_extasis"
+    },
+    "_meta": {
+      "title": "P11 - Save 04_extasis"
+    }
+  },
+  "286": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, piledriver, upside_down, legs_up, folded, vertical_penetration, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, afterglow, satisfied, gentle_smile, blushing, heavy_breathing, sweat, relaxed, exhausted_smile, (after_sex:1.3), (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), semen_drip, semen_on_body, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P11 - Afterglow y Placer Satisfecho (Totalmente Desnuda) (Prompt)"
+    }
+  },
+  "287": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "286",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "270",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P11 - Apply ControlNet Depth (05_afterglow)"
+    }
+  },
+  "288": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "287",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "266",
+        0
+      ],
+      "seed": 42425354,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P11 - KSampler 05_afterglow"
+    }
+  },
+  "289": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "288",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P11 - VAE Decode 05_afterglow"
+    }
+  },
+  "290": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "289",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/11_piledriver/05_afterglow"
+    },
+    "_meta": {
+      "title": "P11 - Save 05_afterglow"
+    }
+  },
+  "291": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, paizuri, breast_smother, breasts_focus, cleavage_fuck, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, seductive smile, blush, looking at viewer, flirting, playful, teasing, parted_lips, blushing, no_penetration, teasing_pose, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P12 - Seducci\u00f3n y Teasing (Ropa Completa / Sin Pene) (Prompt)"
+    }
+  },
+  "292": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "P12 - Latent"
+    }
+  },
+  "293": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "291",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "292",
+        0
+      ],
+      "seed": 42425449,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P12 - KSampler 01_seduccion"
+    }
+  },
+  "294": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "293",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P12 - VAE Decode 01_seduccion"
+    }
+  },
+  "295": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "294",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/12_paizuri/01_seduccion"
+    },
+    "_meta": {
+      "title": "P12 - Save 01_seduccion"
+    }
+  },
+  "296": {
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "inputs": {
+      "image": [
+        "294",
+        0
+      ],
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 1024
+    },
+    "_meta": {
+      "title": "P12 - Depth Preprocessor (Pose 3D Map)"
+    }
+  },
+  "297": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, paizuri, breast_smother, breasts_focus, cleavage_fuck, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, blushing deeply, heavy_breathing, parted_lips, moaning, excited, anticipation, lust, (imminent penetration:1.3), tip_touching, teasing, thigh_contact, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P12 - Preliminares y Contacto Inminente (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "298": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "297",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "296",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P12 - Apply ControlNet Depth (02_preliminares)"
+    }
+  },
+  "299": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "298",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "292",
+        0
+      ],
+      "seed": 42425451,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P12 - KSampler 02_preliminares"
+    }
+  },
+  "300": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "299",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P12 - VAE Decode 02_preliminares"
+    }
+  },
+  "301": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "300",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/12_paizuri/02_preliminares"
+    },
+    "_meta": {
+      "title": "P12 - Save 02_preliminares"
+    }
+  },
+  "302": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, paizuri, breast_smother, breasts_focus, cleavage_fuck, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, pleasure, tears_of_pleasure, blushing, open_mouth, heavy_breathing, panting, moaning, (tip_in_pussy:1.4), (first_insertion:1.3), stretching, (motion lines:1.3), disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P12 - Pasi\u00f3n y Primera Inserci\u00f3n (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "303": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "302",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "296",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P12 - Apply ControlNet Depth (03_primera_insercion)"
+    }
+  },
+  "304": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "303",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "292",
+        0
+      ],
+      "seed": 42425452,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P12 - KSampler 03_primera_insercion"
+    }
+  },
+  "305": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "304",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P12 - VAE Decode 03_primera_insercion"
+    }
+  },
+  "306": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "305",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/12_paizuri/03_primera_insercion"
+    },
+    "_meta": {
+      "title": "P12 - Save 03_primera_insercion"
+    }
+  },
+  "307": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, paizuri, breast_smother, breasts_focus, cleavage_fuck, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, ecstasy, intense_pleasure, ahegao, heart_pupils, drooling, open_mouth, excessive_sweat, eye_contact, (deep penetration:1.6), (balls_deep:1.4), (creampie:1.3), (motion lines:1.5), impact_lines, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P12 - \u00c9xtasis, Cl\u00edmax y Corrida (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "308": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "307",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "296",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P12 - Apply ControlNet Depth (04_extasis)"
+    }
+  },
+  "309": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "308",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "292",
+        0
+      ],
+      "seed": 42425453,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P12 - KSampler 04_extasis"
+    }
+  },
+  "310": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "309",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P12 - VAE Decode 04_extasis"
+    }
+  },
+  "311": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "310",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/12_paizuri/04_extasis"
+    },
+    "_meta": {
+      "title": "P12 - Save 04_extasis"
+    }
+  },
+  "312": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, paizuri, breast_smother, breasts_focus, cleavage_fuck, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, afterglow, satisfied, gentle_smile, blushing, heavy_breathing, sweat, relaxed, exhausted_smile, (after_sex:1.3), (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), semen_drip, semen_on_body, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P12 - Afterglow y Placer Satisfecho (Totalmente Desnuda) (Prompt)"
+    }
+  },
+  "313": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "312",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "296",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P12 - Apply ControlNet Depth (05_afterglow)"
+    }
+  },
+  "314": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "313",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "292",
+        0
+      ],
+      "seed": 42425454,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P12 - KSampler 05_afterglow"
+    }
+  },
+  "315": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "314",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P12 - VAE Decode 05_afterglow"
+    }
+  },
+  "316": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "315",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/12_paizuri/05_afterglow"
+    },
+    "_meta": {
+      "title": "P12 - Save 05_afterglow"
+    }
+  },
+  "317": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, fellatio, oral, deepthroat, kneeling, looking_up, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, seductive smile, blush, looking at viewer, flirting, playful, teasing, parted_lips, blushing, no_penetration, teasing_pose, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P13 - Seducci\u00f3n y Teasing (Ropa Completa / Sin Pene) (Prompt)"
+    }
+  },
+  "318": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "P13 - Latent"
+    }
+  },
+  "319": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "317",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "318",
+        0
+      ],
+      "seed": 42425549,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P13 - KSampler 01_seduccion"
+    }
+  },
+  "320": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "319",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P13 - VAE Decode 01_seduccion"
+    }
+  },
+  "321": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "320",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/13_fellatio/01_seduccion"
+    },
+    "_meta": {
+      "title": "P13 - Save 01_seduccion"
+    }
+  },
+  "322": {
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "inputs": {
+      "image": [
+        "320",
+        0
+      ],
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 1024
+    },
+    "_meta": {
+      "title": "P13 - Depth Preprocessor (Pose 3D Map)"
+    }
+  },
+  "323": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, fellatio, oral, deepthroat, kneeling, looking_up, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, blushing deeply, heavy_breathing, parted_lips, moaning, excited, anticipation, lust, (imminent penetration:1.3), tip_touching, teasing, thigh_contact, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P13 - Preliminares y Contacto Inminente (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "324": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "323",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "322",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P13 - Apply ControlNet Depth (02_preliminares)"
+    }
+  },
+  "325": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "324",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "318",
+        0
+      ],
+      "seed": 42425551,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P13 - KSampler 02_preliminares"
+    }
+  },
+  "326": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "325",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P13 - VAE Decode 02_preliminares"
+    }
+  },
+  "327": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "326",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/13_fellatio/02_preliminares"
+    },
+    "_meta": {
+      "title": "P13 - Save 02_preliminares"
+    }
+  },
+  "328": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, fellatio, oral, deepthroat, kneeling, looking_up, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, pleasure, tears_of_pleasure, blushing, open_mouth, heavy_breathing, panting, moaning, (tip_in_pussy:1.4), (first_insertion:1.3), stretching, (motion lines:1.3), disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P13 - Pasi\u00f3n y Primera Inserci\u00f3n (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "329": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "328",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "322",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P13 - Apply ControlNet Depth (03_primera_insercion)"
+    }
+  },
+  "330": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "329",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "318",
+        0
+      ],
+      "seed": 42425552,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P13 - KSampler 03_primera_insercion"
+    }
+  },
+  "331": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "330",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P13 - VAE Decode 03_primera_insercion"
+    }
+  },
+  "332": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "331",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/13_fellatio/03_primera_insercion"
+    },
+    "_meta": {
+      "title": "P13 - Save 03_primera_insercion"
+    }
+  },
+  "333": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, fellatio, oral, deepthroat, kneeling, looking_up, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, ecstasy, intense_pleasure, ahegao, heart_pupils, drooling, open_mouth, excessive_sweat, eye_contact, (deep penetration:1.6), (balls_deep:1.4), (creampie:1.3), (motion lines:1.5), impact_lines, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P13 - \u00c9xtasis, Cl\u00edmax y Corrida (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "334": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "333",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "322",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P13 - Apply ControlNet Depth (04_extasis)"
+    }
+  },
+  "335": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "334",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "318",
+        0
+      ],
+      "seed": 42425553,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P13 - KSampler 04_extasis"
+    }
+  },
+  "336": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "335",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P13 - VAE Decode 04_extasis"
+    }
+  },
+  "337": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "336",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/13_fellatio/04_extasis"
+    },
+    "_meta": {
+      "title": "P13 - Save 04_extasis"
+    }
+  },
+  "338": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, fellatio, oral, deepthroat, kneeling, looking_up, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, afterglow, satisfied, gentle_smile, blushing, heavy_breathing, sweat, relaxed, exhausted_smile, (after_sex:1.3), (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), semen_drip, semen_on_body, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P13 - Afterglow y Placer Satisfecho (Totalmente Desnuda) (Prompt)"
+    }
+  },
+  "339": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "338",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "322",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P13 - Apply ControlNet Depth (05_afterglow)"
+    }
+  },
+  "340": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "339",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "318",
+        0
+      ],
+      "seed": 42425554,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P13 - KSampler 05_afterglow"
+    }
+  },
+  "341": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "340",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P13 - VAE Decode 05_afterglow"
+    }
+  },
+  "342": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "341",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/13_fellatio/05_afterglow"
+    },
+    "_meta": {
+      "title": "P13 - Save 05_afterglow"
+    }
+  },
+  "343": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, cunnilingus, oral, face_between_legs, spread_legs, lying_on_back, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, seductive smile, blush, looking at viewer, flirting, playful, teasing, parted_lips, blushing, no_penetration, teasing_pose, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P14 - Seducci\u00f3n y Teasing (Ropa Completa / Sin Pene) (Prompt)"
+    }
+  },
+  "344": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "P14 - Latent"
+    }
+  },
+  "345": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "343",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "344",
+        0
+      ],
+      "seed": 42425649,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P14 - KSampler 01_seduccion"
+    }
+  },
+  "346": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "345",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P14 - VAE Decode 01_seduccion"
+    }
+  },
+  "347": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "346",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/14_cunnilingus/01_seduccion"
+    },
+    "_meta": {
+      "title": "P14 - Save 01_seduccion"
+    }
+  },
+  "348": {
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "inputs": {
+      "image": [
+        "346",
+        0
+      ],
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 1024
+    },
+    "_meta": {
+      "title": "P14 - Depth Preprocessor (Pose 3D Map)"
+    }
+  },
+  "349": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, cunnilingus, oral, face_between_legs, spread_legs, lying_on_back, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, blushing deeply, heavy_breathing, parted_lips, moaning, excited, anticipation, lust, (imminent penetration:1.3), tip_touching, teasing, thigh_contact, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P14 - Preliminares y Contacto Inminente (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "350": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "349",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "348",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P14 - Apply ControlNet Depth (02_preliminares)"
+    }
+  },
+  "351": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "350",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "344",
+        0
+      ],
+      "seed": 42425651,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P14 - KSampler 02_preliminares"
+    }
+  },
+  "352": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "351",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P14 - VAE Decode 02_preliminares"
+    }
+  },
+  "353": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "352",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/14_cunnilingus/02_preliminares"
+    },
+    "_meta": {
+      "title": "P14 - Save 02_preliminares"
+    }
+  },
+  "354": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, cunnilingus, oral, face_between_legs, spread_legs, lying_on_back, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, pleasure, tears_of_pleasure, blushing, open_mouth, heavy_breathing, panting, moaning, (tip_in_pussy:1.4), (first_insertion:1.3), stretching, (motion lines:1.3), disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P14 - Pasi\u00f3n y Primera Inserci\u00f3n (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "355": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "354",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "348",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P14 - Apply ControlNet Depth (03_primera_insercion)"
+    }
+  },
+  "356": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "355",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "344",
+        0
+      ],
+      "seed": 42425652,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P14 - KSampler 03_primera_insercion"
+    }
+  },
+  "357": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "356",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P14 - VAE Decode 03_primera_insercion"
+    }
+  },
+  "358": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "357",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/14_cunnilingus/03_primera_insercion"
+    },
+    "_meta": {
+      "title": "P14 - Save 03_primera_insercion"
+    }
+  },
+  "359": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, cunnilingus, oral, face_between_legs, spread_legs, lying_on_back, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, ecstasy, intense_pleasure, ahegao, heart_pupils, drooling, open_mouth, excessive_sweat, eye_contact, (deep penetration:1.6), (balls_deep:1.4), (creampie:1.3), (motion lines:1.5), impact_lines, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P14 - \u00c9xtasis, Cl\u00edmax y Corrida (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "360": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "359",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "348",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P14 - Apply ControlNet Depth (04_extasis)"
+    }
+  },
+  "361": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "360",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "344",
+        0
+      ],
+      "seed": 42425653,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P14 - KSampler 04_extasis"
+    }
+  },
+  "362": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "361",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P14 - VAE Decode 04_extasis"
+    }
+  },
+  "363": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "362",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/14_cunnilingus/04_extasis"
+    },
+    "_meta": {
+      "title": "P14 - Save 04_extasis"
+    }
+  },
+  "364": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, cunnilingus, oral, face_between_legs, spread_legs, lying_on_back, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, afterglow, satisfied, gentle_smile, blushing, heavy_breathing, sweat, relaxed, exhausted_smile, (after_sex:1.3), (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), semen_drip, semen_on_body, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P14 - Afterglow y Placer Satisfecho (Totalmente Desnuda) (Prompt)"
+    }
+  },
+  "365": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "364",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "348",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P14 - Apply ControlNet Depth (05_afterglow)"
+    }
+  },
+  "366": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "365",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "344",
+        0
+      ],
+      "seed": 42425654,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P14 - KSampler 05_afterglow"
+    }
+  },
+  "367": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "366",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P14 - VAE Decode 05_afterglow"
+    }
+  },
+  "368": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "367",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/14_cunnilingus/05_afterglow"
+    },
+    "_meta": {
+      "title": "P14 - Save 05_afterglow"
+    }
+  },
+  "369": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, 69_position, mutual_oral, reciprocal_oral, lying_on_side, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, seductive smile, blush, looking at viewer, flirting, playful, teasing, parted_lips, blushing, no_penetration, teasing_pose, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P15 - Seducci\u00f3n y Teasing (Ropa Completa / Sin Pene) (Prompt)"
+    }
+  },
+  "370": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "P15 - Latent"
+    }
+  },
+  "371": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "369",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "370",
+        0
+      ],
+      "seed": 42425749,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P15 - KSampler 01_seduccion"
+    }
+  },
+  "372": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "371",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P15 - VAE Decode 01_seduccion"
+    }
+  },
+  "373": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "372",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/15_sixtynine/01_seduccion"
+    },
+    "_meta": {
+      "title": "P15 - Save 01_seduccion"
+    }
+  },
+  "374": {
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "inputs": {
+      "image": [
+        "372",
+        0
+      ],
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 1024
+    },
+    "_meta": {
+      "title": "P15 - Depth Preprocessor (Pose 3D Map)"
+    }
+  },
+  "375": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, 69_position, mutual_oral, reciprocal_oral, lying_on_side, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, blushing deeply, heavy_breathing, parted_lips, moaning, excited, anticipation, lust, (imminent penetration:1.3), tip_touching, teasing, thigh_contact, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P15 - Preliminares y Contacto Inminente (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "376": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "375",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "374",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P15 - Apply ControlNet Depth (02_preliminares)"
+    }
+  },
+  "377": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "376",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "370",
+        0
+      ],
+      "seed": 42425751,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P15 - KSampler 02_preliminares"
+    }
+  },
+  "378": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "377",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P15 - VAE Decode 02_preliminares"
+    }
+  },
+  "379": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "378",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/15_sixtynine/02_preliminares"
+    },
+    "_meta": {
+      "title": "P15 - Save 02_preliminares"
+    }
+  },
+  "380": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, 69_position, mutual_oral, reciprocal_oral, lying_on_side, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, pleasure, tears_of_pleasure, blushing, open_mouth, heavy_breathing, panting, moaning, (tip_in_pussy:1.4), (first_insertion:1.3), stretching, (motion lines:1.3), disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P15 - Pasi\u00f3n y Primera Inserci\u00f3n (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "381": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "380",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "374",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P15 - Apply ControlNet Depth (03_primera_insercion)"
+    }
+  },
+  "382": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "381",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "370",
+        0
+      ],
+      "seed": 42425752,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P15 - KSampler 03_primera_insercion"
+    }
+  },
+  "383": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "382",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P15 - VAE Decode 03_primera_insercion"
+    }
+  },
+  "384": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "383",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/15_sixtynine/03_primera_insercion"
+    },
+    "_meta": {
+      "title": "P15 - Save 03_primera_insercion"
+    }
+  },
+  "385": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, japanese clothes, white kimono, single bare shoulder, chest sarashi, cleavage, black hakama, hakama skirt, fur scarf, manaita obi, white socks, platform sandals, geta, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, 69_position, mutual_oral, reciprocal_oral, lying_on_side, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, ecstasy, intense_pleasure, ahegao, heart_pupils, drooling, open_mouth, excessive_sweat, eye_contact, (deep penetration:1.6), (balls_deep:1.4), (creampie:1.3), (motion lines:1.5), impact_lines, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P15 - \u00c9xtasis, Cl\u00edmax y Corrida (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "386": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "385",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "374",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P15 - Apply ControlNet Depth (04_extasis)"
+    }
+  },
+  "387": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "386",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "370",
+        0
+      ],
+      "seed": 42425753,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P15 - KSampler 04_extasis"
+    }
+  },
+  "388": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "387",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P15 - VAE Decode 04_extasis"
+    }
+  },
+  "389": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "388",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/15_sixtynine/04_extasis"
+    },
+    "_meta": {
+      "title": "P15 - Save 04_extasis"
+    }
+  },
+  "390": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, ran_(lost_sword), ran, 1girl, solo, oni, white hair, high ponytail, black horns, pointy ears, red eye makeup, hair between eyes, large breasts, mole on breast, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, 69_position, mutual_oral, reciprocal_oral, lying_on_side, dark background, blurry background, depth of field, bokeh, dim lighting, dark room, soft rim light, cinematic lighting, afterglow, satisfied, gentle_smile, blushing, heavy_breathing, sweat, relaxed, exhausted_smile, (after_sex:1.3), (pull_out:1.3), (cum_leak:1.4), (gaping:1.3), semen_drip, semen_on_body, disembodied_penis, masterpiece, best quality, highly detailed"
+    },
+    "_meta": {
+      "title": "P15 - Afterglow y Placer Satisfecho (Totalmente Desnuda) (Prompt)"
+    }
+  },
+  "391": {
+    "class_type": "ControlNetApply",
+    "inputs": {
+      "conditioning": [
+        "390",
+        0
+      ],
+      "control_net": [
+        "3",
+        0
+      ],
+      "image": [
+        "374",
+        0
+      ],
+      "strength": 0.75
+    },
+    "_meta": {
+      "title": "P15 - Apply ControlNet Depth (05_afterglow)"
+    }
+  },
+  "392": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "positive": [
+        "391",
+        0
+      ],
+      "negative": [
+        "4",
+        0
+      ],
+      "latent_image": [
+        "370",
+        0
+      ],
+      "seed": 42425754,
+      "steps": 20,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "P15 - KSampler 05_afterglow"
+    }
+  },
+  "393": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "392",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "P15 - VAE Decode 05_afterglow"
+    }
+  },
+  "394": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "393",
+        0
+      ],
+      "filename_prefix": "ran/kamasutra/15_sixtynine/05_afterglow"
+    },
+    "_meta": {
+      "title": "P15 - Save 05_afterglow"
+    }
+  }
+}

@@ -1,0 +1,212 @@
+[
+  {
+    "id": "nol_01",
+    "character": "nol",
+    "prompt": "elfmori, nol, 1girl, elf, long pointy ears, profile view, serene expression, seductive smile, subtle blush, fantasy priestess gown, lake side, water reflections, moonlight, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "nol_02",
+    "character": "nol",
+    "prompt": "elfmori, nol, 1girl, elf, long pointy ears, medium shot, sitting gracefully, calm and quiet expression, white lace robe, translucent frills, flower meadow background, vibrant colors, bokeh, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "nol_03",
+    "character": "nol",
+    "prompt": "elfmori, nol, 1girl, elf, long pointy ears, medium shot, sitting gracefully, blushing, embarrassed expression, traditional elf dress, gold trim, simple neutral background, studio lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "nol_04",
+    "character": "nol",
+    "prompt": "elfmori, nol, 1girl, elf, long pointy ears, close-up portrait, looking at viewer, calm and quiet expression, fantasy priestess gown, ancient tree hollow, soft ambient lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "nol_05",
+    "character": "nol",
+    "prompt": "elfmori, nol, 1girl, elf, long pointy ears, medium shot, sitting gracefully, calm and quiet expression, casual off-shoulder dress, flower meadow background, vibrant colors, bokeh, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "delva_01",
+    "character": "delva",
+    "prompt": "elfmori, delva, 1girl, elf, long pointy ears, full body, standing pose, open mouth, surprised expression, white lace robe, translucent frills, mystical forest background, glowing particles, sunlight filtering, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "delva_02",
+    "character": "delva",
+    "prompt": "elfmori, delva, 1girl, elf, long pointy ears, close-up portrait, looking at viewer, seductive smile, subtle blush, casual off-shoulder dress, lake side, water reflections, moonlight, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "delva_03",
+    "character": "delva",
+    "prompt": "elfmori, delva, 1girl, elf, long pointy ears, upper body, turning head to viewer, blushing, embarrassed expression, traditional elf dress, gold trim, mystical forest background, glowing particles, sunlight filtering, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "delva_04",
+    "character": "delva",
+    "prompt": "elfmori, delva, 1girl, elf, long pointy ears, upper body, turning head to viewer, open mouth, surprised expression, traditional elf dress, gold trim, flower meadow background, vibrant colors, bokeh, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "delva_05",
+    "character": "delva",
+    "prompt": "elfmori, delva, 1girl, elf, long pointy ears, profile view, serene expression, calm and quiet expression, fantasy priestess gown, ancient tree hollow, soft ambient lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "lucie_01",
+    "character": "lucie",
+    "prompt": "elfmori, lucie, 1girl, elf, long pointy ears, medium shot, sitting gracefully, open mouth, surprised expression, fantasy priestess gown, lake side, water reflections, moonlight, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "lucie_02",
+    "character": "lucie",
+    "prompt": "elfmori, lucie, 1girl, elf, long pointy ears, upper body, turning head to viewer, seductive smile, subtle blush, white lace robe, translucent frills, simple neutral background, studio lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "lucie_03",
+    "character": "lucie",
+    "prompt": "elfmori, lucie, 1girl, elf, long pointy ears, upper body, turning head to viewer, blushing, embarrassed expression, white lace robe, translucent frills, lake side, water reflections, moonlight, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "lucie_04",
+    "character": "lucie",
+    "prompt": "elfmori, lucie, 1girl, elf, long pointy ears, full body, standing pose, seductive smile, subtle blush, traditional elf dress, gold trim, simple neutral background, studio lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "lucie_05",
+    "character": "lucie",
+    "prompt": "elfmori, lucie, 1girl, elf, long pointy ears, medium shot, sitting gracefully, gentle smile, white lace robe, translucent frills, flower meadow background, vibrant colors, bokeh, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "elda_01",
+    "character": "elda",
+    "prompt": "elfmori, elda, 1girl, elf, long pointy ears, medium shot, sitting gracefully, calm and quiet expression, casual off-shoulder dress, ancient tree hollow, soft ambient lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "elda_02",
+    "character": "elda",
+    "prompt": "elfmori, elda, 1girl, elf, long pointy ears, close-up portrait, looking at viewer, seductive smile, subtle blush, white lace robe, translucent frills, lake side, water reflections, moonlight, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "elda_03",
+    "character": "elda",
+    "prompt": "elfmori, elda, 1girl, elf, long pointy ears, close-up portrait, looking at viewer, calm and quiet expression, traditional elf dress, gold trim, mystical forest background, glowing particles, sunlight filtering, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "elda_04",
+    "character": "elda",
+    "prompt": "elfmori, elda, 1girl, elf, long pointy ears, close-up portrait, looking at viewer, open mouth, surprised expression, traditional elf dress, gold trim, mystical forest background, glowing particles, sunlight filtering, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "elda_05",
+    "character": "elda",
+    "prompt": "elfmori, elda, 1girl, elf, long pointy ears, full body, standing pose, seductive smile, subtle blush, traditional elf dress, gold trim, mystical forest background, glowing particles, sunlight filtering, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "misery_01",
+    "character": "misery",
+    "prompt": "elfmori, misery, 1girl, elf, long pointy ears, upper body, turning head to viewer, blushing, embarrassed expression, forest guardian tunic, leather accents, flower meadow background, vibrant colors, bokeh, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "misery_02",
+    "character": "misery",
+    "prompt": "elfmori, misery, 1girl, elf, long pointy ears, upper body, turning head to viewer, gentle smile, traditional elf dress, gold trim, lake side, water reflections, moonlight, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "misery_03",
+    "character": "misery",
+    "prompt": "elfmori, misery, 1girl, elf, long pointy ears, medium shot, sitting gracefully, gentle smile, fantasy priestess gown, simple neutral background, studio lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "misery_04",
+    "character": "misery",
+    "prompt": "elfmori, misery, 1girl, elf, long pointy ears, full body, standing pose, seductive smile, subtle blush, traditional elf dress, gold trim, ancient tree hollow, soft ambient lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "misery_05",
+    "character": "misery",
+    "prompt": "elfmori, misery, 1girl, elf, long pointy ears, full body, standing pose, gentle smile, casual off-shoulder dress, flower meadow background, vibrant colors, bokeh, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "phyllis_01",
+    "character": "phyllis",
+    "prompt": "elfmori, phyllis, 1girl, elf, long pointy ears, medium shot, sitting gracefully, seductive smile, subtle blush, forest guardian tunic, leather accents, ancient tree hollow, soft ambient lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "phyllis_02",
+    "character": "phyllis",
+    "prompt": "elfmori, phyllis, 1girl, elf, long pointy ears, medium shot, sitting gracefully, open mouth, surprised expression, white lace robe, translucent frills, simple neutral background, studio lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "phyllis_03",
+    "character": "phyllis",
+    "prompt": "elfmori, phyllis, 1girl, elf, long pointy ears, full body, standing pose, gentle smile, casual off-shoulder dress, simple neutral background, studio lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "phyllis_04",
+    "character": "phyllis",
+    "prompt": "elfmori, phyllis, 1girl, elf, long pointy ears, close-up portrait, looking at viewer, calm and quiet expression, fantasy priestess gown, simple neutral background, studio lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "phyllis_05",
+    "character": "phyllis",
+    "prompt": "elfmori, phyllis, 1girl, elf, long pointy ears, profile view, serene expression, open mouth, surprised expression, casual off-shoulder dress, mystical forest background, glowing particles, sunlight filtering, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "evelyn_01",
+    "character": "evelyn",
+    "prompt": "elfmori, evelyn, 1girl, elf, long pointy ears, medium shot, sitting gracefully, gentle smile, traditional elf dress, gold trim, mystical forest background, glowing particles, sunlight filtering, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "evelyn_02",
+    "character": "evelyn",
+    "prompt": "elfmori, evelyn, 1girl, elf, long pointy ears, full body, standing pose, calm and quiet expression, traditional elf dress, gold trim, flower meadow background, vibrant colors, bokeh, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "evelyn_03",
+    "character": "evelyn",
+    "prompt": "elfmori, evelyn, 1girl, elf, long pointy ears, medium shot, sitting gracefully, blushing, embarrassed expression, forest guardian tunic, leather accents, simple neutral background, studio lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "evelyn_04",
+    "character": "evelyn",
+    "prompt": "elfmori, evelyn, 1girl, elf, long pointy ears, profile view, serene expression, gentle smile, traditional elf dress, gold trim, simple neutral background, studio lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "evelyn_05",
+    "character": "evelyn",
+    "prompt": "elfmori, evelyn, 1girl, elf, long pointy ears, upper body, turning head to viewer, calm and quiet expression, casual off-shoulder dress, ancient tree hollow, soft ambient lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  }
+]

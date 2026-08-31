@@ -1,0 +1,2498 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "lora_name": "belsey_lostsword.safetensors",
+      "strength_model": 1,
+      "strength_clip": 1
+    }
+  },
+  "lora_detail": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "add-detail-xl.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "lowres, bad anatomy, bad hands, extra fingers, worst quality, blurry, ugly, text, watermark, male, nsfw, sex, nude, exposed, clothes_lift, hentai, censored, plastic, doll_joints, mannequin",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "100": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, standing, looking at viewer, full body, front view, confident pose, hand on hip, official art style, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "101": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "102": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11333,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "100",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "101",
+        0
+      ]
+    }
+  },
+  "103": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "102",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "104": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/full_s1",
+      "images": [
+        "103",
+        0
+      ]
+    }
+  },
+  "105": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, portrait, upper body, looking at viewer, gentle smile, soft expression, head tilt, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "106": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "107": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11334,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "105",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "106",
+        0
+      ]
+    }
+  },
+  "108": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "107",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "109": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/portrait_s1",
+      "images": [
+        "108",
+        0
+      ]
+    }
+  },
+  "110": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, extreme close-up, eyes, detailed eyes, eyelashes, pink eyes, looking at viewer, catchlight, reflection, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "111": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "112": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11335,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "110",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "111",
+        0
+      ]
+    }
+  },
+  "113": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "112",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "114": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/eyes_s1",
+      "images": [
+        "113",
+        0
+      ]
+    }
+  },
+  "115": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, close-up, hair detail, long pink hair, hair flowing, wind blown hair, hair ornament, from behind, looking back, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "116": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "117": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11336,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "115",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "116",
+        0
+      ]
+    }
+  },
+  "118": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "117",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "119": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/hair_s1",
+      "images": [
+        "118",
+        0
+      ]
+    }
+  },
+  "120": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, close-up, hands, fingerless gloves, holding staff, detailed fingers, elegant pose, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "121": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "122": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11337,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "120",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "121",
+        0
+      ]
+    }
+  },
+  "123": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "122",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "124": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/hands_s1",
+      "images": [
+        "123",
+        0
+      ]
+    }
+  },
+  "125": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, full body, from below, legs, thighhighs, high heels, looking down at viewer, low angle, dominant pose, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "126": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "127": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11338,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "125",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "126",
+        0
+      ]
+    }
+  },
+  "128": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "127",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "129": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/legs_s1",
+      "images": [
+        "128",
+        0
+      ]
+    }
+  },
+  "130": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, profile, from side, looking away, nose, lips, jawline, ear detail, cow ears, hair over one eye, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "131": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "132": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11339,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "130",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "131",
+        0
+      ]
+    }
+  },
+  "133": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "132",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "134": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/face_profile_s1",
+      "images": [
+        "133",
+        0
+      ]
+    }
+  },
+  "135": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, close-up, upper body, cleavage, micro bikini, chest focus, looking down, shy expression, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "136": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "137": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11340,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "135",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "136",
+        0
+      ]
+    }
+  },
+  "138": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "137",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "139": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/chest_s1",
+      "images": [
+        "138",
+        0
+      ]
+    }
+  },
+  "140": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, from behind, looking back, back view, cape, fur trim, over shoulder look, seductive expression, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "141": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "142": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11341,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "140",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "141",
+        0
+      ]
+    }
+  },
+  "143": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "142",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "144": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/back_s1",
+      "images": [
+        "143",
+        0
+      ]
+    }
+  },
+  "145": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, sitting, on throne, legs crossed, regal pose, crown, looking down, royal, dramatic lighting, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "146": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "147": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11342,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "145",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "146",
+        0
+      ]
+    }
+  },
+  "148": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "147",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "149": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/sitting_s1",
+      "images": [
+        "148",
+        0
+      ]
+    }
+  },
+  "150": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, action pose, dynamic pose, battle stance, wind, cape flowing, determined expression, low angle, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "151": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "152": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11343,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "150",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "151",
+        0
+      ]
+    }
+  },
+  "153": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "152",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "154": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/action_s1",
+      "images": [
+        "153",
+        0
+      ]
+    }
+  },
+  "155": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, lying, on side, relaxed, head resting on hand, soft smile, pillow, intimate atmosphere, warm lighting, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "156": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "157": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11344,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "155",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "156",
+        0
+      ]
+    }
+  },
+  "158": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "157",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "159": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/relaxed_s1",
+      "images": [
+        "158",
+        0
+      ]
+    }
+  },
+  "160": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, standing, looking at viewer, full body, front view, confident pose, hand on hip, official art style, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "161": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "162": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11345,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "160",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "161",
+        0
+      ]
+    }
+  },
+  "163": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "162",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "164": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/full_s2",
+      "images": [
+        "163",
+        0
+      ]
+    }
+  },
+  "165": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, portrait, upper body, looking at viewer, gentle smile, soft expression, head tilt, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "166": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "167": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11346,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "165",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "166",
+        0
+      ]
+    }
+  },
+  "168": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "167",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "169": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/portrait_s2",
+      "images": [
+        "168",
+        0
+      ]
+    }
+  },
+  "170": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, extreme close-up, eyes, detailed eyes, eyelashes, pink eyes, looking at viewer, catchlight, reflection, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "171": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "172": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11347,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "170",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "171",
+        0
+      ]
+    }
+  },
+  "173": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "172",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "174": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/eyes_s2",
+      "images": [
+        "173",
+        0
+      ]
+    }
+  },
+  "175": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, close-up, hair detail, long pink hair, hair flowing, wind blown hair, hair ornament, from behind, looking back, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "176": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "177": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11348,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "175",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "176",
+        0
+      ]
+    }
+  },
+  "178": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "177",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "179": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/hair_s2",
+      "images": [
+        "178",
+        0
+      ]
+    }
+  },
+  "180": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, close-up, hands, fingerless gloves, holding staff, detailed fingers, elegant pose, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "181": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "182": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11349,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "180",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "181",
+        0
+      ]
+    }
+  },
+  "183": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "182",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "184": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/hands_s2",
+      "images": [
+        "183",
+        0
+      ]
+    }
+  },
+  "185": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, full body, from below, legs, thighhighs, high heels, looking down at viewer, low angle, dominant pose, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "186": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "187": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11350,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "185",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "186",
+        0
+      ]
+    }
+  },
+  "188": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "187",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "189": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/legs_s2",
+      "images": [
+        "188",
+        0
+      ]
+    }
+  },
+  "190": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, profile, from side, looking away, nose, lips, jawline, ear detail, cow ears, hair over one eye, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "191": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "192": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11351,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "190",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "191",
+        0
+      ]
+    }
+  },
+  "193": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "192",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "194": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/face_profile_s2",
+      "images": [
+        "193",
+        0
+      ]
+    }
+  },
+  "195": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, close-up, upper body, cleavage, micro bikini, chest focus, looking down, shy expression, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "196": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "197": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11352,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "195",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "196",
+        0
+      ]
+    }
+  },
+  "198": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "197",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "199": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/chest_s2",
+      "images": [
+        "198",
+        0
+      ]
+    }
+  },
+  "200": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, from behind, looking back, back view, cape, fur trim, over shoulder look, seductive expression, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "201": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "202": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11353,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "200",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "201",
+        0
+      ]
+    }
+  },
+  "203": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "202",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "204": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/back_s2",
+      "images": [
+        "203",
+        0
+      ]
+    }
+  },
+  "205": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, sitting, on throne, legs crossed, regal pose, crown, looking down, royal, dramatic lighting, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "206": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "207": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11354,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "205",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "206",
+        0
+      ]
+    }
+  },
+  "208": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "207",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "209": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/sitting_s2",
+      "images": [
+        "208",
+        0
+      ]
+    }
+  },
+  "210": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, action pose, dynamic pose, battle stance, wind, cape flowing, determined expression, low angle, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "211": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "212": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11355,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "210",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "211",
+        0
+      ]
+    }
+  },
+  "213": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "212",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "214": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/action_s2",
+      "images": [
+        "213",
+        0
+      ]
+    }
+  },
+  "215": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, lying, on side, relaxed, head resting on hand, soft smile, pillow, intimate atmosphere, warm lighting, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "216": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "217": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11356,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "215",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "216",
+        0
+      ]
+    }
+  },
+  "218": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "217",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "219": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/relaxed_s2",
+      "images": [
+        "218",
+        0
+      ]
+    }
+  },
+  "220": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, standing, looking at viewer, full body, front view, confident pose, hand on hip, official art style, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "221": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "222": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11357,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "220",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "221",
+        0
+      ]
+    }
+  },
+  "223": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "222",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "224": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/full_s3",
+      "images": [
+        "223",
+        0
+      ]
+    }
+  },
+  "225": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, portrait, upper body, looking at viewer, gentle smile, soft expression, head tilt, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "226": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "227": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11358,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "225",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "226",
+        0
+      ]
+    }
+  },
+  "228": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "227",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "229": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/portrait_s3",
+      "images": [
+        "228",
+        0
+      ]
+    }
+  },
+  "230": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, extreme close-up, eyes, detailed eyes, eyelashes, pink eyes, looking at viewer, catchlight, reflection, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "231": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "232": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11359,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "230",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "231",
+        0
+      ]
+    }
+  },
+  "233": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "232",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "234": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/eyes_s3",
+      "images": [
+        "233",
+        0
+      ]
+    }
+  },
+  "235": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, close-up, hair detail, long pink hair, hair flowing, wind blown hair, hair ornament, from behind, looking back, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "236": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "237": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11360,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "235",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "236",
+        0
+      ]
+    }
+  },
+  "238": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "237",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "239": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/hair_s3",
+      "images": [
+        "238",
+        0
+      ]
+    }
+  },
+  "240": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, close-up, hands, fingerless gloves, holding staff, detailed fingers, elegant pose, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "241": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "242": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11361,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "240",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "241",
+        0
+      ]
+    }
+  },
+  "243": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "242",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "244": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/hands_s3",
+      "images": [
+        "243",
+        0
+      ]
+    }
+  },
+  "245": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, full body, from below, legs, thighhighs, high heels, looking down at viewer, low angle, dominant pose, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "246": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "247": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11362,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "245",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "246",
+        0
+      ]
+    }
+  },
+  "248": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "247",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "249": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/legs_s3",
+      "images": [
+        "248",
+        0
+      ]
+    }
+  },
+  "250": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, profile, from side, looking away, nose, lips, jawline, ear detail, cow ears, hair over one eye, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "251": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "252": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11363,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "250",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "251",
+        0
+      ]
+    }
+  },
+  "253": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "252",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "254": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/face_profile_s3",
+      "images": [
+        "253",
+        0
+      ]
+    }
+  },
+  "255": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, close-up, upper body, cleavage, micro bikini, chest focus, looking down, shy expression, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "256": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "257": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11364,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "255",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "256",
+        0
+      ]
+    }
+  },
+  "258": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "257",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "259": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/chest_s3",
+      "images": [
+        "258",
+        0
+      ]
+    }
+  },
+  "260": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, from behind, looking back, back view, cape, fur trim, over shoulder look, seductive expression, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "261": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "262": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11365,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "260",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "261",
+        0
+      ]
+    }
+  },
+  "263": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "262",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "264": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/back_s3",
+      "images": [
+        "263",
+        0
+      ]
+    }
+  },
+  "265": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, sitting, on throne, legs crossed, regal pose, crown, looking down, royal, dramatic lighting, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "266": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "267": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11366,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "265",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "266",
+        0
+      ]
+    }
+  },
+  "268": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "267",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "269": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/sitting_s3",
+      "images": [
+        "268",
+        0
+      ]
+    }
+  },
+  "270": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, action pose, dynamic pose, battle stance, wind, cape flowing, determined expression, low angle, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "271": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "272": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11367,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "270",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "271",
+        0
+      ]
+    }
+  },
+  "273": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "272",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "274": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/action_s3",
+      "images": [
+        "273",
+        0
+      ]
+    }
+  },
+  "275": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "belsey, cow girl, pink hair, pink eyes, huge breasts, cow horns, cow ears, cow tail, 1girl, micro bikini, elbow gloves, thighhighs, red cape, fur trim, crown, lying, on side, relaxed, head resting on hand, soft smile, pillow, intimate atmosphere, warm lighting, game cg, official art, digital painting, semi-realistic, soft lighting, detailed background, fantasy, clean linework, ornate details, sharp_focus, detailed_face, detailed_skin, detailed_eyes, eyelashes, hair_detail, matte_skin, natural_lighting, depth_of_field",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "276": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "277": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 11368,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "275",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "276",
+        0
+      ]
+    }
+  },
+  "278": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "277",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "279": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "belsey_closeup/relaxed_s3",
+      "images": [
+        "278",
+        0
+      ]
+    }
+  }
+}

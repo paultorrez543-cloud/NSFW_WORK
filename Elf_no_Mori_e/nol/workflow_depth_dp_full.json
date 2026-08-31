@@ -1,0 +1,965 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "lora_name": "Nol_Youkoso_Sukebe_Elf_no_Mori_e.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8
+    }
+  },
+  "lora_dp": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth",
+        0
+      ],
+      "clip": [
+        "lora_depth",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 0.5
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "lowres, bad anatomy, bad hands, deformed, extra digits, (bright lighting, bright room, daylight, sunlight, high key, well-lit, illuminated room, bright lamps, oversaturated, hyper-saturated, vivid colors, neon lighting:1.5), (blue light, blue tint, blue hue, blue room, blue lighting, cool lighting, cyan tint, blue background cast, cool color cast:1.4)",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "txt_e_0": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "txt_p_0": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Nol_YSEnMe, 1girl, petite, silver hair, long hair, red eyes, pointy ears, dark elf, small breasts, 1boy, male, huge_penis, 2penises, size_difference, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, missionary_position, male_on_top, female_on_bottom, eye_contact, both_holes, pussy_and_ass, imminent penetration, doublepen, vaginal, anal, tip_in_pussy, tip_in_ass, nude, bare_breasts, panties_around_one_leg, dangling_panties, white panties, blush, sweat, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), anime, cel shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "txt_k_0": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "positive": [
+        "txt_p_0",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "txt_e_0",
+        0
+      ]
+    }
+  },
+  "txt_d_0": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "txt_k_0",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "txt_s_0": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "nol_depth_dp_01_imminent",
+      "images": [
+        "txt_d_0",
+        0
+      ]
+    }
+  },
+  "txt_e_1": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "txt_p_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Nol_YSEnMe, 1girl, petite, silver hair, long hair, red eyes, pointy ears, dark elf, small breasts, 1boy, male, huge_penis, 2penises, size_difference, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, missionary_position, male_on_top, female_on_bottom, eye_contact, both_holes, pussy_and_ass, penetration, doublepen, vaginal, anal, double_penetration, nude, bare_breasts, panties_around_one_leg, dangling_panties, white panties, blush, sweat, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), anime, cel shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "txt_k_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "positive": [
+        "txt_p_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "txt_e_1",
+        0
+      ]
+    }
+  },
+  "txt_d_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "txt_k_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "txt_s_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "nol_depth_dp_02_normal",
+      "images": [
+        "txt_d_1",
+        0
+      ]
+    }
+  },
+  "txt_e_2": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "txt_p_2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Nol_YSEnMe, 1girl, petite, silver hair, long hair, red eyes, pointy ears, dark elf, small breasts, 1boy, male, huge_penis, 2penises, size_difference, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, missionary_position, male_on_top, female_on_bottom, eye_contact, both_holes, pussy_and_ass, deep penetration, balls_deep, doublepen, vaginal, anal, double_penetration, deep, full_insertion, nude, bare_breasts, panties_around_one_leg, dangling_panties, white panties, blush, sweat, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), anime, cel shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "txt_k_2": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "positive": [
+        "txt_p_2",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "txt_e_2",
+        0
+      ]
+    }
+  },
+  "txt_d_2": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "txt_k_2",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "txt_s_2": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "nol_depth_dp_03_deep",
+      "images": [
+        "txt_d_2",
+        0
+      ]
+    }
+  },
+  "i2i_load_0_0": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "nol_depth_dp_01_imminent_00001_.png"
+    }
+  },
+  "i2i_vae_0_0": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "i2i_load_0_0",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_p_0_0": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Nol_YSEnMe, 1girl, petite, silver hair, long hair, red eyes, pointy ears, dark elf, small breasts, 1boy, male, huge_penis, 2penises, size_difference, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, missionary_position, male_on_top, female_on_bottom, eye_contact, both_holes, pussy_and_ass, imminent penetration, doublepen, vaginal, anal, tip_in_pussy, tip_in_ass, nude, bare_breasts, panties_around_one_leg, dangling_panties, white panties, blush, sweat, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), anime, cel shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "i2i_k_0_0": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.3,
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "positive": [
+        "i2i_p_0_0",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "i2i_vae_0_0",
+        0
+      ]
+    }
+  },
+  "i2i_d_0_0": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "i2i_k_0_0",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_s_0_0": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "nol_depth_dp_01_imminent_i2i_refine",
+      "images": [
+        "i2i_d_0_0",
+        0
+      ]
+    }
+  },
+  "i2i_load_0_1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "nol_depth_dp_01_imminent_00001_.png"
+    }
+  },
+  "i2i_vae_0_1": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "i2i_load_0_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_p_0_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Nol_YSEnMe, 1girl, petite, silver hair, long hair, red eyes, pointy ears, dark elf, small breasts, 1boy, male, huge_penis, 2penises, size_difference, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, missionary_position, male_on_top, female_on_bottom, eye_contact, both_holes, pussy_and_ass, imminent penetration, doublepen, vaginal, anal, tip_in_pussy, tip_in_ass, nude, bare_breasts, panties_around_one_leg, dangling_panties, white panties, blush, sweat, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), anime, cel shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "i2i_k_0_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424575,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.45,
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "positive": [
+        "i2i_p_0_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "i2i_vae_0_1",
+        0
+      ]
+    }
+  },
+  "i2i_d_0_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "i2i_k_0_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_s_0_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "nol_depth_dp_01_imminent_i2i_enhance",
+      "images": [
+        "i2i_d_0_1",
+        0
+      ]
+    }
+  },
+  "i2i_load_0_2": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "nol_depth_dp_01_imminent_00001_.png"
+    }
+  },
+  "i2i_vae_0_2": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "i2i_load_0_2",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_p_0_2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Nol_YSEnMe, 1girl, petite, silver hair, long hair, red eyes, pointy ears, dark elf, small breasts, 1boy, male, huge_penis, 2penises, size_difference, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, missionary_position, male_on_top, female_on_bottom, eye_contact, both_holes, pussy_and_ass, imminent penetration, doublepen, vaginal, anal, tip_in_pussy, tip_in_ass, nude, bare_breasts, panties_around_one_leg, dangling_panties, white panties, blush, sweat, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), anime, cel shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "i2i_k_0_2": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424908,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "positive": [
+        "i2i_p_0_2",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "i2i_vae_0_2",
+        0
+      ]
+    }
+  },
+  "i2i_d_0_2": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "i2i_k_0_2",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_s_0_2": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "nol_depth_dp_01_imminent_i2i_intense",
+      "images": [
+        "i2i_d_0_2",
+        0
+      ]
+    }
+  },
+  "i2i_load_1_0": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "nol_depth_dp_02_normal_00001_.png"
+    }
+  },
+  "i2i_vae_1_0": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "i2i_load_1_0",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_p_1_0": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Nol_YSEnMe, 1girl, petite, silver hair, long hair, red eyes, pointy ears, dark elf, small breasts, 1boy, male, huge_penis, 2penises, size_difference, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, missionary_position, male_on_top, female_on_bottom, eye_contact, both_holes, pussy_and_ass, penetration, doublepen, vaginal, anal, double_penetration, nude, bare_breasts, panties_around_one_leg, dangling_panties, white panties, blush, sweat, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), anime, cel shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "i2i_k_1_0": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424353,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.3,
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "positive": [
+        "i2i_p_1_0",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "i2i_vae_1_0",
+        0
+      ]
+    }
+  },
+  "i2i_d_1_0": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "i2i_k_1_0",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_s_1_0": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "nol_depth_dp_02_normal_i2i_refine",
+      "images": [
+        "i2i_d_1_0",
+        0
+      ]
+    }
+  },
+  "i2i_load_1_1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "nol_depth_dp_02_normal_00001_.png"
+    }
+  },
+  "i2i_vae_1_1": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "i2i_load_1_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_p_1_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Nol_YSEnMe, 1girl, petite, silver hair, long hair, red eyes, pointy ears, dark elf, small breasts, 1boy, male, huge_penis, 2penises, size_difference, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, missionary_position, male_on_top, female_on_bottom, eye_contact, both_holes, pussy_and_ass, penetration, doublepen, vaginal, anal, double_penetration, nude, bare_breasts, panties_around_one_leg, dangling_panties, white panties, blush, sweat, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), anime, cel shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "i2i_k_1_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424686,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.45,
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "positive": [
+        "i2i_p_1_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "i2i_vae_1_1",
+        0
+      ]
+    }
+  },
+  "i2i_d_1_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "i2i_k_1_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_s_1_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "nol_depth_dp_02_normal_i2i_enhance",
+      "images": [
+        "i2i_d_1_1",
+        0
+      ]
+    }
+  },
+  "i2i_load_1_2": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "nol_depth_dp_02_normal_00001_.png"
+    }
+  },
+  "i2i_vae_1_2": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "i2i_load_1_2",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_p_1_2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Nol_YSEnMe, 1girl, petite, silver hair, long hair, red eyes, pointy ears, dark elf, small breasts, 1boy, male, huge_penis, 2penises, size_difference, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, missionary_position, male_on_top, female_on_bottom, eye_contact, both_holes, pussy_and_ass, penetration, doublepen, vaginal, anal, double_penetration, nude, bare_breasts, panties_around_one_leg, dangling_panties, white panties, blush, sweat, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), anime, cel shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "i2i_k_1_2": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42425019,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "positive": [
+        "i2i_p_1_2",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "i2i_vae_1_2",
+        0
+      ]
+    }
+  },
+  "i2i_d_1_2": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "i2i_k_1_2",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_s_1_2": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "nol_depth_dp_02_normal_i2i_intense",
+      "images": [
+        "i2i_d_1_2",
+        0
+      ]
+    }
+  },
+  "i2i_load_2_0": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "nol_depth_dp_03_deep_00001_.png"
+    }
+  },
+  "i2i_vae_2_0": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "i2i_load_2_0",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_p_2_0": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Nol_YSEnMe, 1girl, petite, silver hair, long hair, red eyes, pointy ears, dark elf, small breasts, 1boy, male, huge_penis, 2penises, size_difference, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, missionary_position, male_on_top, female_on_bottom, eye_contact, both_holes, pussy_and_ass, deep penetration, balls_deep, doublepen, vaginal, anal, double_penetration, deep, full_insertion, nude, bare_breasts, panties_around_one_leg, dangling_panties, white panties, blush, sweat, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), anime, cel shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "i2i_k_2_0": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424464,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.3,
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "positive": [
+        "i2i_p_2_0",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "i2i_vae_2_0",
+        0
+      ]
+    }
+  },
+  "i2i_d_2_0": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "i2i_k_2_0",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_s_2_0": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "nol_depth_dp_03_deep_i2i_refine",
+      "images": [
+        "i2i_d_2_0",
+        0
+      ]
+    }
+  },
+  "i2i_load_2_1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "nol_depth_dp_03_deep_00001_.png"
+    }
+  },
+  "i2i_vae_2_1": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "i2i_load_2_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_p_2_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Nol_YSEnMe, 1girl, petite, silver hair, long hair, red eyes, pointy ears, dark elf, small breasts, 1boy, male, huge_penis, 2penises, size_difference, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, missionary_position, male_on_top, female_on_bottom, eye_contact, both_holes, pussy_and_ass, deep penetration, balls_deep, doublepen, vaginal, anal, double_penetration, deep, full_insertion, nude, bare_breasts, panties_around_one_leg, dangling_panties, white panties, blush, sweat, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), anime, cel shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "i2i_k_2_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424797,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.45,
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "positive": [
+        "i2i_p_2_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "i2i_vae_2_1",
+        0
+      ]
+    }
+  },
+  "i2i_d_2_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "i2i_k_2_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_s_2_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "nol_depth_dp_03_deep_i2i_enhance",
+      "images": [
+        "i2i_d_2_1",
+        0
+      ]
+    }
+  },
+  "i2i_load_2_2": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "nol_depth_dp_03_deep_00001_.png"
+    }
+  },
+  "i2i_vae_2_2": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "i2i_load_2_2",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_p_2_2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Nol_YSEnMe, 1girl, petite, silver hair, long hair, red eyes, pointy ears, dark elf, small breasts, 1boy, male, huge_penis, 2penises, size_difference, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, missionary_position, male_on_top, female_on_bottom, eye_contact, both_holes, pussy_and_ass, deep penetration, balls_deep, doublepen, vaginal, anal, double_penetration, deep, full_insertion, nude, bare_breasts, panties_around_one_leg, dangling_panties, white panties, blush, sweat, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), anime, cel shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "i2i_k_2_2": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42425130,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "positive": [
+        "i2i_p_2_2",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "i2i_vae_2_2",
+        0
+      ]
+    }
+  },
+  "i2i_d_2_2": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "i2i_k_2_2",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "i2i_s_2_2": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "nol_depth_dp_03_deep_i2i_intense",
+      "images": [
+        "i2i_d_2_2",
+        0
+      ]
+    }
+  }
+}

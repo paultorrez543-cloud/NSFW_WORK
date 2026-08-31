@@ -1,0 +1,2140 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "latent_shared": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1536,
+      "batch_size": 1
+    }
+  },
+  "clip_skip": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip",
+        0
+      ],
+      "lora_name": "Tilia_Dovellys.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_ugly": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "faceless-ugly-man-illustriousxl-lora-nochekaiser.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_ugly",
+        0
+      ],
+      "clip": [
+        "lora_ugly",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth",
+        0
+      ],
+      "clip": [
+        "lora_depth",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, holding mirror, red mirror, mirror",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "p_01_saludo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, black shirt, white collar, shoulder armor, gauntlets, pauldrons, blue skirt, white thighhighs, armored boots, high heel boots, clothes_lift, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, looking_at_viewer, greeting, bedroom, smile, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_01_saludo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_01_saludo",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_01_saludo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_01_saludo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_01_saludo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_01_saludo",
+      "images": [
+        "d_01_saludo",
+        0
+      ]
+    }
+  },
+  "p_02_coqueteo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, black shirt, white collar, shoulder armor, gauntlets, pauldrons, blue skirt, white thighhighs, armored boots, high heel boots, clothes_lift, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, looking_at_viewer, flirting, bedroom, blush, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_02_coqueteo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_02_coqueteo",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_02_coqueteo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_02_coqueteo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_02_coqueteo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_02_coqueteo",
+      "images": [
+        "d_02_coqueteo",
+        0
+      ]
+    }
+  },
+  "p_03_acercandose": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, black shirt, white collar, shoulder armor, gauntlets, pauldrons, blue skirt, white thighhighs, armored boots, high heel boots, clothes_lift, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, looking_at_viewer, nervous, bedroom, leaning, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_03_acercandose": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_03_acercandose",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_03_acercandose": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_03_acercandose",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_03_acercandose": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_03_acercandose",
+      "images": [
+        "d_03_acercandose",
+        0
+      ]
+    }
+  },
+  "p_04_pecho": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, white bra, skirt, clothes_lift, breast_touching, looking_at_viewer, moaning, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_04_pecho": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_04_pecho",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_04_pecho": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_04_pecho",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_04_pecho": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_04_pecho",
+      "images": [
+        "d_04_pecho",
+        0
+      ]
+    }
+  },
+  "p_05_dedos": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, white bra, white panties, fingering, wet, looking_at_viewer, aroused, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_05_dedos": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_05_dedos",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_05_dedos": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_05_dedos",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_05_dedos": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_05_dedos",
+      "images": [
+        "d_05_dedos",
+        0
+      ]
+    }
+  },
+  "p_06_oral": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, white bra, white panties, blowjob, looking_up_at_viewer, oral, deepthroat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_06_oral": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_06_oral",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_06_oral": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_06_oral",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_06_oral": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_06_oral",
+      "images": [
+        "d_06_oral",
+        0
+      ]
+    }
+  },
+  "p_07_paizuri": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude_top, white panties, titfuck, paizuri, between_breasts, looking_at_viewer, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_07_paizuri": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_07_paizuri",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_07_paizuri": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_07_paizuri",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_07_paizuri": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_07_paizuri",
+      "images": [
+        "d_07_paizuri",
+        0
+      ]
+    }
+  },
+  "p_08_desnuda": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, completely_nude, looking_at_viewer, shy, covering, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_08_desnuda": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_08_desnuda",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_08_desnuda": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_08_desnuda",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_08_desnuda": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_08_desnuda",
+      "images": [
+        "d_08_desnuda",
+        0
+      ]
+    }
+  },
+  "p_09_insercion": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, missionary_position, first_insertion, looking_at_viewer, (pain:1.3), (imminent penetration:1.2), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_09_insercion": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_09_insercion",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_09_insercion": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_09_insercion",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_09_insercion": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_09_insercion",
+      "images": [
+        "d_09_insercion",
+        0
+      ]
+    }
+  },
+  "p_10_estirando": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, stretching, screaming, looking_at_viewer, tip_in_pussy, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_10_estirando": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_10_estirando",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_10_estirando": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_10_estirando",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_10_estirando": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_10_estirando",
+      "images": [
+        "d_10_estirando",
+        0
+      ]
+    }
+  },
+  "p_11_ritmo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, thrusting, moaning, looking_at_viewer, (deep penetration:1.3), motion_lines, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_11_ritmo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_11_ritmo",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_11_ritmo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_11_ritmo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_11_ritmo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_11_ritmo",
+      "images": [
+        "d_11_ritmo",
+        0
+      ]
+    }
+  },
+  "p_12_cowgirl": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, cowgirl_position, girl_on_top, looking_at_viewer, riding, (deep penetration:1.4), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_12_cowgirl": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_12_cowgirl",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_12_cowgirl": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_12_cowgirl",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_12_cowgirl": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_12_cowgirl",
+      "images": [
+        "d_12_cowgirl",
+        0
+      ]
+    }
+  },
+  "p_13_reverse": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, reverse_cowgirl, facing_away, pov_crotch, ass_view, (deep penetration:1.4), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_13_reverse": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_13_reverse",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_13_reverse": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_13_reverse",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_13_reverse": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_13_reverse",
+      "images": [
+        "d_13_reverse",
+        0
+      ]
+    }
+  },
+  "p_14_doggystyle": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, doggystyle, from_behind, looking_back_at_viewer, (deep penetration:1.4), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_14_doggystyle": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_14_doggystyle",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_14_doggystyle": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_14_doggystyle",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_14_doggystyle": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_14_doggystyle",
+      "images": [
+        "d_14_doggystyle",
+        0
+      ]
+    }
+  },
+  "p_15_mating_press": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, mating_press, legs_above_head, folded, looking_at_viewer, (deep penetration:1.5), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_15_mating_press": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_15_mating_press",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_15_mating_press": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_15_mating_press",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_15_mating_press": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_15_mating_press",
+      "images": [
+        "d_15_mating_press",
+        0
+      ]
+    }
+  },
+  "p_16_standing": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, standing_sex, lifted, looking_at_viewer, wall, (deep penetration:1.5), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_16_standing": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_16_standing",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_16_standing": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_16_standing",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_16_standing": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_16_standing",
+      "images": [
+        "d_16_standing",
+        0
+      ]
+    }
+  },
+  "p_17_prone": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, prone_bone, lying, from_behind, deep, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_17_prone": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_17_prone",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_17_prone": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_17_prone",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_17_prone": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_17_prone",
+      "images": [
+        "d_17_prone",
+        0
+      ]
+    }
+  },
+  "p_18_anal": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, anal_sex, anal_penetration, looking_back_at_viewer, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_18_anal": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_18_anal",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_18_anal": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_18_anal",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_18_anal": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_18_anal",
+      "images": [
+        "d_18_anal",
+        0
+      ]
+    }
+  },
+  "p_19_full_nelson": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, full_nelson, held_up, legs_spread, looking_at_viewer, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_19_full_nelson": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_19_full_nelson",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_19_full_nelson": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_19_full_nelson",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_19_full_nelson": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_19_full_nelson",
+      "images": [
+        "d_19_full_nelson",
+        0
+      ]
+    }
+  },
+  "p_20_lotus": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, lotus_position, facing, hugging, looking_at_viewer, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_20_lotus": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_20_lotus",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_20_lotus": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_20_lotus",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_20_lotus": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_20_lotus",
+      "images": [
+        "d_20_lotus",
+        0
+      ]
+    }
+  },
+  "p_21_cerca": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, deep_penetration, ahegao, looking_at_viewer, close_up, balls_deep, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_21_cerca": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_21_cerca",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_21_cerca": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_21_cerca",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_21_cerca": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_21_cerca",
+      "images": [
+        "d_21_cerca",
+        0
+      ]
+    }
+  },
+  "p_22_creampie": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, creampie, cum_in_pussy, mind_break, looking_at_viewer, balls_deep, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_22_creampie": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_22_creampie",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_22_creampie": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_22_creampie",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_22_creampie": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_22_creampie",
+      "images": [
+        "d_22_creampie",
+        0
+      ]
+    }
+  },
+  "p_23_cumdrip": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, cumdrip, cum_leaking, gaping, pov_crotch, close_up, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_23_cumdrip": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_23_cumdrip",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_23_cumdrip": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_23_cumdrip",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_23_cumdrip": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_23_cumdrip",
+      "images": [
+        "d_23_cumdrip",
+        0
+      ]
+    }
+  },
+  "p_24_overflow": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, cum_overflow, excessive_cum, gaping, close_up, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_24_overflow": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_24_overflow",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_24_overflow": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_24_overflow",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_24_overflow": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_24_overflow",
+      "images": [
+        "d_24_overflow",
+        0
+      ]
+    }
+  },
+  "p_25_creampie2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, second_creampie, cum_in_pussy_again, cum_overflow, gaping, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_25_creampie2": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_25_creampie2",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_25_creampie2": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_25_creampie2",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_25_creampie2": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_25_creampie2",
+      "images": [
+        "d_25_creampie2",
+        0
+      ]
+    }
+  },
+  "p_26_anal_creampie": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, anal_creampie, cum_in_ass, gaping_anus, cumdrip, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_26_anal_creampie": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_26_anal_creampie",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_26_anal_creampie": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_26_anal_creampie",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_26_anal_creampie": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_26_anal_creampie",
+      "images": [
+        "d_26_anal_creampie",
+        0
+      ]
+    }
+  },
+  "p_27_ronda2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, second_round, re-aroused, cowgirl_position, energetic, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_27_ronda2": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_27_ronda2",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_27_ronda2": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_27_ronda2",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_27_ronda2": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_27_ronda2",
+      "images": [
+        "d_27_ronda2",
+        0
+      ]
+    }
+  },
+  "p_28_ronda2_intensa": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, intense, rough_sex, ahegao, (deep penetration:1.5), motion_lines, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_28_ronda2_intensa": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_28_ronda2_intensa",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_28_ronda2_intensa": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_28_ronda2_intensa",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_28_ronda2_intensa": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_28_ronda2_intensa",
+      "images": [
+        "d_28_ronda2_intensa",
+        0
+      ]
+    }
+  },
+  "p_29_ronda2_climax": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, final_creampie, exhausted, cum_overflow, mind_break, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_29_ronda2_climax": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_29_ronda2_climax",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_29_ronda2_climax": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_29_ronda2_climax",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_29_ronda2_climax": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_29_ronda2_climax",
+      "images": [
+        "d_29_ronda2_climax",
+        0
+      ]
+    }
+  },
+  "p_30_gaping": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, gaping, cum_pool, creampie_aftermath, close_up, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_30_gaping": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_30_gaping",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_30_gaping": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_30_gaping",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_30_gaping": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_30_gaping",
+      "images": [
+        "d_30_gaping",
+        0
+      ]
+    }
+  },
+  "p_31_agotada": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, exhausted, tongue_out, looking_at_viewer, excessive_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_31_agotada": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_31_agotada",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_31_agotada": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_31_agotada",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_31_agotada": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_31_agotada",
+      "images": [
+        "d_31_agotada",
+        0
+      ]
+    }
+  },
+  "p_32_bukake": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, bukkake, cum_covered, semen_on_face, semen_on_body, looking_at_viewer, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_32_bukake": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_32_bukake",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_32_bukake": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_32_bukake",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_32_bukake": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_32_bukake",
+      "images": [
+        "d_32_bukake",
+        0
+      ]
+    }
+  },
+  "p_33_bukake_llena": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, cum_covered, excessive_cum, dripping, exhausted, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_33_bukake_llena": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_33_bukake_llena",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_33_bukake_llena": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_33_bukake_llena",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_33_bukake_llena": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_33_bukake_llena",
+      "images": [
+        "d_33_bukake_llena",
+        0
+      ]
+    }
+  },
+  "p_34_agotada_bukake": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, 1boy, faceless ugly man, ugly man, faceless_male, bald, mature male, fat, head_out_of_frame, penis, pov, nude, bukkake, cum_covered, semen_on_face, exhausted, sleeping, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_34_agotada_bukake": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_34_agotada_bukake",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_34_agotada_bukake": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_34_agotada_bukake",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_34_agotada_bukake": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pov_ugly_tilia_34_agotada_bukake",
+      "images": [
+        "d_34_agotada_bukake",
+        0
+      ]
+    }
+  }
+}

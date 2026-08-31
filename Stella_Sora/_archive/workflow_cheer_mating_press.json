@@ -1,0 +1,2680 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "latent_shared": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1536,
+      "batch_size": 1
+    }
+  },
+  "clip_skip_virigia_default": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_virigia_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_virigia_default",
+        0
+      ],
+      "lora_name": "Stella-Virigia-v1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_virigia_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_virigia_default",
+        0
+      ],
+      "clip": [
+        "lora_char_virigia_default",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_virigia_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_virigia_default",
+        0
+      ],
+      "clip": [
+        "lora_depth_virigia_default",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_virigia_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_virigia_default",
+        0
+      ],
+      "clip": [
+        "lora_dp_virigia_default",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_virigia_default": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, holding mirror, red mirror, mirror",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "p_virigia_default_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), mating_press, boy_on_top, deep_penetration, front_view, scared, nervous_sweat, struggling, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "k_virigia_default_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_default",
+        0
+      ],
+      "positive": [
+        "p_virigia_default_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg_virigia_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_default_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_default_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_default_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_virigia_default_01_miedo",
+      "images": [
+        "d_virigia_default_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_virigia_default_02_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, tip_in_pussy, first_insertion, mating_press, boy_on_top, deep_penetration, front_view, (pain:1.3), tears_streaming, screaming, sweat, tears_streaming, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "k_virigia_default_02_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_default",
+        0
+      ],
+      "positive": [
+        "p_virigia_default_02_dolor",
+        0
+      ],
+      "negative": [
+        "neg_virigia_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_default_02_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_default_02_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_default_02_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_virigia_default_02_dolor",
+      "images": [
+        "d_virigia_default_02_dolor",
+        0
+      ]
+    }
+  },
+  "p_virigia_default_03_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), mating_press, boy_on_top, deep_penetration, front_view, crying, defeated, broken_spirit, sweat_drops, drooling, (motion lines:1.4), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "k_virigia_default_03_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_default",
+        0
+      ],
+      "positive": [
+        "p_virigia_default_03_quebranto",
+        0
+      ],
+      "negative": [
+        "neg_virigia_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_default_03_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_default_03_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_default_03_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_virigia_default_03_quebranto",
+      "images": [
+        "d_virigia_default_03_quebranto",
+        0
+      ]
+    }
+  },
+  "p_virigia_default_04_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), balls_deep, mating_press, boy_on_top, deep_penetration, front_view, ahegao, heart_pupils, mind_break, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "k_virigia_default_04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_default",
+        0
+      ],
+      "positive": [
+        "p_virigia_default_04_ahegao",
+        0
+      ],
+      "negative": [
+        "neg_virigia_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_default_04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_default_04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_default_04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_virigia_default_04_ahegao",
+      "images": [
+        "d_virigia_default_04_ahegao",
+        0
+      ]
+    }
+  },
+  "p_virigia_default_05_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, balls_deep, gaping, mating_press, boy_on_top, deep_penetration, front_view, blank_eyes, thousand_yard_stare, semen_on_body, excessive_sweat, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "k_virigia_default_05_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_default",
+        0
+      ],
+      "positive": [
+        "p_virigia_default_05_rota",
+        0
+      ],
+      "negative": [
+        "neg_virigia_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_default_05_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_default_05_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_default_05_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_virigia_default_05_rota",
+      "images": [
+        "d_virigia_default_05_rota",
+        0
+      ]
+    }
+  },
+  "p_virigia_default_06_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, sleeping, mating_press, boy_on_top, deep_penetration, front_view, sleeping, tears_streaming, semen_on_face, dried_tears, cum_pool, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "k_virigia_default_06_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_default",
+        0
+      ],
+      "positive": [
+        "p_virigia_default_06_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg_virigia_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_default_06_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_default_06_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_default_06_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_virigia_default_06_inconsciente",
+      "images": [
+        "d_virigia_default_06_inconsciente",
+        0
+      ]
+    }
+  },
+  "clip_skip_shia": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_shia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_shia",
+        0
+      ],
+      "lora_name": "Shia_Stella_Sora.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_shia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_shia",
+        0
+      ],
+      "clip": [
+        "lora_char_shia",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_shia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_shia",
+        0
+      ],
+      "clip": [
+        "lora_depth_shia",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_shia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_shia",
+        0
+      ],
+      "clip": [
+        "lora_dp_shia",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_shia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, tail, demon tail",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "p_shia_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, shia, stella sora, 1girl, (large breasts:1.3), cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), mating_press, boy_on_top, deep_penetration, front_view, scared, nervous_sweat, struggling, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "k_shia_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424251,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_shia",
+        0
+      ],
+      "positive": [
+        "p_shia_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg_shia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_shia_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_shia_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_shia_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_shia_01_miedo",
+      "images": [
+        "d_shia_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_shia_02_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, shia, stella sora, 1girl, (large breasts:1.3), cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, tip_in_pussy, first_insertion, mating_press, boy_on_top, deep_penetration, front_view, (pain:1.3), tears_streaming, screaming, sweat, tears_streaming, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "k_shia_02_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424251,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_shia",
+        0
+      ],
+      "positive": [
+        "p_shia_02_dolor",
+        0
+      ],
+      "negative": [
+        "neg_shia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_shia_02_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_shia_02_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_shia_02_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_shia_02_dolor",
+      "images": [
+        "d_shia_02_dolor",
+        0
+      ]
+    }
+  },
+  "p_shia_03_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, shia, stella sora, 1girl, (large breasts:1.3), cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), mating_press, boy_on_top, deep_penetration, front_view, crying, defeated, broken_spirit, sweat_drops, drooling, (motion lines:1.4), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "k_shia_03_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424251,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_shia",
+        0
+      ],
+      "positive": [
+        "p_shia_03_quebranto",
+        0
+      ],
+      "negative": [
+        "neg_shia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_shia_03_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_shia_03_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_shia_03_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_shia_03_quebranto",
+      "images": [
+        "d_shia_03_quebranto",
+        0
+      ]
+    }
+  },
+  "p_shia_04_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, shia, stella sora, 1girl, (large breasts:1.3), cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), balls_deep, mating_press, boy_on_top, deep_penetration, front_view, ahegao, heart_pupils, mind_break, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "k_shia_04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424251,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_shia",
+        0
+      ],
+      "positive": [
+        "p_shia_04_ahegao",
+        0
+      ],
+      "negative": [
+        "neg_shia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_shia_04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_shia_04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_shia_04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_shia_04_ahegao",
+      "images": [
+        "d_shia_04_ahegao",
+        0
+      ]
+    }
+  },
+  "p_shia_05_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, shia, stella sora, 1girl, (large breasts:1.3), cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, balls_deep, gaping, mating_press, boy_on_top, deep_penetration, front_view, blank_eyes, thousand_yard_stare, semen_on_body, excessive_sweat, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "k_shia_05_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424251,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_shia",
+        0
+      ],
+      "positive": [
+        "p_shia_05_rota",
+        0
+      ],
+      "negative": [
+        "neg_shia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_shia_05_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_shia_05_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_shia_05_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_shia_05_rota",
+      "images": [
+        "d_shia_05_rota",
+        0
+      ]
+    }
+  },
+  "p_shia_06_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, shia, stella sora, 1girl, (large breasts:1.3), cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, sleeping, mating_press, boy_on_top, deep_penetration, front_view, sleeping, tears_streaming, semen_on_face, dried_tears, cum_pool, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "k_shia_06_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424251,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_shia",
+        0
+      ],
+      "positive": [
+        "p_shia_06_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg_shia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_shia_06_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_shia_06_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_shia_06_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_shia_06_inconsciente",
+      "images": [
+        "d_shia_06_inconsciente",
+        0
+      ]
+    }
+  },
+  "clip_skip_bernina_default": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_bernina_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_bernina_default",
+        0
+      ],
+      "lora_name": "Stella-Bernina-v1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_bernina_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_bernina_default",
+        0
+      ],
+      "clip": [
+        "lora_char_bernina_default",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_bernina_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_bernina_default",
+        0
+      ],
+      "clip": [
+        "lora_depth_bernina_default",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_bernina_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_bernina_default",
+        0
+      ],
+      "clip": [
+        "lora_dp_bernina_default",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_bernina_default": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, tail, demon tail, lantern, holding lantern",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "p_bernina_default_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninadef, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), mating_press, boy_on_top, deep_penetration, front_view, scared, nervous_sweat, struggling, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "k_bernina_default_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424253,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_default",
+        0
+      ],
+      "positive": [
+        "p_bernina_default_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg_bernina_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_default_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_default_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_default_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_bernina_default_01_miedo",
+      "images": [
+        "d_bernina_default_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_bernina_default_02_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninadef, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, tip_in_pussy, first_insertion, mating_press, boy_on_top, deep_penetration, front_view, (pain:1.3), tears_streaming, screaming, sweat, tears_streaming, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "k_bernina_default_02_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424253,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_default",
+        0
+      ],
+      "positive": [
+        "p_bernina_default_02_dolor",
+        0
+      ],
+      "negative": [
+        "neg_bernina_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_default_02_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_default_02_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_default_02_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_bernina_default_02_dolor",
+      "images": [
+        "d_bernina_default_02_dolor",
+        0
+      ]
+    }
+  },
+  "p_bernina_default_03_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninadef, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), mating_press, boy_on_top, deep_penetration, front_view, crying, defeated, broken_spirit, sweat_drops, drooling, (motion lines:1.4), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "k_bernina_default_03_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424253,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_default",
+        0
+      ],
+      "positive": [
+        "p_bernina_default_03_quebranto",
+        0
+      ],
+      "negative": [
+        "neg_bernina_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_default_03_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_default_03_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_default_03_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_bernina_default_03_quebranto",
+      "images": [
+        "d_bernina_default_03_quebranto",
+        0
+      ]
+    }
+  },
+  "p_bernina_default_04_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninadef, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), balls_deep, mating_press, boy_on_top, deep_penetration, front_view, ahegao, heart_pupils, mind_break, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "k_bernina_default_04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424253,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_default",
+        0
+      ],
+      "positive": [
+        "p_bernina_default_04_ahegao",
+        0
+      ],
+      "negative": [
+        "neg_bernina_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_default_04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_default_04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_default_04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_bernina_default_04_ahegao",
+      "images": [
+        "d_bernina_default_04_ahegao",
+        0
+      ]
+    }
+  },
+  "p_bernina_default_05_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninadef, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, balls_deep, gaping, mating_press, boy_on_top, deep_penetration, front_view, blank_eyes, thousand_yard_stare, semen_on_body, excessive_sweat, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "k_bernina_default_05_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424253,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_default",
+        0
+      ],
+      "positive": [
+        "p_bernina_default_05_rota",
+        0
+      ],
+      "negative": [
+        "neg_bernina_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_default_05_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_default_05_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_default_05_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_bernina_default_05_rota",
+      "images": [
+        "d_bernina_default_05_rota",
+        0
+      ]
+    }
+  },
+  "p_bernina_default_06_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninadef, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, sleeping, mating_press, boy_on_top, deep_penetration, front_view, sleeping, tears_streaming, semen_on_face, dried_tears, cum_pool, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "k_bernina_default_06_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424253,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_default",
+        0
+      ],
+      "positive": [
+        "p_bernina_default_06_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg_bernina_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_default_06_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_default_06_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_default_06_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_bernina_default_06_inconsciente",
+      "images": [
+        "d_bernina_default_06_inconsciente",
+        0
+      ]
+    }
+  },
+  "clip_skip_reisen": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_reisen": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_reisen",
+        0
+      ],
+      "lora_name": "Reisen_ridge_-_Stella_Sora.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_reisen": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_reisen",
+        0
+      ],
+      "clip": [
+        "lora_char_reisen",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_reisen": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_reisen",
+        0
+      ],
+      "clip": [
+        "lora_depth_reisen",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_reisen": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_reisen",
+        0
+      ],
+      "clip": [
+        "lora_dp_reisen",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_reisen": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "p_reisen_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ReisenStellaS, 1girl, blonde hair, antenna hair, very long hair, low-tied long hair, yellow eyes, thick thighs, large breasts, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), mating_press, boy_on_top, deep_penetration, front_view, scared, nervous_sweat, struggling, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "k_reisen_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424255,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_reisen",
+        0
+      ],
+      "positive": [
+        "p_reisen_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg_reisen",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reisen_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reisen_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reisen_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_reisen_01_miedo",
+      "images": [
+        "d_reisen_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_reisen_02_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ReisenStellaS, 1girl, blonde hair, antenna hair, very long hair, low-tied long hair, yellow eyes, thick thighs, large breasts, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, tip_in_pussy, first_insertion, mating_press, boy_on_top, deep_penetration, front_view, (pain:1.3), tears_streaming, screaming, sweat, tears_streaming, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "k_reisen_02_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424255,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_reisen",
+        0
+      ],
+      "positive": [
+        "p_reisen_02_dolor",
+        0
+      ],
+      "negative": [
+        "neg_reisen",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reisen_02_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reisen_02_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reisen_02_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_reisen_02_dolor",
+      "images": [
+        "d_reisen_02_dolor",
+        0
+      ]
+    }
+  },
+  "p_reisen_03_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ReisenStellaS, 1girl, blonde hair, antenna hair, very long hair, low-tied long hair, yellow eyes, thick thighs, large breasts, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), mating_press, boy_on_top, deep_penetration, front_view, crying, defeated, broken_spirit, sweat_drops, drooling, (motion lines:1.4), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "k_reisen_03_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424255,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_reisen",
+        0
+      ],
+      "positive": [
+        "p_reisen_03_quebranto",
+        0
+      ],
+      "negative": [
+        "neg_reisen",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reisen_03_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reisen_03_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reisen_03_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_reisen_03_quebranto",
+      "images": [
+        "d_reisen_03_quebranto",
+        0
+      ]
+    }
+  },
+  "p_reisen_04_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ReisenStellaS, 1girl, blonde hair, antenna hair, very long hair, low-tied long hair, yellow eyes, thick thighs, large breasts, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), balls_deep, mating_press, boy_on_top, deep_penetration, front_view, ahegao, heart_pupils, mind_break, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "k_reisen_04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424255,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_reisen",
+        0
+      ],
+      "positive": [
+        "p_reisen_04_ahegao",
+        0
+      ],
+      "negative": [
+        "neg_reisen",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reisen_04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reisen_04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reisen_04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_reisen_04_ahegao",
+      "images": [
+        "d_reisen_04_ahegao",
+        0
+      ]
+    }
+  },
+  "p_reisen_05_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ReisenStellaS, 1girl, blonde hair, antenna hair, very long hair, low-tied long hair, yellow eyes, thick thighs, large breasts, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, balls_deep, gaping, mating_press, boy_on_top, deep_penetration, front_view, blank_eyes, thousand_yard_stare, semen_on_body, excessive_sweat, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "k_reisen_05_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424255,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_reisen",
+        0
+      ],
+      "positive": [
+        "p_reisen_05_rota",
+        0
+      ],
+      "negative": [
+        "neg_reisen",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reisen_05_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reisen_05_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reisen_05_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_reisen_05_rota",
+      "images": [
+        "d_reisen_05_rota",
+        0
+      ]
+    }
+  },
+  "p_reisen_06_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ReisenStellaS, 1girl, blonde hair, antenna hair, very long hair, low-tied long hair, yellow eyes, thick thighs, large breasts, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, sleeping, mating_press, boy_on_top, deep_penetration, front_view, sleeping, tears_streaming, semen_on_face, dried_tears, cum_pool, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "k_reisen_06_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424255,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_reisen",
+        0
+      ],
+      "positive": [
+        "p_reisen_06_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg_reisen",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reisen_06_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reisen_06_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reisen_06_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_reisen_06_inconsciente",
+      "images": [
+        "d_reisen_06_inconsciente",
+        0
+      ]
+    }
+  },
+  "clip_skip_amber": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_amber": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_amber",
+        0
+      ],
+      "lora_name": "Amber_Stella_Sora.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_amber": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_amber",
+        0
+      ],
+      "clip": [
+        "lora_char_amber",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_amber": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_amber",
+        0
+      ],
+      "clip": [
+        "lora_depth_amber",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_amber": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_amber",
+        0
+      ],
+      "clip": [
+        "lora_dp_amber",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_amber": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, black cat",
+      "clip": [
+        "lora_size_amber",
+        1
+      ]
+    }
+  },
+  "p_amber_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, AmberSora, 1girl, black hair, yellow eyes, hair ornament, hood down, fingerless gloves, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), mating_press, boy_on_top, deep_penetration, front_view, scared, nervous_sweat, struggling, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_amber",
+        1
+      ]
+    }
+  },
+  "k_amber_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424261,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_amber",
+        0
+      ],
+      "positive": [
+        "p_amber_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg_amber",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_amber_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_amber_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_amber_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_amber_01_miedo",
+      "images": [
+        "d_amber_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_amber_02_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, AmberSora, 1girl, black hair, yellow eyes, hair ornament, hood down, fingerless gloves, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, tip_in_pussy, first_insertion, mating_press, boy_on_top, deep_penetration, front_view, (pain:1.3), tears_streaming, screaming, sweat, tears_streaming, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_amber",
+        1
+      ]
+    }
+  },
+  "k_amber_02_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424261,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_amber",
+        0
+      ],
+      "positive": [
+        "p_amber_02_dolor",
+        0
+      ],
+      "negative": [
+        "neg_amber",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_amber_02_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_amber_02_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_amber_02_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_amber_02_dolor",
+      "images": [
+        "d_amber_02_dolor",
+        0
+      ]
+    }
+  },
+  "p_amber_03_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, AmberSora, 1girl, black hair, yellow eyes, hair ornament, hood down, fingerless gloves, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), mating_press, boy_on_top, deep_penetration, front_view, crying, defeated, broken_spirit, sweat_drops, drooling, (motion lines:1.4), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_amber",
+        1
+      ]
+    }
+  },
+  "k_amber_03_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424261,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_amber",
+        0
+      ],
+      "positive": [
+        "p_amber_03_quebranto",
+        0
+      ],
+      "negative": [
+        "neg_amber",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_amber_03_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_amber_03_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_amber_03_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_amber_03_quebranto",
+      "images": [
+        "d_amber_03_quebranto",
+        0
+      ]
+    }
+  },
+  "p_amber_04_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, AmberSora, 1girl, black hair, yellow eyes, hair ornament, hood down, fingerless gloves, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), balls_deep, mating_press, boy_on_top, deep_penetration, front_view, ahegao, heart_pupils, mind_break, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_amber",
+        1
+      ]
+    }
+  },
+  "k_amber_04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424261,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_amber",
+        0
+      ],
+      "positive": [
+        "p_amber_04_ahegao",
+        0
+      ],
+      "negative": [
+        "neg_amber",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_amber_04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_amber_04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_amber_04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_amber_04_ahegao",
+      "images": [
+        "d_amber_04_ahegao",
+        0
+      ]
+    }
+  },
+  "p_amber_05_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, AmberSora, 1girl, black hair, yellow eyes, hair ornament, hood down, fingerless gloves, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, balls_deep, gaping, mating_press, boy_on_top, deep_penetration, front_view, blank_eyes, thousand_yard_stare, semen_on_body, excessive_sweat, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_amber",
+        1
+      ]
+    }
+  },
+  "k_amber_05_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424261,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_amber",
+        0
+      ],
+      "positive": [
+        "p_amber_05_rota",
+        0
+      ],
+      "negative": [
+        "neg_amber",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_amber_05_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_amber_05_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_amber_05_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_amber_05_rota",
+      "images": [
+        "d_amber_05_rota",
+        0
+      ]
+    }
+  },
+  "p_amber_06_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, AmberSora, 1girl, black hair, yellow eyes, hair ornament, hood down, fingerless gloves, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, sleeping, mating_press, boy_on_top, deep_penetration, front_view, sleeping, tears_streaming, semen_on_face, dried_tears, cum_pool, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_amber",
+        1
+      ]
+    }
+  },
+  "k_amber_06_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424261,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_amber",
+        0
+      ],
+      "positive": [
+        "p_amber_06_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg_amber",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_amber_06_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_amber_06_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_amber_06_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_amber_06_inconsciente",
+      "images": [
+        "d_amber_06_inconsciente",
+        0
+      ]
+    }
+  },
+  "clip_skip_portia": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_portia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_portia",
+        0
+      ],
+      "lora_name": "Portia_Stella_Sora.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_portia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_portia",
+        0
+      ],
+      "clip": [
+        "lora_char_portia",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_portia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_portia",
+        0
+      ],
+      "clip": [
+        "lora_depth_portia",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_portia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_portia",
+        0
+      ],
+      "clip": [
+        "lora_dp_portia",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_portia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_portia",
+        1
+      ]
+    }
+  },
+  "p_portia_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, Portia, 1girl, visor cap, long hair, green hair, mole under eye, mole under mouth, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), mating_press, boy_on_top, deep_penetration, front_view, scared, nervous_sweat, struggling, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_portia",
+        1
+      ]
+    }
+  },
+  "k_portia_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424262,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_portia",
+        0
+      ],
+      "positive": [
+        "p_portia_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg_portia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_portia_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_portia_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_portia_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_portia_01_miedo",
+      "images": [
+        "d_portia_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_portia_02_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, Portia, 1girl, visor cap, long hair, green hair, mole under eye, mole under mouth, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, tip_in_pussy, first_insertion, mating_press, boy_on_top, deep_penetration, front_view, (pain:1.3), tears_streaming, screaming, sweat, tears_streaming, (motion lines:1.3), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_portia",
+        1
+      ]
+    }
+  },
+  "k_portia_02_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424262,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_portia",
+        0
+      ],
+      "positive": [
+        "p_portia_02_dolor",
+        0
+      ],
+      "negative": [
+        "neg_portia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_portia_02_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_portia_02_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_portia_02_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_portia_02_dolor",
+      "images": [
+        "d_portia_02_dolor",
+        0
+      ]
+    }
+  },
+  "p_portia_03_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, Portia, 1girl, visor cap, long hair, green hair, mole under eye, mole under mouth, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), mating_press, boy_on_top, deep_penetration, front_view, crying, defeated, broken_spirit, sweat_drops, drooling, (motion lines:1.4), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_portia",
+        1
+      ]
+    }
+  },
+  "k_portia_03_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424262,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_portia",
+        0
+      ],
+      "positive": [
+        "p_portia_03_quebranto",
+        0
+      ],
+      "negative": [
+        "neg_portia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_portia_03_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_portia_03_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_portia_03_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_portia_03_quebranto",
+      "images": [
+        "d_portia_03_quebranto",
+        0
+      ]
+    }
+  },
+  "p_portia_04_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, Portia, 1girl, visor cap, long hair, green hair, mole under eye, mole under mouth, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), balls_deep, mating_press, boy_on_top, deep_penetration, front_view, ahegao, heart_pupils, mind_break, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_portia",
+        1
+      ]
+    }
+  },
+  "k_portia_04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424262,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_portia",
+        0
+      ],
+      "positive": [
+        "p_portia_04_ahegao",
+        0
+      ],
+      "negative": [
+        "neg_portia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_portia_04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_portia_04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_portia_04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_portia_04_ahegao",
+      "images": [
+        "d_portia_04_ahegao",
+        0
+      ]
+    }
+  },
+  "p_portia_05_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, Portia, 1girl, visor cap, long hair, green hair, mole under eye, mole under mouth, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, balls_deep, gaping, mating_press, boy_on_top, deep_penetration, front_view, blank_eyes, thousand_yard_stare, semen_on_body, excessive_sweat, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_portia",
+        1
+      ]
+    }
+  },
+  "k_portia_05_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424262,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_portia",
+        0
+      ],
+      "positive": [
+        "p_portia_05_rota",
+        0
+      ],
+      "negative": [
+        "neg_portia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_portia_05_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_portia_05_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_portia_05_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_portia_05_rota",
+      "images": [
+        "d_portia_05_rota",
+        0
+      ]
+    }
+  },
+  "p_portia_06_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, Portia, 1girl, visor cap, long hair, green hair, mole under eye, mole under mouth, cheerleader, micro_bikini, blue_bikini, pom_pom_(cheerleading), skirt, white_thighhighs, clothes_lift, disembodied_penis, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, sleeping, mating_press, boy_on_top, deep_penetration, front_view, sleeping, tears_streaming, semen_on_face, dried_tears, cum_pool, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_portia",
+        1
+      ]
+    }
+  },
+  "k_portia_06_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424262,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_portia",
+        0
+      ],
+      "positive": [
+        "p_portia_06_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg_portia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_portia_06_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_portia_06_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_portia_06_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cheer_mating_press_portia_06_inconsciente",
+      "images": [
+        "d_portia_06_inconsciente",
+        0
+      ]
+    }
+  }
+}

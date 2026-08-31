@@ -1,0 +1,4486 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "lora_name": "mythra_xenoblade.safetensors",
+      "strength_model": 1,
+      "strength_clip": 1
+    }
+  },
+  "lora_comic": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "hentai_comic_generator.safetensors",
+      "strength_model": 0.35,
+      "strength_clip": 0.35
+    }
+  },
+  "lora_detail": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_comic",
+        0
+      ],
+      "clip": [
+        "lora_comic",
+        1
+      ],
+      "lora_name": "add-detail-xl.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "stand, full body standing, Character illustration, text_bubbles, speech_bubble, dialogue, onomatopoeia, japanese_text, english_text, white_box, text_box, letter, word, clothed, dress, clothes, outfit, lowres, bad_anatomy, bad_hands, extra_fingers, worst_quality, blurry, ugly, censored, mosaic, watermark, text, male_face, male_head, male_eyes, male_hair, male_beard, shiny_skin, wet_skin, glossy, plastic, doll_joints, mannequin, blended_features, male_with_female_clothing, male_with_breasts, male_wearing_dress, male_with_long_hair, crossdressing, feminine_male, effeminate, flat_colors, simple_background, 3d_render, cgi, ai_generated, smooth, airbrushed, perfect_anatomy, flawless_skin, bloom, glowing, masterpiece, best_quality, absurdres, ultra_detailed",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "100": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, lying, on_back, legs_up, spread_legs, held_down, triple_penetration, three_cocks, penis_presented, spitroast, imminent_triple, about_to_penetrate, nervous, anticipation, blush, sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "101": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "102": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "100",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "101",
+        0
+      ]
+    }
+  },
+  "103": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "102",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "104": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_missionary_inicio",
+      "images": [
+        "103",
+        0
+      ]
+    }
+  },
+  "105": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, lying, on_back, legs_up, spread_legs, held_down, triple_penetration, simultaneous_insertion, three_holes, tip_in_pussy, tip_in_ass, tip_in_mouth, first_insertion, stretching, pain, tears, gagging, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "106": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "107": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "105",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "106",
+        0
+      ]
+    }
+  },
+  "108": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "107",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "109": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_missionary_entrada",
+      "images": [
+        "108",
+        0
+      ]
+    }
+  },
+  "110": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, lying, on_back, legs_up, spread_legs, held_down, triple_penetration, vaginal, anal, oral, deep, balls_deep, full_insertion, one_in_pussy, one_in_ass, one_in_mouth, mmf_threesome, thrusting, ahegao, rolled_back_eyes, drooling, forced_orgasm, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "111": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "112": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "110",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "111",
+        0
+      ]
+    }
+  },
+  "113": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "112",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "114": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_missionary_penetrada",
+      "images": [
+        "113",
+        0
+      ]
+    }
+  },
+  "115": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, lying, on_back, legs_up, spread_legs, held_down, triple_penetration, climax, vaginal, anal, oral, cum, cum_in_pussy, cum_in_ass, cum_in_mouth, excessive_cum, ahegao, forced_orgasm, mind_break, convulsing, heavy_sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "116": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "117": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "115",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "116",
+        0
+      ]
+    }
+  },
+  "118": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "117",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "119": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_missionary_final",
+      "images": [
+        "118",
+        0
+      ]
+    }
+  },
+  "120": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, lying, on_back, legs_up, spread_legs, held_down, triple_penetration, x-ray, internal_shot, cross-section, vaginal, anal, deep, three_cocks, penis_inside, stomach_bulge, internal_cumshot, cum_in_pussy, cum_in_ass, cum_in_mouth, ahegao, mind_break, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "121": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "122": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "120",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "121",
+        0
+      ]
+    }
+  },
+  "123": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "122",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "124": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_missionary_xray",
+      "images": [
+        "123",
+        0
+      ]
+    }
+  },
+  "125": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, cowgirl_position, girl_on_top, straddling, triple_penetration, three_cocks, penis_presented, spitroast, imminent_triple, about_to_penetrate, nervous, anticipation, blush, sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "126": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "127": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "125",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "126",
+        0
+      ]
+    }
+  },
+  "128": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "127",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "129": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_cowgirl_inicio",
+      "images": [
+        "128",
+        0
+      ]
+    }
+  },
+  "130": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, cowgirl_position, girl_on_top, straddling, triple_penetration, simultaneous_insertion, three_holes, tip_in_pussy, tip_in_ass, tip_in_mouth, first_insertion, stretching, pain, tears, gagging, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "131": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "132": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "130",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "131",
+        0
+      ]
+    }
+  },
+  "133": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "132",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "134": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_cowgirl_entrada",
+      "images": [
+        "133",
+        0
+      ]
+    }
+  },
+  "135": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, cowgirl_position, girl_on_top, straddling, triple_penetration, vaginal, anal, oral, deep, balls_deep, full_insertion, one_in_pussy, one_in_ass, one_in_mouth, mmf_threesome, thrusting, ahegao, rolled_back_eyes, drooling, forced_orgasm, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "136": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "137": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "135",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "136",
+        0
+      ]
+    }
+  },
+  "138": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "137",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "139": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_cowgirl_penetrada",
+      "images": [
+        "138",
+        0
+      ]
+    }
+  },
+  "140": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, cowgirl_position, girl_on_top, straddling, triple_penetration, climax, vaginal, anal, oral, cum, cum_in_pussy, cum_in_ass, cum_in_mouth, excessive_cum, ahegao, forced_orgasm, mind_break, convulsing, heavy_sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "141": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "142": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "140",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "141",
+        0
+      ]
+    }
+  },
+  "143": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "142",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "144": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_cowgirl_final",
+      "images": [
+        "143",
+        0
+      ]
+    }
+  },
+  "145": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, cowgirl_position, girl_on_top, straddling, triple_penetration, x-ray, internal_shot, cross-section, vaginal, anal, deep, three_cocks, penis_inside, stomach_bulge, internal_cumshot, cum_in_pussy, cum_in_ass, cum_in_mouth, ahegao, mind_break, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "146": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "147": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "145",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "146",
+        0
+      ]
+    }
+  },
+  "148": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "147",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "149": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_cowgirl_xray",
+      "images": [
+        "148",
+        0
+      ]
+    }
+  },
+  "150": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, doggystyle, from_behind, arched_back, hands_on_hips, triple_penetration, three_cocks, penis_presented, spitroast, imminent_triple, about_to_penetrate, nervous, anticipation, blush, sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "151": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "152": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "150",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "151",
+        0
+      ]
+    }
+  },
+  "153": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "152",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "154": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_doggystyle_inicio",
+      "images": [
+        "153",
+        0
+      ]
+    }
+  },
+  "155": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, doggystyle, from_behind, arched_back, hands_on_hips, triple_penetration, simultaneous_insertion, three_holes, tip_in_pussy, tip_in_ass, tip_in_mouth, first_insertion, stretching, pain, tears, gagging, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "156": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "157": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "155",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "156",
+        0
+      ]
+    }
+  },
+  "158": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "157",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "159": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_doggystyle_entrada",
+      "images": [
+        "158",
+        0
+      ]
+    }
+  },
+  "160": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, doggystyle, from_behind, arched_back, hands_on_hips, triple_penetration, vaginal, anal, oral, deep, balls_deep, full_insertion, one_in_pussy, one_in_ass, one_in_mouth, mmf_threesome, thrusting, ahegao, rolled_back_eyes, drooling, forced_orgasm, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "161": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "162": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "160",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "161",
+        0
+      ]
+    }
+  },
+  "163": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "162",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "164": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_doggystyle_penetrada",
+      "images": [
+        "163",
+        0
+      ]
+    }
+  },
+  "165": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, doggystyle, from_behind, arched_back, hands_on_hips, triple_penetration, climax, vaginal, anal, oral, cum, cum_in_pussy, cum_in_ass, cum_in_mouth, excessive_cum, ahegao, forced_orgasm, mind_break, convulsing, heavy_sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "166": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "167": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "165",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "166",
+        0
+      ]
+    }
+  },
+  "168": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "167",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "169": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_doggystyle_final",
+      "images": [
+        "168",
+        0
+      ]
+    }
+  },
+  "170": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, doggystyle, from_behind, arched_back, hands_on_hips, triple_penetration, x-ray, internal_shot, cross-section, vaginal, anal, deep, three_cocks, penis_inside, stomach_bulge, internal_cumshot, cum_in_pussy, cum_in_ass, cum_in_mouth, ahegao, mind_break, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "171": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "172": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "170",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "171",
+        0
+      ]
+    }
+  },
+  "173": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "172",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "174": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_doggystyle_xray",
+      "images": [
+        "173",
+        0
+      ]
+    }
+  },
+  "175": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, piledriver, inverted, legs_up, upside_down, triple_penetration, three_cocks, penis_presented, spitroast, imminent_triple, about_to_penetrate, nervous, anticipation, blush, sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "176": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "177": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "175",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "176",
+        0
+      ]
+    }
+  },
+  "178": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "177",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "179": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_piledriver_inicio",
+      "images": [
+        "178",
+        0
+      ]
+    }
+  },
+  "180": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, piledriver, inverted, legs_up, upside_down, triple_penetration, simultaneous_insertion, three_holes, tip_in_pussy, tip_in_ass, tip_in_mouth, first_insertion, stretching, pain, tears, gagging, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "181": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "182": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "180",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "181",
+        0
+      ]
+    }
+  },
+  "183": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "182",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "184": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_piledriver_entrada",
+      "images": [
+        "183",
+        0
+      ]
+    }
+  },
+  "185": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, piledriver, inverted, legs_up, upside_down, triple_penetration, vaginal, anal, oral, deep, balls_deep, full_insertion, one_in_pussy, one_in_ass, one_in_mouth, mmf_threesome, thrusting, ahegao, rolled_back_eyes, drooling, forced_orgasm, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "186": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "187": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "185",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "186",
+        0
+      ]
+    }
+  },
+  "188": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "187",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "189": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_piledriver_penetrada",
+      "images": [
+        "188",
+        0
+      ]
+    }
+  },
+  "190": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, piledriver, inverted, legs_up, upside_down, triple_penetration, climax, vaginal, anal, oral, cum, cum_in_pussy, cum_in_ass, cum_in_mouth, excessive_cum, ahegao, forced_orgasm, mind_break, convulsing, heavy_sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "191": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "192": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "190",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "191",
+        0
+      ]
+    }
+  },
+  "193": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "192",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "194": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_piledriver_final",
+      "images": [
+        "193",
+        0
+      ]
+    }
+  },
+  "195": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, piledriver, inverted, legs_up, upside_down, triple_penetration, x-ray, internal_shot, cross-section, vaginal, anal, deep, three_cocks, penis_inside, stomach_bulge, internal_cumshot, cum_in_pussy, cum_in_ass, cum_in_mouth, ahegao, mind_break, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "196": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "197": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "195",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "196",
+        0
+      ]
+    }
+  },
+  "198": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "197",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "199": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_piledriver_xray",
+      "images": [
+        "198",
+        0
+      ]
+    }
+  },
+  "200": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, prone_bone, lying, on_stomach, from_behind, legs_closed, triple_penetration, three_cocks, penis_presented, spitroast, imminent_triple, about_to_penetrate, nervous, anticipation, blush, sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "201": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "202": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "200",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "201",
+        0
+      ]
+    }
+  },
+  "203": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "202",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "204": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_prone_bone_inicio",
+      "images": [
+        "203",
+        0
+      ]
+    }
+  },
+  "205": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, prone_bone, lying, on_stomach, from_behind, legs_closed, triple_penetration, simultaneous_insertion, three_holes, tip_in_pussy, tip_in_ass, tip_in_mouth, first_insertion, stretching, pain, tears, gagging, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "206": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "207": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "205",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "206",
+        0
+      ]
+    }
+  },
+  "208": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "207",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "209": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_prone_bone_entrada",
+      "images": [
+        "208",
+        0
+      ]
+    }
+  },
+  "210": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, prone_bone, lying, on_stomach, from_behind, legs_closed, triple_penetration, vaginal, anal, oral, deep, balls_deep, full_insertion, one_in_pussy, one_in_ass, one_in_mouth, mmf_threesome, thrusting, ahegao, rolled_back_eyes, drooling, forced_orgasm, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "211": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "212": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "210",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "211",
+        0
+      ]
+    }
+  },
+  "213": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "212",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "214": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_prone_bone_penetrada",
+      "images": [
+        "213",
+        0
+      ]
+    }
+  },
+  "215": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, prone_bone, lying, on_stomach, from_behind, legs_closed, triple_penetration, climax, vaginal, anal, oral, cum, cum_in_pussy, cum_in_ass, cum_in_mouth, excessive_cum, ahegao, forced_orgasm, mind_break, convulsing, heavy_sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "216": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "217": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "215",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "216",
+        0
+      ]
+    }
+  },
+  "218": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "217",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "219": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_prone_bone_final",
+      "images": [
+        "218",
+        0
+      ]
+    }
+  },
+  "220": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, prone_bone, lying, on_stomach, from_behind, legs_closed, triple_penetration, x-ray, internal_shot, cross-section, vaginal, anal, deep, three_cocks, penis_inside, stomach_bulge, internal_cumshot, cum_in_pussy, cum_in_ass, cum_in_mouth, ahegao, mind_break, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "221": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "222": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "220",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "221",
+        0
+      ]
+    }
+  },
+  "223": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "222",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "224": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_prone_bone_xray",
+      "images": [
+        "223",
+        0
+      ]
+    }
+  },
+  "225": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, standing_sex, against_wall, held_up, legs_around_waist, triple_penetration, three_cocks, penis_presented, spitroast, imminent_triple, about_to_penetrate, nervous, anticipation, blush, sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "226": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "227": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "225",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "226",
+        0
+      ]
+    }
+  },
+  "228": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "227",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "229": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_standing_inicio",
+      "images": [
+        "228",
+        0
+      ]
+    }
+  },
+  "230": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, standing_sex, against_wall, held_up, legs_around_waist, triple_penetration, simultaneous_insertion, three_holes, tip_in_pussy, tip_in_ass, tip_in_mouth, first_insertion, stretching, pain, tears, gagging, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "231": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "232": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "230",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "231",
+        0
+      ]
+    }
+  },
+  "233": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "232",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "234": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_standing_entrada",
+      "images": [
+        "233",
+        0
+      ]
+    }
+  },
+  "235": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, standing_sex, against_wall, held_up, legs_around_waist, triple_penetration, vaginal, anal, oral, deep, balls_deep, full_insertion, one_in_pussy, one_in_ass, one_in_mouth, mmf_threesome, thrusting, ahegao, rolled_back_eyes, drooling, forced_orgasm, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "236": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "237": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "235",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "236",
+        0
+      ]
+    }
+  },
+  "238": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "237",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "239": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_standing_penetrada",
+      "images": [
+        "238",
+        0
+      ]
+    }
+  },
+  "240": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, standing_sex, against_wall, held_up, legs_around_waist, triple_penetration, climax, vaginal, anal, oral, cum, cum_in_pussy, cum_in_ass, cum_in_mouth, excessive_cum, ahegao, forced_orgasm, mind_break, convulsing, heavy_sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "241": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "242": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "240",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "241",
+        0
+      ]
+    }
+  },
+  "243": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "242",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "244": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_standing_final",
+      "images": [
+        "243",
+        0
+      ]
+    }
+  },
+  "245": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, standing_sex, against_wall, held_up, legs_around_waist, triple_penetration, x-ray, internal_shot, cross-section, vaginal, anal, deep, three_cocks, penis_inside, stomach_bulge, internal_cumshot, cum_in_pussy, cum_in_ass, cum_in_mouth, ahegao, mind_break, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "246": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "247": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "245",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "246",
+        0
+      ]
+    }
+  },
+  "248": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "247",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "249": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_standing_xray",
+      "images": [
+        "248",
+        0
+      ]
+    }
+  },
+  "250": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, reverse_cowgirl, cowgirl_position, girl_on_top, facing_away, looking_back, triple_penetration, three_cocks, penis_presented, spitroast, imminent_triple, about_to_penetrate, nervous, anticipation, blush, sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "251": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "252": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "250",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "251",
+        0
+      ]
+    }
+  },
+  "253": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "252",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "254": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_reverse_cowgirl_inicio",
+      "images": [
+        "253",
+        0
+      ]
+    }
+  },
+  "255": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, reverse_cowgirl, cowgirl_position, girl_on_top, facing_away, looking_back, triple_penetration, simultaneous_insertion, three_holes, tip_in_pussy, tip_in_ass, tip_in_mouth, first_insertion, stretching, pain, tears, gagging, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "256": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "257": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "255",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "256",
+        0
+      ]
+    }
+  },
+  "258": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "257",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "259": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_reverse_cowgirl_entrada",
+      "images": [
+        "258",
+        0
+      ]
+    }
+  },
+  "260": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, reverse_cowgirl, cowgirl_position, girl_on_top, facing_away, looking_back, triple_penetration, vaginal, anal, oral, deep, balls_deep, full_insertion, one_in_pussy, one_in_ass, one_in_mouth, mmf_threesome, thrusting, ahegao, rolled_back_eyes, drooling, forced_orgasm, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "261": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "262": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "260",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "261",
+        0
+      ]
+    }
+  },
+  "263": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "262",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "264": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_reverse_cowgirl_penetrada",
+      "images": [
+        "263",
+        0
+      ]
+    }
+  },
+  "265": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, reverse_cowgirl, cowgirl_position, girl_on_top, facing_away, looking_back, triple_penetration, climax, vaginal, anal, oral, cum, cum_in_pussy, cum_in_ass, cum_in_mouth, excessive_cum, ahegao, forced_orgasm, mind_break, convulsing, heavy_sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "266": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "267": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "265",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "266",
+        0
+      ]
+    }
+  },
+  "268": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "267",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "269": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_reverse_cowgirl_final",
+      "images": [
+        "268",
+        0
+      ]
+    }
+  },
+  "270": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, reverse_cowgirl, cowgirl_position, girl_on_top, facing_away, looking_back, triple_penetration, x-ray, internal_shot, cross-section, vaginal, anal, deep, three_cocks, penis_inside, stomach_bulge, internal_cumshot, cum_in_pussy, cum_in_ass, cum_in_mouth, ahegao, mind_break, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "271": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "272": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "270",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "271",
+        0
+      ]
+    }
+  },
+  "273": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "272",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "274": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_reverse_cowgirl_xray",
+      "images": [
+        "273",
+        0
+      ]
+    }
+  },
+  "275": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, spooning, spoon_position, lying, on_side, from_behind, legs_together, triple_penetration, three_cocks, penis_presented, spitroast, imminent_triple, about_to_penetrate, nervous, anticipation, blush, sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "276": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "277": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "275",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "276",
+        0
+      ]
+    }
+  },
+  "278": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "277",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "279": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_spooning_inicio",
+      "images": [
+        "278",
+        0
+      ]
+    }
+  },
+  "280": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, spooning, spoon_position, lying, on_side, from_behind, legs_together, triple_penetration, simultaneous_insertion, three_holes, tip_in_pussy, tip_in_ass, tip_in_mouth, first_insertion, stretching, pain, tears, gagging, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "281": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "282": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "280",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "281",
+        0
+      ]
+    }
+  },
+  "283": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "282",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "284": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_spooning_entrada",
+      "images": [
+        "283",
+        0
+      ]
+    }
+  },
+  "285": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, spooning, spoon_position, lying, on_side, from_behind, legs_together, triple_penetration, vaginal, anal, oral, deep, balls_deep, full_insertion, one_in_pussy, one_in_ass, one_in_mouth, mmf_threesome, thrusting, ahegao, rolled_back_eyes, drooling, forced_orgasm, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "286": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "287": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "285",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "286",
+        0
+      ]
+    }
+  },
+  "288": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "287",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "289": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_spooning_penetrada",
+      "images": [
+        "288",
+        0
+      ]
+    }
+  },
+  "290": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, spooning, spoon_position, lying, on_side, from_behind, legs_together, triple_penetration, climax, vaginal, anal, oral, cum, cum_in_pussy, cum_in_ass, cum_in_mouth, excessive_cum, ahegao, forced_orgasm, mind_break, convulsing, heavy_sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "291": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "292": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "290",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "291",
+        0
+      ]
+    }
+  },
+  "293": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "292",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "294": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_spooning_final",
+      "images": [
+        "293",
+        0
+      ]
+    }
+  },
+  "295": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, spooning, spoon_position, lying, on_side, from_behind, legs_together, triple_penetration, x-ray, internal_shot, cross-section, vaginal, anal, deep, three_cocks, penis_inside, stomach_bulge, internal_cumshot, cum_in_pussy, cum_in_ass, cum_in_mouth, ahegao, mind_break, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "296": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "297": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "295",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "296",
+        0
+      ]
+    }
+  },
+  "298": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "297",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "299": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_spooning_xray",
+      "images": [
+        "298",
+        0
+      ]
+    }
+  },
+  "300": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, full_nelson, nelson_position, restrained, legs_folded, held_up, pinned, triple_penetration, three_cocks, penis_presented, spitroast, imminent_triple, about_to_penetrate, nervous, anticipation, blush, sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "301": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "302": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "300",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "301",
+        0
+      ]
+    }
+  },
+  "303": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "302",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "304": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_full_nelson_inicio",
+      "images": [
+        "303",
+        0
+      ]
+    }
+  },
+  "305": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, full_nelson, nelson_position, restrained, legs_folded, held_up, pinned, triple_penetration, simultaneous_insertion, three_holes, tip_in_pussy, tip_in_ass, tip_in_mouth, first_insertion, stretching, pain, tears, gagging, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "306": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "307": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "305",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "306",
+        0
+      ]
+    }
+  },
+  "308": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "307",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "309": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_full_nelson_entrada",
+      "images": [
+        "308",
+        0
+      ]
+    }
+  },
+  "310": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, full_nelson, nelson_position, restrained, legs_folded, held_up, pinned, triple_penetration, vaginal, anal, oral, deep, balls_deep, full_insertion, one_in_pussy, one_in_ass, one_in_mouth, mmf_threesome, thrusting, ahegao, rolled_back_eyes, drooling, forced_orgasm, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "311": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "312": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "310",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "311",
+        0
+      ]
+    }
+  },
+  "313": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "312",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "314": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_full_nelson_penetrada",
+      "images": [
+        "313",
+        0
+      ]
+    }
+  },
+  "315": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, full_nelson, nelson_position, restrained, legs_folded, held_up, pinned, triple_penetration, climax, vaginal, anal, oral, cum, cum_in_pussy, cum_in_ass, cum_in_mouth, excessive_cum, ahegao, forced_orgasm, mind_break, convulsing, heavy_sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "316": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "317": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "315",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "316",
+        0
+      ]
+    }
+  },
+  "318": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "317",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "319": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_full_nelson_final",
+      "images": [
+        "318",
+        0
+      ]
+    }
+  },
+  "320": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, full_nelson, nelson_position, restrained, legs_folded, held_up, pinned, triple_penetration, x-ray, internal_shot, cross-section, vaginal, anal, deep, three_cocks, penis_inside, stomach_bulge, internal_cumshot, cum_in_pussy, cum_in_ass, cum_in_mouth, ahegao, mind_break, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "321": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "322": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "320",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "321",
+        0
+      ]
+    }
+  },
+  "323": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "322",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "324": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_full_nelson_xray",
+      "images": [
+        "323",
+        0
+      ]
+    }
+  },
+  "325": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, mating_press, folded, shoulders_pressed, legs_on_shoulders, pinned, deep, triple_penetration, three_cocks, penis_presented, spitroast, imminent_triple, about_to_penetrate, nervous, anticipation, blush, sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "326": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "327": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "325",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "326",
+        0
+      ]
+    }
+  },
+  "328": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "327",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "329": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_mating_press_inicio",
+      "images": [
+        "328",
+        0
+      ]
+    }
+  },
+  "330": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, mating_press, folded, shoulders_pressed, legs_on_shoulders, pinned, deep, triple_penetration, simultaneous_insertion, three_holes, tip_in_pussy, tip_in_ass, tip_in_mouth, first_insertion, stretching, pain, tears, gagging, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "331": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "332": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "330",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "331",
+        0
+      ]
+    }
+  },
+  "333": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "332",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "334": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_mating_press_entrada",
+      "images": [
+        "333",
+        0
+      ]
+    }
+  },
+  "335": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, mating_press, folded, shoulders_pressed, legs_on_shoulders, pinned, deep, triple_penetration, vaginal, anal, oral, deep, balls_deep, full_insertion, one_in_pussy, one_in_ass, one_in_mouth, mmf_threesome, thrusting, ahegao, rolled_back_eyes, drooling, forced_orgasm, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "336": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "337": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "335",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "336",
+        0
+      ]
+    }
+  },
+  "338": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "337",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "339": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_mating_press_penetrada",
+      "images": [
+        "338",
+        0
+      ]
+    }
+  },
+  "340": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, mating_press, folded, shoulders_pressed, legs_on_shoulders, pinned, deep, triple_penetration, climax, vaginal, anal, oral, cum, cum_in_pussy, cum_in_ass, cum_in_mouth, excessive_cum, ahegao, forced_orgasm, mind_break, convulsing, heavy_sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "341": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "342": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "340",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "341",
+        0
+      ]
+    }
+  },
+  "343": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "342",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "344": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_mating_press_final",
+      "images": [
+        "343",
+        0
+      ]
+    }
+  },
+  "345": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, mating_press, folded, shoulders_pressed, legs_on_shoulders, pinned, deep, triple_penetration, x-ray, internal_shot, cross-section, vaginal, anal, deep, three_cocks, penis_inside, stomach_bulge, internal_cumshot, cum_in_pussy, cum_in_ass, cum_in_mouth, ahegao, mind_break, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "346": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "347": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "345",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "346",
+        0
+      ]
+    }
+  },
+  "348": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "347",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "349": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_mating_press_xray",
+      "images": [
+        "348",
+        0
+      ]
+    }
+  },
+  "350": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, fellatio, blowjob, oral, penis_in_mouth, facefuck, deepthroat, on_knees, looking_up, triple_penetration, three_cocks, penis_presented, spitroast, imminent_triple, about_to_penetrate, nervous, anticipation, blush, sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "351": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "352": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "350",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "351",
+        0
+      ]
+    }
+  },
+  "353": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "352",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "354": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_oral_inicio",
+      "images": [
+        "353",
+        0
+      ]
+    }
+  },
+  "355": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, fellatio, blowjob, oral, penis_in_mouth, facefuck, deepthroat, on_knees, looking_up, triple_penetration, simultaneous_insertion, three_holes, tip_in_pussy, tip_in_ass, tip_in_mouth, first_insertion, stretching, pain, tears, gagging, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "356": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "357": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "355",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "356",
+        0
+      ]
+    }
+  },
+  "358": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "357",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "359": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_oral_entrada",
+      "images": [
+        "358",
+        0
+      ]
+    }
+  },
+  "360": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, fellatio, blowjob, oral, penis_in_mouth, facefuck, deepthroat, on_knees, looking_up, triple_penetration, vaginal, anal, oral, deep, balls_deep, full_insertion, one_in_pussy, one_in_ass, one_in_mouth, mmf_threesome, thrusting, ahegao, rolled_back_eyes, drooling, forced_orgasm, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "361": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "362": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "360",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "361",
+        0
+      ]
+    }
+  },
+  "363": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "362",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "364": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_oral_penetrada",
+      "images": [
+        "363",
+        0
+      ]
+    }
+  },
+  "365": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, fellatio, blowjob, oral, penis_in_mouth, facefuck, deepthroat, on_knees, looking_up, triple_penetration, climax, vaginal, anal, oral, cum, cum_in_pussy, cum_in_ass, cum_in_mouth, excessive_cum, ahegao, forced_orgasm, mind_break, convulsing, heavy_sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "366": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "367": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "365",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "366",
+        0
+      ]
+    }
+  },
+  "368": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "367",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "369": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_oral_final",
+      "images": [
+        "368",
+        0
+      ]
+    }
+  },
+  "370": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, fellatio, blowjob, oral, penis_in_mouth, facefuck, deepthroat, on_knees, looking_up, triple_penetration, x-ray, internal_shot, cross-section, vaginal, anal, deep, three_cocks, penis_inside, stomach_bulge, internal_cumshot, cum_in_pussy, cum_in_ass, cum_in_mouth, ahegao, mind_break, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "371": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "372": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "370",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "371",
+        0
+      ]
+    }
+  },
+  "373": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "372",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "374": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_oral_xray",
+      "images": [
+        "373",
+        0
+      ]
+    }
+  },
+  "375": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, paizuri, titfuck, between_breasts, breast_sandwich, penis_between_breasts, triple_penetration, three_cocks, penis_presented, spitroast, imminent_triple, about_to_penetrate, nervous, anticipation, blush, sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "376": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "377": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "375",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "376",
+        0
+      ]
+    }
+  },
+  "378": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "377",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "379": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_paizuri_inicio",
+      "images": [
+        "378",
+        0
+      ]
+    }
+  },
+  "380": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, paizuri, titfuck, between_breasts, breast_sandwich, penis_between_breasts, triple_penetration, simultaneous_insertion, three_holes, tip_in_pussy, tip_in_ass, tip_in_mouth, first_insertion, stretching, pain, tears, gagging, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "381": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "382": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "380",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "381",
+        0
+      ]
+    }
+  },
+  "383": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "382",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "384": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_paizuri_entrada",
+      "images": [
+        "383",
+        0
+      ]
+    }
+  },
+  "385": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, paizuri, titfuck, between_breasts, breast_sandwich, penis_between_breasts, triple_penetration, vaginal, anal, oral, deep, balls_deep, full_insertion, one_in_pussy, one_in_ass, one_in_mouth, mmf_threesome, thrusting, ahegao, rolled_back_eyes, drooling, forced_orgasm, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "386": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "387": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "385",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "386",
+        0
+      ]
+    }
+  },
+  "388": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "387",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "389": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_paizuri_penetrada",
+      "images": [
+        "388",
+        0
+      ]
+    }
+  },
+  "390": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, paizuri, titfuck, between_breasts, breast_sandwich, penis_between_breasts, triple_penetration, climax, vaginal, anal, oral, cum, cum_in_pussy, cum_in_ass, cum_in_mouth, excessive_cum, ahegao, forced_orgasm, mind_break, convulsing, heavy_sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "391": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "392": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "390",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "391",
+        0
+      ]
+    }
+  },
+  "393": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "392",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "394": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_paizuri_final",
+      "images": [
+        "393",
+        0
+      ]
+    }
+  },
+  "395": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, paizuri, titfuck, between_breasts, breast_sandwich, penis_between_breasts, triple_penetration, x-ray, internal_shot, cross-section, vaginal, anal, deep, three_cocks, penis_inside, stomach_bulge, internal_cumshot, cum_in_pussy, cum_in_ass, cum_in_mouth, ahegao, mind_break, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "396": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "397": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "395",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "396",
+        0
+      ]
+    }
+  },
+  "398": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "397",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "399": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_paizuri_xray",
+      "images": [
+        "398",
+        0
+      ]
+    }
+  },
+  "400": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, sitting_on_lap, sitting_position, lap_sex, straddling_sitting, chair, arms_around_neck, triple_penetration, three_cocks, penis_presented, spitroast, imminent_triple, about_to_penetrate, nervous, anticipation, blush, sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "401": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "402": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "400",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "401",
+        0
+      ]
+    }
+  },
+  "403": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "402",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "404": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_sitting_inicio",
+      "images": [
+        "403",
+        0
+      ]
+    }
+  },
+  "405": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, sitting_on_lap, sitting_position, lap_sex, straddling_sitting, chair, arms_around_neck, triple_penetration, simultaneous_insertion, three_holes, tip_in_pussy, tip_in_ass, tip_in_mouth, first_insertion, stretching, pain, tears, gagging, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "406": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "407": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "405",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "406",
+        0
+      ]
+    }
+  },
+  "408": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "407",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "409": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_sitting_entrada",
+      "images": [
+        "408",
+        0
+      ]
+    }
+  },
+  "410": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, sitting_on_lap, sitting_position, lap_sex, straddling_sitting, chair, arms_around_neck, triple_penetration, vaginal, anal, oral, deep, balls_deep, full_insertion, one_in_pussy, one_in_ass, one_in_mouth, mmf_threesome, thrusting, ahegao, rolled_back_eyes, drooling, forced_orgasm, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "411": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "412": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "410",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "411",
+        0
+      ]
+    }
+  },
+  "413": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "412",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "414": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_sitting_penetrada",
+      "images": [
+        "413",
+        0
+      ]
+    }
+  },
+  "415": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, sitting_on_lap, sitting_position, lap_sex, straddling_sitting, chair, arms_around_neck, triple_penetration, climax, vaginal, anal, oral, cum, cum_in_pussy, cum_in_ass, cum_in_mouth, excessive_cum, ahegao, forced_orgasm, mind_break, convulsing, heavy_sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "416": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "417": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "415",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "416",
+        0
+      ]
+    }
+  },
+  "418": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "417",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "419": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_sitting_final",
+      "images": [
+        "418",
+        0
+      ]
+    }
+  },
+  "420": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "mthrsum, yellow eyes, blonde hair, long hair, tiara, earrings, choker, chest jewel, large breasts, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 3boys, male, huge_penis, size_difference, multiple_penises, anonymous_males, generic_men, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, group, gangbang, sitting_on_lap, sitting_position, lap_sex, straddling_sitting, chair, arms_around_neck, triple_penetration, x-ray, internal_shot, cross-section, vaginal, anal, deep, three_cocks, penis_inside, stomach_bulge, internal_cumshot, cum_in_pussy, cum_in_ass, cum_in_mouth, ahegao, mind_break, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "421": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "422": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 6777,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "420",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "421",
+        0
+      ]
+    }
+  },
+  "423": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "422",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "424": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "mythra_nude_tp_sitting_xray",
+      "images": [
+        "423",
+        0
+      ]
+    }
+  }
+}

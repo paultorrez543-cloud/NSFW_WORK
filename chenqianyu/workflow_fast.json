@@ -1,0 +1,950 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "lora_name": "chenqianyu_arknights.safetensors",
+      "strength_model": 1,
+      "strength_clip": 1
+    }
+  },
+  "lora_comic": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "hentai_comic_generator.safetensors",
+      "strength_model": 0.35,
+      "strength_clip": 0.35
+    }
+  },
+  "lora_detail": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_comic",
+        0
+      ],
+      "clip": [
+        "lora_comic",
+        1
+      ],
+      "lora_name": "add-detail-xl.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "stand, full body standing, Character illustration, text_bubbles, speech_bubble, dialogue, onomatopoeia, japanese_text, english_text, white_box, text_box, letter, word, lowres, bad_anatomy, bad_hands, extra_fingers, worst_quality, blurry, ugly, censored, mosaic, watermark, text, male_face, male_head, male_eyes, male_hair, male_beard, shiny_skin, wet_skin, glossy, plastic, doll_joints, mannequin, blended_features, male_with_female_clothing, male_with_breasts, male_wearing_dress, male_with_long_hair, crossdressing, feminine_male, effeminate, flat_colors, simple_background, 3d_render, cgi, ai_generated, smooth, airbrushed, perfect_anatomy, flawless_skin, bloom, glowing, masterpiece, best_quality, absurdres, ultra_detailed",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "100": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "chenqianyu, black hair, long hair, bangs, brown eyes, ponytail, animal ears, dragon tail, twintails, dragon horns, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, lying, on_back, legs_up, spread_legs, held_down, double_penetration, vaginal, anal, deep, balls_deep, full_insertion, both_holes, pussy_and_ass, thrusting, ahegao, rolled_back_eyes, drooling, forced_orgasm, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "101": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "102": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 8888,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "100",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "101",
+        0
+      ]
+    }
+  },
+  "103": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "102",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "104": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "chenqianyu_fast_missionary",
+      "images": [
+        "103",
+        0
+      ]
+    }
+  },
+  "105": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "chenqianyu, black hair, long hair, bangs, brown eyes, ponytail, animal ears, dragon tail, twintails, dragon horns, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, cowgirl_position, girl_on_top, straddling, double_penetration, vaginal, anal, deep, balls_deep, ahegao, rolled_back_eyes, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "106": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "107": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 8888,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "105",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "106",
+        0
+      ]
+    }
+  },
+  "108": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "107",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "109": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "chenqianyu_fast_cowgirl",
+      "images": [
+        "108",
+        0
+      ]
+    }
+  },
+  "110": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "chenqianyu, black hair, long hair, bangs, brown eyes, ponytail, animal ears, dragon tail, twintails, dragon horns, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, doggystyle, from_behind, arched_back, hands_on_hips, double_penetration, vaginal, anal, ahegao, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "111": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "112": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 8888,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "110",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "111",
+        0
+      ]
+    }
+  },
+  "113": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "112",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "114": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "chenqianyu_fast_doggystyle",
+      "images": [
+        "113",
+        0
+      ]
+    }
+  },
+  "115": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "chenqianyu, black hair, long hair, bangs, brown eyes, ponytail, animal ears, dragon tail, twintails, dragon horns, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, piledriver, inverted, legs_up, upside_down, double_penetration, vaginal, anal, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "116": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "117": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 8888,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "115",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "116",
+        0
+      ]
+    }
+  },
+  "118": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "117",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "119": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "chenqianyu_fast_piledriver",
+      "images": [
+        "118",
+        0
+      ]
+    }
+  },
+  "120": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "chenqianyu, black hair, long hair, bangs, brown eyes, ponytail, animal ears, dragon tail, twintails, dragon horns, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, prone_bone, lying, on_stomach, from_behind, legs_closed, double_penetration, vaginal, anal, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "121": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "122": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 8888,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "120",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "121",
+        0
+      ]
+    }
+  },
+  "123": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "122",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "124": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "chenqianyu_fast_prone_bone",
+      "images": [
+        "123",
+        0
+      ]
+    }
+  },
+  "125": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "chenqianyu, black hair, long hair, bangs, brown eyes, ponytail, animal ears, dragon tail, twintails, dragon horns, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, standing_sex, against_wall, held_up, legs_around_waist, double_penetration, vaginal, anal, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "126": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "127": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 8888,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "125",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "126",
+        0
+      ]
+    }
+  },
+  "128": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "127",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "129": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "chenqianyu_fast_standing",
+      "images": [
+        "128",
+        0
+      ]
+    }
+  },
+  "130": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "chenqianyu, black hair, long hair, bangs, brown eyes, ponytail, animal ears, dragon tail, twintails, dragon horns, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, reverse_cowgirl, cowgirl_position, girl_on_top, facing_away, looking_back, double_penetration, vaginal, anal, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "131": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "132": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 8888,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "130",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "131",
+        0
+      ]
+    }
+  },
+  "133": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "132",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "134": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "chenqianyu_fast_reverse_cowgirl",
+      "images": [
+        "133",
+        0
+      ]
+    }
+  },
+  "135": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "chenqianyu, black hair, long hair, bangs, brown eyes, ponytail, animal ears, dragon tail, twintails, dragon horns, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, spooning, spoon_position, lying, on_side, from_behind, legs_together, double_penetration, vaginal, anal, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "136": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "137": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 8888,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "135",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "136",
+        0
+      ]
+    }
+  },
+  "138": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "137",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "139": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "chenqianyu_fast_spooning",
+      "images": [
+        "138",
+        0
+      ]
+    }
+  },
+  "140": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "chenqianyu, black hair, long hair, bangs, brown eyes, ponytail, animal ears, dragon tail, twintails, dragon horns, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, full_nelson, nelson_position, restrained, legs_folded, held_up, pinned, double_penetration, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "141": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "142": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 8888,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "140",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "141",
+        0
+      ]
+    }
+  },
+  "143": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "142",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "144": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "chenqianyu_fast_full_nelson",
+      "images": [
+        "143",
+        0
+      ]
+    }
+  },
+  "145": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "chenqianyu, black hair, long hair, bangs, brown eyes, ponytail, animal ears, dragon tail, twintails, dragon horns, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, mating_press, folded, shoulders_pressed, legs_on_shoulders, pinned, deep, double_penetration, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "146": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "147": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 8888,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "145",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "146",
+        0
+      ]
+    }
+  },
+  "148": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "147",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "149": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "chenqianyu_fast_mating_press",
+      "images": [
+        "148",
+        0
+      ]
+    }
+  },
+  "150": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "chenqianyu, black hair, long hair, bangs, brown eyes, ponytail, animal ears, dragon tail, twintails, dragon horns, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, fellatio, blowjob, oral, penis_in_mouth, facefuck, deepthroat, on_knees, looking_up, double_penetration, vaginal, anal, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "151": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "152": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 8888,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "150",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "151",
+        0
+      ]
+    }
+  },
+  "153": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "152",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "154": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "chenqianyu_fast_oral",
+      "images": [
+        "153",
+        0
+      ]
+    }
+  },
+  "155": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "chenqianyu, black hair, long hair, bangs, brown eyes, ponytail, animal ears, dragon tail, twintails, dragon horns, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, paizuri, titfuck, between_breasts, breast_sandwich, penis_between_breasts, double_penetration, vaginal, anal, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "156": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "157": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 8888,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "155",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "156",
+        0
+      ]
+    }
+  },
+  "158": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "157",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "159": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "chenqianyu_fast_paizuri",
+      "images": [
+        "158",
+        0
+      ]
+    }
+  },
+  "160": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "chenqianyu, black hair, long hair, bangs, brown eyes, ponytail, animal ears, dragon tail, twintails, dragon horns, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, sitting_on_lap, sitting_position, lap_sex, straddling_sitting, chair, arms_around_neck, double_penetration, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "161": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "162": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 8888,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "160",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "161",
+        0
+      ]
+    }
+  },
+  "163": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "162",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "164": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "chenqianyu_fast_sitting",
+      "images": [
+        "163",
+        0
+      ]
+    }
+  }
+}

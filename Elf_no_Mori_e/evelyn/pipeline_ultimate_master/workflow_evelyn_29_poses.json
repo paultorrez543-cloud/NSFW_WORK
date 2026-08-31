@@ -1,0 +1,1798 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "lora_name": "evelyn_celebrian-koto-illustrious.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8,
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "lora_ugly_man": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "lora_name": "faceless-ugly-man-illustriousxl-lora-nochekaiser.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "lowres, bad anatomy, bad hands, deformed, extra digits, (bright lighting, bright room, daylight, sunlight, high key, well-lit, illuminated room, bright lamps, oversaturated, hyper-saturated, vivid colors, neon lighting:1.5), (blue light, blue tint, blue hue, blue room, blue lighting, cool lighting, cyan tint, blue background cast, cool color cast:1.4)",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "e100": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "p_01_69_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_01_69_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_01_69_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e100",
+        0
+      ]
+    }
+  },
+  "d_01_69_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_01_69_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_01_69_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/01_69_1/01_69_1",
+      "images": [
+        "d_01_69_1",
+        0
+      ]
+    }
+  },
+  "p_02_cowgirl_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_02_cowgirl_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_02_cowgirl_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_01_69_1",
+        0
+      ]
+    }
+  },
+  "d_02_cowgirl_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_02_cowgirl_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_02_cowgirl_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/02_cowgirl_1/02_cowgirl_1",
+      "images": [
+        "d_02_cowgirl_1",
+        0
+      ]
+    }
+  },
+  "p_05_cunnilingus_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_05_cunnilingus_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_05_cunnilingus_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_02_cowgirl_1",
+        0
+      ]
+    }
+  },
+  "d_05_cunnilingus_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_05_cunnilingus_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_05_cunnilingus_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/05_cunnilingus_1/05_cunnilingus_1",
+      "images": [
+        "d_05_cunnilingus_1",
+        0
+      ]
+    }
+  },
+  "p_06_doggystyle_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_06_doggystyle_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_06_doggystyle_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_05_cunnilingus_1",
+        0
+      ]
+    }
+  },
+  "d_06_doggystyle_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_06_doggystyle_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_06_doggystyle_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/06_doggystyle_1/06_doggystyle_1",
+      "images": [
+        "d_06_doggystyle_1",
+        0
+      ]
+    }
+  },
+  "p_09_facesitting_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_09_facesitting_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_09_facesitting_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_06_doggystyle_1",
+        0
+      ]
+    }
+  },
+  "d_09_facesitting_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_09_facesitting_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_09_facesitting_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/09_facesitting_1/09_facesitting_1",
+      "images": [
+        "d_09_facesitting_1",
+        0
+      ]
+    }
+  },
+  "p_12_fellatio_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_12_fellatio_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_12_fellatio_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_09_facesitting_1",
+        0
+      ]
+    }
+  },
+  "d_12_fellatio_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_12_fellatio_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_12_fellatio_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/12_fellatio_1/12_fellatio_1",
+      "images": [
+        "d_12_fellatio_1",
+        0
+      ]
+    }
+  },
+  "p_13_footjob_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_13_footjob_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_13_footjob_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_12_fellatio_1",
+        0
+      ]
+    }
+  },
+  "d_13_footjob_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_13_footjob_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_13_footjob_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/13_footjob_1/13_footjob_1",
+      "images": [
+        "d_13_footjob_1",
+        0
+      ]
+    }
+  },
+  "p_14_full_nelson_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_14_full_nelson_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_14_full_nelson_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_13_footjob_1",
+        0
+      ]
+    }
+  },
+  "d_14_full_nelson_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_14_full_nelson_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_14_full_nelson_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/14_full_nelson_1/14_full_nelson_1",
+      "images": [
+        "d_14_full_nelson_1",
+        0
+      ]
+    }
+  },
+  "p_15_handjob_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_15_handjob_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_15_handjob_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_14_full_nelson_1",
+        0
+      ]
+    }
+  },
+  "d_15_handjob_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_15_handjob_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_15_handjob_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/15_handjob_1/15_handjob_1",
+      "images": [
+        "d_15_handjob_1",
+        0
+      ]
+    }
+  },
+  "p_16_lotus_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_16_lotus_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_16_lotus_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_15_handjob_1",
+        0
+      ]
+    }
+  },
+  "d_16_lotus_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_16_lotus_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_16_lotus_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/16_lotus_1/16_lotus_1",
+      "images": [
+        "d_16_lotus_1",
+        0
+      ]
+    }
+  },
+  "p_19_masturbation_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_19_masturbation_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_19_masturbation_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_16_lotus_1",
+        0
+      ]
+    }
+  },
+  "d_19_masturbation_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_19_masturbation_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_19_masturbation_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/19_masturbation_1/19_masturbation_1",
+      "images": [
+        "d_19_masturbation_1",
+        0
+      ]
+    }
+  },
+  "p_20_missionary_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_20_missionary_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_20_missionary_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_19_masturbation_1",
+        0
+      ]
+    }
+  },
+  "d_20_missionary_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_20_missionary_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_20_missionary_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/20_missionary_1/20_missionary_1",
+      "images": [
+        "d_20_missionary_1",
+        0
+      ]
+    }
+  },
+  "p_23_paizuri_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_23_paizuri_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_23_paizuri_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_20_missionary_1",
+        0
+      ]
+    }
+  },
+  "d_23_paizuri_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_23_paizuri_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_23_paizuri_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/23_paizuri_1/23_paizuri_1",
+      "images": [
+        "d_23_paizuri_1",
+        0
+      ]
+    }
+  },
+  "p_24_piledriver_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_24_piledriver_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_24_piledriver_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_23_paizuri_1",
+        0
+      ]
+    }
+  },
+  "d_24_piledriver_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_24_piledriver_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_24_piledriver_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/24_piledriver_1/24_piledriver_1",
+      "images": [
+        "d_24_piledriver_1",
+        0
+      ]
+    }
+  },
+  "p_26_prone_bone_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_26_prone_bone_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_26_prone_bone_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_24_piledriver_1",
+        0
+      ]
+    }
+  },
+  "d_26_prone_bone_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_26_prone_bone_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_26_prone_bone_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/26_prone_bone_1/26_prone_bone_1",
+      "images": [
+        "d_26_prone_bone_1",
+        0
+      ]
+    }
+  },
+  "p_29_reverse_cowgirl_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_29_reverse_cowgirl_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_29_reverse_cowgirl_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_26_prone_bone_1",
+        0
+      ]
+    }
+  },
+  "d_29_reverse_cowgirl_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_29_reverse_cowgirl_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_29_reverse_cowgirl_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/29_reverse_cowgirl_1/29_reverse_cowgirl_1",
+      "images": [
+        "d_29_reverse_cowgirl_1",
+        0
+      ]
+    }
+  },
+  "p_32_sitting_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_32_sitting_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_32_sitting_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_29_reverse_cowgirl_1",
+        0
+      ]
+    }
+  },
+  "d_32_sitting_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_32_sitting_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_32_sitting_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/32_sitting_1/32_sitting_1",
+      "images": [
+        "d_32_sitting_1",
+        0
+      ]
+    }
+  },
+  "p_33_spooning_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_33_spooning_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_33_spooning_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_32_sitting_1",
+        0
+      ]
+    }
+  },
+  "d_33_spooning_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_33_spooning_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_33_spooning_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/33_spooning_1/33_spooning_1",
+      "images": [
+        "d_33_spooning_1",
+        0
+      ]
+    }
+  },
+  "p_36_standing_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_36_standing_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_36_standing_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_33_spooning_1",
+        0
+      ]
+    }
+  },
+  "d_36_standing_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_36_standing_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_36_standing_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/36_standing_1/36_standing_1",
+      "images": [
+        "d_36_standing_1",
+        0
+      ]
+    }
+  },
+  "p_39_suspended_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_39_suspended_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_39_suspended_1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_36_standing_1",
+        0
+      ]
+    }
+  },
+  "d_39_suspended_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_39_suspended_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_39_suspended_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/39_suspended_1/39_suspended_1",
+      "images": [
+        "d_39_suspended_1",
+        0
+      ]
+    }
+  },
+  "p_42_mating_press": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_42_mating_press": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_42_mating_press",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_39_suspended_1",
+        0
+      ]
+    }
+  },
+  "d_42_mating_press": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_42_mating_press",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_42_mating_press": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/42_mating_press/42_mating_press",
+      "images": [
+        "d_42_mating_press",
+        0
+      ]
+    }
+  },
+  "p_43_against_wall": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_43_against_wall": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_43_against_wall",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_42_mating_press",
+        0
+      ]
+    }
+  },
+  "d_43_against_wall": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_43_against_wall",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_43_against_wall": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/43_against_wall/43_against_wall",
+      "images": [
+        "d_43_against_wall",
+        0
+      ]
+    }
+  },
+  "p_45_amazon_position": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_45_amazon_position": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_45_amazon_position",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_43_against_wall",
+        0
+      ]
+    }
+  },
+  "d_45_amazon_position": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_45_amazon_position",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_45_amazon_position": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/45_amazon_position/45_amazon_position",
+      "images": [
+        "d_45_amazon_position",
+        0
+      ]
+    }
+  },
+  "p_46_lifted_carry": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_46_lifted_carry": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_46_lifted_carry",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_45_amazon_position",
+        0
+      ]
+    }
+  },
+  "d_46_lifted_carry": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_46_lifted_carry",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_46_lifted_carry": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/46_lifted_carry/46_lifted_carry",
+      "images": [
+        "d_46_lifted_carry",
+        0
+      ]
+    }
+  },
+  "p_47_bridge_position": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_47_bridge_position": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_47_bridge_position",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_46_lifted_carry",
+        0
+      ]
+    }
+  },
+  "d_47_bridge_position": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_47_bridge_position",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_47_bridge_position": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/47_bridge_position/47_bridge_position",
+      "images": [
+        "d_47_bridge_position",
+        0
+      ]
+    }
+  },
+  "p_48_side_doggystyle": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_48_side_doggystyle": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_48_side_doggystyle",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_47_bridge_position",
+        0
+      ]
+    }
+  },
+  "d_48_side_doggystyle": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_48_side_doggystyle",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_48_side_doggystyle": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/48_side_doggystyle/48_side_doggystyle",
+      "images": [
+        "d_48_side_doggystyle",
+        0
+      ]
+    }
+  },
+  "p_49_bent_over_desk": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_49_bent_over_desk": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_49_bent_over_desk",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_48_side_doggystyle",
+        0
+      ]
+    }
+  },
+  "d_49_bent_over_desk": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_49_bent_over_desk",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_49_bent_over_desk": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/49_bent_over_desk/49_bent_over_desk",
+      "images": [
+        "d_49_bent_over_desk",
+        0
+      ]
+    }
+  },
+  "p_50_chair_sex": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_50_chair_sex": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_50_chair_sex",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_49_bent_over_desk",
+        0
+      ]
+    }
+  },
+  "d_50_chair_sex": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_50_chair_sex",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_50_chair_sex": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/50_chair_sex/50_chair_sex",
+      "images": [
+        "d_50_chair_sex",
+        0
+      ]
+    }
+  },
+  "p_51_suspended_mating": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_ugly_man",
+        1
+      ]
+    }
+  },
+  "k_51_suspended_mating": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_ugly_man",
+        0
+      ],
+      "positive": [
+        "p_51_suspended_mating",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_50_chair_sex",
+        0
+      ]
+    }
+  },
+  "d_51_suspended_mating": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_51_suspended_mating",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_51_suspended_mating": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_climax_51_poses/51_suspended_mating/51_suspended_mating",
+      "images": [
+        "d_51_suspended_mating",
+        0
+      ]
+    }
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "UnholyDesireMixSinisterAesthetic_V5_Illustrious.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "lora_name": "yvonne_noobai.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_comic": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "hentai_comic_generator.safetensors",
+      "strength_model": 0.25,
+      "strength_clip": 0.25
+    }
+  },
+  "lora_detail": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_comic",
+        0
+      ],
+      "clip": [
+        "lora_comic",
+        1
+      ],
+      "lora_name": "add-detail-xl.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_stabilizer": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "clip": [
+        "lora_detail",
+        1
+      ],
+      "lora_name": "stabilizer_animaginexl.safetensors",
+      "strength_model": 0.7,
+      "strength_clip": 0.7
+    }
+  },
+  "lora_style": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_stabilizer",
+        0
+      ],
+      "clip": [
+        "lora_stabilizer",
+        1
+      ],
+      "lora_name": "illustrious_style_pack.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 0.25
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "bad quality, worst quality, lowres, blurry, text, watermark, bad anatomy, bad hands, missing finger, extra limbs, (deformed:1.5), (bad hand:1.3), extra finger, mutated, bad eyes, poorly drawn face, jpeg artifacts, signature, censor",
+      "clip": [
+        "lora_style",
+        1
+      ]
+    }
+  },
+  "100": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "unholy-aesthetic, unholy-detailing, soft lighting, dramatic lighting, dim lighting, reflections, masterpiece, best quality, absurdres, ultra detailed face, ultra detailed eyes, triple_penetration, DP_and_oral, 3boys, three_men, sitting, lap, spread_legs, crop top, white shorts, detached sleeves, gloves, single thighhigh, 1girl, yvonne (arknights), dragon girl, dragon horns, dragon tail, green tail, pointy ears",
+      "clip": [
+        "lora_style",
+        1
+      ]
+    }
+  },
+  "101": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "102": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 7777,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_style",
+        0
+      ],
+      "positive": [
+        "100",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "101",
+        0
+      ]
+    }
+  },
+  "103": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "102",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "104": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Yvonna_Custom",
+      "images": [
+        "103",
+        0
+      ]
+    }
+  }
+}

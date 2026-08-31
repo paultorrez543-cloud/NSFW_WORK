@@ -1,0 +1,568 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "rinIllusionRNSFW_v30.safetensors"
+    }
+  },
+  "clip_skip": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip",
+        0
+      ],
+      "lora_name": "Otoha_stella_sora.safetensors",
+      "strength_model": 0.95,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth",
+        0
+      ],
+      "clip": [
+        "lora_depth",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "clip": [
+        "lora_dp",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, holding mirror, red mirror, mirror",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "e_01_resistencia": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "p_01_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stsroto, 1girl, long hair, half up braid, white hair, grey hair, mole, blue eyes, animal ear fluff, animal ears, fox ears, fox tail, (large breasts:1.2), collarbone, navel, hip_bones, ninja, black leotard, highleg leotard, sleeveless leotard, bare shoulders, cleavage cutout, sarashi, underbust, belt, red tassel, black gloves, elbow gloves, fingerless gloves, brown pantyhose, thighs, intact_clothing, leotard_aside, pantyhose_pull, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), penis_on_pussy, full_nelson, nelson_position, lifted, legs_folded, front_view, hands_pushing_away, skin_indentation, mattress_indentation, wide_eyes, trembling, furrowed_brow, nervous, screaming, open_mouth, sweat_drops, tears, full_shot, (motion lines:1.2), dimly_lit, dark_ambiance, (dark lighting:1.4), rim_lighting, sweat_gleam, glossy_skin, dramatic_shadows, depth_of_field, anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_01_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424272,
+      "steps": 40,
+      "cfg": 6.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_01_resistencia",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_01_resistencia",
+        0
+      ]
+    }
+  },
+  "d_01_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_01_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_01_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Stella_Sora/otoha_ninja/full_nelson/otoha_ninja_full_nelson_01_resistencia",
+      "images": [
+        "d_01_resistencia",
+        0
+      ]
+    }
+  },
+  "e_02_primer_impacto": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "p_02_primer_impacto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stsroto, 1girl, long hair, half up braid, white hair, grey hair, mole, blue eyes, animal ear fluff, animal ears, fox ears, fox tail, (large breasts:1.2), collarbone, navel, hip_bones, ninja, black leotard, highleg leotard, sleeveless leotard, bare shoulders, cleavage cutout, sarashi, underbust, belt, red tassel, black gloves, elbow gloves, fingerless gloves, brown pantyhose, thighs, torn_leotard, torn_sarashi, exposed_breasts, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, tip_in_pussy, first_insertion, stretching, full_nelson, nelson_position, lifted, legs_folded, front_view, hands_gripping_sheets, white_knuckles, breast_squish, hair_stuck_to_face, mattress_indentation, clenched_eyes, grimace, parted_lips, furrowed_brow, painful_expression, crying, sweat, tears_streaming, saliva_string, cowboy_shot, dutch_angle, (motion lines:1.3), (speed lines:1.2), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.4), rim_lighting, sweat_gleam, glossy_skin, dramatic_shadows, depth_of_field, anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_02_primer_impacto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424272,
+      "steps": 40,
+      "cfg": 6.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_02_primer_impacto",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_02_primer_impacto",
+        0
+      ]
+    }
+  },
+  "d_02_primer_impacto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_02_primer_impacto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_02_primer_impacto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Stella_Sora/otoha_ninja/full_nelson/otoha_ninja_full_nelson_02_primer_impacto",
+      "images": [
+        "d_02_primer_impacto",
+        0
+      ]
+    }
+  },
+  "e_03_ritmo": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "p_03_ritmo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stsroto, 1girl, long hair, half up braid, white hair, grey hair, mole, blue eyes, animal ear fluff, animal ears, fox ears, fox tail, (large breasts:1.2), collarbone, navel, hip_bones, ninja, black leotard, highleg leotard, sleeveless leotard, bare shoulders, cleavage cutout, sarashi, underbust, belt, red tassel, black gloves, elbow gloves, fingerless gloves, brown pantyhose, thighs, shredded_clothes, exposed_breasts, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), thrusting, (half insertion:1.2), full_nelson, nelson_position, lifted, legs_folded, front_view, hands_above_head, clenched_hands, bouncing_breasts, breast_squish, thigh_squish, flying_sweat_drops, half-closed_eyes, heavy_breathing, parted_lips, flushed_face, tear_tracks, sweat_drops, drooling, saliva_string, messy_tears, medium_shot, dutch_angle, (motion lines:1.4), (speed lines:1.3), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), rim_lighting, sweat_gleam, glossy_skin, dramatic_shadows, depth_of_field, anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_03_ritmo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424272,
+      "steps": 40,
+      "cfg": 6.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_03_ritmo",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_03_ritmo",
+        0
+      ]
+    }
+  },
+  "d_03_ritmo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_03_ritmo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_03_ritmo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Stella_Sora/otoha_ninja/full_nelson/otoha_ninja_full_nelson_03_ritmo",
+      "images": [
+        "d_03_ritmo",
+        0
+      ]
+    }
+  },
+  "e_04_ahegao": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "p_04_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stsroto, 1girl, long hair, half up braid, white hair, grey hair, mole, blue eyes, animal ear fluff, animal ears, fox ears, fox tail, (large breasts:1.2), collarbone, navel, hip_bones, ninja, black leotard, highleg leotard, sleeveless leotard, bare shoulders, cleavage cutout, sarashi, underbust, belt, red tassel, black gloves, elbow gloves, fingerless gloves, brown pantyhose, thighs, shredded_clothes, clothes_falling_off, nude_top, exposed_breasts, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), full_penetration, (belly_bulge:1.1), full_nelson, nelson_position, lifted, legs_folded, front_view, hands_above_head, fingers_twitching, bouncing_breasts, belly_bulge, flying_sweat_drops, ahegao, rolled_back_eyes, tongue_out, drooling, open_mouth, heavy_blush, forced_orgasm, sweat_drops, tears_of_pleasure, excessive_drooling, medium_close-up, dutch_angle, (motion lines:1.4), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.4), rim_lighting, sweat_gleam, glossy_skin, dramatic_shadows, depth_of_field, anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424272,
+      "steps": 40,
+      "cfg": 6.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_04_ahegao",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_04_ahegao",
+        0
+      ]
+    }
+  },
+  "d_04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Stella_Sora/otoha_ninja/full_nelson/otoha_ninja_full_nelson_04_ahegao",
+      "images": [
+        "d_04_ahegao",
+        0
+      ]
+    }
+  },
+  "e_05_climax": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "p_05_climax": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stsroto, 1girl, long hair, half up braid, white hair, grey hair, mole, blue eyes, animal ear fluff, animal ears, fox ears, fox tail, (large breasts:1.2), collarbone, navel, hip_bones, ninja, black leotard, highleg leotard, sleeveless leotard, bare shoulders, cleavage cutout, sarashi, underbust, belt, red tassel, black gloves, elbow gloves, fingerless gloves, brown pantyhose, thighs, ruined_outfit, nude, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), (balls_deep:1.4), (belly_bulge:1.3), full_nelson, nelson_position, lifted, legs_folded, front_view, hands_above_head, trembling_fingers, bouncing_breasts, belly_bulge, flying_sweat_drops, spasming, extreme_ahegao, heart_pupils, rolled_back_eyes, cross-eyed, tongue_out, excessive_sweat, tears_of_pleasure, excessive_cum, creampie, cum_overflow, cowboy_shot, dutch_angle, dynamic_angle, (motion lines:1.5), (speed lines:1.4), impact_lines, sound_effects, onomatopoeia, japanese_text_sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.4), rim_lighting, sweat_gleam, glossy_skin, dramatic_shadows, depth_of_field, anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_05_climax": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424272,
+      "steps": 40,
+      "cfg": 6.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_05_climax",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_05_climax",
+        0
+      ]
+    }
+  },
+  "d_05_climax": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_05_climax",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_05_climax": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Stella_Sora/otoha_ninja/full_nelson/otoha_ninja_full_nelson_05_climax",
+      "images": [
+        "d_05_climax",
+        0
+      ]
+    }
+  },
+  "e_06_rota": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "p_06_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stsroto, 1girl, long hair, half up braid, white hair, grey hair, mole, blue eyes, animal ear fluff, animal ears, fox ears, fox tail, (large breasts:1.2), collarbone, navel, hip_bones, ninja, black leotard, highleg leotard, sleeveless leotard, bare shoulders, cleavage cutout, sarashi, underbust, belt, red tassel, black gloves, elbow gloves, fingerless gloves, brown pantyhose, thighs, completely_nude, discarded_clothes, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, balls_deep, (gaping:1.3), belly_bulge, full_nelson, nelson_position, lifted, legs_folded, front_view, limp_arms, hands_resting, spasming_legs, mattress_indentation, hair_stuck_to_face, blank_eyes, empty_eyes, thousand_yard_stare, slack-jawed, mouth_slightly_open, emotionless, excessive_cum, cum_drip, cum_overflow, drooling, close-up, low_angle, depth_of_field, dimly_lit, dark_ambiance, (dark lighting:1.4), rim_lighting, sweat_gleam, glossy_skin, dramatic_shadows, anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_06_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424272,
+      "steps": 40,
+      "cfg": 6.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_06_rota",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_06_rota",
+        0
+      ]
+    }
+  },
+  "d_06_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_06_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_06_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Stella_Sora/otoha_ninja/full_nelson/otoha_ninja_full_nelson_06_rota",
+      "images": [
+        "d_06_rota",
+        0
+      ]
+    }
+  },
+  "e_07_inconsciente": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "p_07_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stsroto, 1girl, long hair, half up braid, white hair, grey hair, mole, blue eyes, animal ear fluff, animal ears, fox ears, fox tail, (large breasts:1.2), collarbone, navel, hip_bones, ninja, black leotard, highleg leotard, sleeveless leotard, bare shoulders, cleavage cutout, sarashi, underbust, belt, red tassel, black gloves, elbow gloves, fingerless gloves, brown pantyhose, thighs, completely_nude, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, gaping, cum_pool, full_nelson, nelson_position, lifted, legs_folded, front_view, limp_arms, relaxed_posture, disheveled_hair, messy_bed, soaked_sheets, closed_eyes, sleeping, relaxed_face, serene_expression, dried_tears, semen_on_face, semen_on_body, wide_shot, overhead_view, high_angle, depth_of_field, dimly_lit, dark_ambiance, (dark lighting:1.4), rim_lighting, sweat_gleam, glossy_skin, dramatic_shadows, anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size",
+        1
+      ]
+    }
+  },
+  "k_07_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424272,
+      "steps": 40,
+      "cfg": 6.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size",
+        0
+      ],
+      "positive": [
+        "p_07_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_07_inconsciente",
+        0
+      ]
+    }
+  },
+  "d_07_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_07_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_07_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Stella_Sora/otoha_ninja/full_nelson/otoha_ninja_full_nelson_07_inconsciente",
+      "images": [
+        "d_07_inconsciente",
+        0
+      ]
+    }
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "UnholyDesireMixSinisterAesthetic_V5_Illustrious.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "lora_name": "ryuuou_sora_ginko.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8
+    }
+  },
+  "lora_stabilizer": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "stabilizer_animaginexl.safetensors",
+      "strength_model": 0.7,
+      "strength_clip": 0.7
+    }
+  },
+  "lora_style": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_stabilizer",
+        0
+      ],
+      "clip": [
+        "lora_stabilizer",
+        1
+      ],
+      "lora_name": "illustrious_style_pack.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 0.25
+    }
+  },
+  "lora_face": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_style",
+        0
+      ],
+      "clip": [
+        "lora_style",
+        1
+      ],
+      "lora_name": "Face_Detailed_v2.safetensors",
+      "strength_model": 0.85,
+      "strength_clip": 0.85
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "lowres, bad anatomy, bad eyes, deformed eyes, asymmetrical_eyes, different_sized_eyes, bad hands, extra fingers, worst_quality, blurry, ugly, censored, thick lines, black outlines, lineart, (deformed:1.5), (bad hand:1.3), extra finger, mutated, bad eyes, poorly drawn face, character fusion, fused males, merged males, conjoined twins, connected bodies, double heads, duplicate limbs, fused bodies, (duplicate panties:1.4), (multiple panties:1.4), (two panties:1.4), extra underwear, duplicate bra, wrong hair length, mutated hair, mature, old woman, hag, wrinkled skin, adult female, semi-realistic, 3d, 3d render, photorealistic, realistic, real life, 3d model, cg render, photography, blue_hair, cyan_hair",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "e100": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1216,
+      "height": 832,
+      "batch_size": 1
+    }
+  },
+  "p100": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Sora Ginko, 1girl, adult, (silver_hair:1.2), short_hair, hair_ribbon, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, prone_bone, lying_on_stomach, from_behind, hips_raised, vaginal_penetration, vaginal, penetration, clothes_lift, skirt_lift, nude, bare_breasts, panties_around_one_leg, dangling_panties, sky_blue_panties, flushed_face, eyes_closed, open_mouth, heavy_breathing, moaning, head_tilted_back, sweat_drops, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), shadows on body, (dim red light:0.3), unholy-aesthetic, unholy-detailing, flushed_face, sweat, heavy_breathing, anime, anime style, 2d, anime artwork, anime coloring, cel shading, vibrant colors, detailed anime style, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "k100": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 831666966,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "p100",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e100",
+        0
+      ]
+    }
+  },
+  "d100": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k100",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s100": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_nude_dangling_pleasure/prone_bone_1",
+      "images": [
+        "d100",
+        0
+      ]
+    }
+  }
+}

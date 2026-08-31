@@ -1,0 +1,438 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "UnholyDesireMixSinisterAesthetic_V5_Illustrious.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "lora_name": "yvonne_noobai.safetensors",
+      "strength_model": 1,
+      "strength_clip": 1
+    }
+  },
+  "lora_comic": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "hentai_comic_generator.safetensors",
+      "strength_model": 0.25,
+      "strength_clip": 0.25
+    }
+  },
+  "lora_detail": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_comic",
+        0
+      ],
+      "clip": [
+        "lora_comic",
+        1
+      ],
+      "lora_name": "add-detail-xl.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "stand, full body standing, Character illustration, text_bubbles, speech_bubble, dialogue, onomatopoeia, japanese_text, english_text, white_box, text_box, letter, word, clothed, dress, clothes, outfit, lowres, bad_anatomy, bad_hands, extra_fingers, worst_quality, blurry, ugly, censored, mosaic, watermark, text, male_face, male_head, male_eyes, male_hair, male_beard, shiny_skin, wet_skin, glossy, plastic, doll_joints, mannequin, blended_features, male_with_female_clothing, male_with_breasts, male_wearing_dress, male_with_long_hair, crossdressing, feminine_male, effeminate, flat_colors, simple_background, 3d_render, cgi, ai_generated, smooth, airbrushed, perfect_anatomy, flawless_skin, bloom, glowing, (deformed:1.5), (bad hand:1.3), extra finger, mutated, bad eyes, poorly drawn face",
+      "clip": [
+        "lora_style",
+        1
+      ]
+    }
+  },
+  "10": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "unholy-aesthetic, unholy-detailing, soft lighting, dramatic lighting, dim lighting, reflections, double_penetration, vaginal_and_anal, both_holes, pussy_and_ass, full_insertion, 2boys, two_men, 1girl, yvonne \\(arknights\\), dragon girl, hairclip, hair intakes, dragon horns, pink horns, black horns, two-tone horns, pointy ears, two-tone eyes, dragon tail, green tail, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, sitting_on_lap, sitting_position, lap_sex, straddling_sitting, chair, arms_around_neck, both_erect, penis_presented, penis_on_pussy, penis_on_anus, imminent_double, about_to_penetrate, nervous, anticipation, blush, sweat, Hentai comic style, multi-view, 2-4 panels, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, masterpiece, best_quality, absurdres, ultra_detailed, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_style",
+        1
+      ]
+    }
+  },
+  "11": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "12": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 7777,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_style",
+        0
+      ],
+      "positive": [
+        "10",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "11",
+        0
+      ]
+    }
+  },
+  "13": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "12",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "14": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yvonna_nude_dp_sitting_inicio",
+      "images": [
+        "13",
+        0
+      ]
+    }
+  },
+  "15": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "unholy-aesthetic, unholy-detailing, soft lighting, dramatic lighting, dim lighting, reflections, double_penetration, vaginal_and_anal, both_holes, pussy_and_ass, full_insertion, 2boys, two_men, 1girl, yvonne \\(arknights\\), dragon girl, hairclip, hair intakes, dragon horns, pink horns, black horns, two-tone horns, pointy ears, two-tone eyes, dragon tail, green tail, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, sitting_on_lap, sitting_position, lap_sex, straddling_sitting, chair, arms_around_neck, double_penetration, simultaneous_insertion, both_holes, tip_in_pussy, tip_in_ass, first_insertion, stretching, pain, tears, screaming, Hentai comic style, multi-view, 2-4 panels, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, masterpiece, best_quality, absurdres, ultra_detailed, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_style",
+        1
+      ]
+    }
+  },
+  "16": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "17": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 7777,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_style",
+        0
+      ],
+      "positive": [
+        "10",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "16",
+        0
+      ]
+    }
+  },
+  "18": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "17",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "19": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yvonna_nude_dp_sitting_entrada",
+      "images": [
+        "18",
+        0
+      ]
+    }
+  },
+  "20": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "unholy-aesthetic, unholy-detailing, soft lighting, dramatic lighting, dim lighting, reflections, double_penetration, vaginal_and_anal, both_holes, pussy_and_ass, full_insertion, 2boys, two_men, 1girl, yvonne \\(arknights\\), dragon girl, hairclip, hair intakes, dragon horns, pink horns, black horns, two-tone horns, pointy ears, two-tone eyes, dragon tail, green tail, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, sitting_on_lap, sitting_position, lap_sex, straddling_sitting, chair, arms_around_neck, double_penetration, vaginal, anal, deep, balls_deep, full_insertion, both_holes, pussy_and_ass, thrusting, ahegao, rolled_back_eyes, drooling, forced_orgasm, Hentai comic style, multi-view, 2-4 panels, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, masterpiece, best_quality, absurdres, ultra_detailed, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_style",
+        1
+      ]
+    }
+  },
+  "21": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "22": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 7777,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_style",
+        0
+      ],
+      "positive": [
+        "10",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "21",
+        0
+      ]
+    }
+  },
+  "23": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "22",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "24": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yvonna_nude_dp_sitting_penetrada",
+      "images": [
+        "23",
+        0
+      ]
+    }
+  },
+  "25": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "unholy-aesthetic, unholy-detailing, soft lighting, dramatic lighting, dim lighting, reflections, double_penetration, vaginal_and_anal, both_holes, pussy_and_ass, full_insertion, 2boys, two_men, 1girl, yvonne \\(arknights\\), dragon girl, hairclip, hair intakes, dragon horns, pink horns, black horns, two-tone horns, pointy ears, two-tone eyes, dragon tail, green tail, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, sitting_on_lap, sitting_position, lap_sex, straddling_sitting, chair, arms_around_neck, double_penetration, climax, vaginal, anal, cum, cum_in_pussy, cum_in_ass, both_cumming, ahegao, forced_orgasm, mind_break, convulsing, heavy_sweat, excessive_cum, Hentai comic style, multi-view, 2-4 panels, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, masterpiece, best_quality, absurdres, ultra_detailed, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_style",
+        1
+      ]
+    }
+  },
+  "26": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "27": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 7777,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_style",
+        0
+      ],
+      "positive": [
+        "10",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "26",
+        0
+      ]
+    }
+  },
+  "28": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "27",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "29": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yvonna_nude_dp_sitting_final",
+      "images": [
+        "28",
+        0
+      ]
+    }
+  },
+  "30": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "unholy-aesthetic, unholy-detailing, soft lighting, dramatic lighting, dim lighting, reflections, double_penetration, vaginal_and_anal, both_holes, pussy_and_ass, full_insertion, 2boys, two_men, 1girl, yvonne \\(arknights\\), dragon girl, hairclip, hair intakes, dragon horns, pink horns, black horns, two-tone horns, pointy ears, two-tone eyes, dragon tail, green tail, 1girl, nude, naked, completely_nude, exposed_breasts, exposed_pussy, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, sitting_on_lap, sitting_position, lap_sex, straddling_sitting, chair, arms_around_neck, double_penetration, x-ray, internal_shot, cross-section, vaginal, anal, deep, both_holes, penis_inside, stomach_bulge, internal_cumshot, cum_in_pussy, cum_in_ass, ahegao, mind_break, Hentai comic style, multi-view, 2-4 panels, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, masterpiece, best_quality, absurdres, ultra_detailed, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_style",
+        1
+      ]
+    }
+  },
+  "31": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "32": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 7777,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_style",
+        0
+      ],
+      "positive": [
+        "10",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "31",
+        0
+      ]
+    }
+  },
+  "33": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "32",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "34": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yvonna_nude_dp_sitting_xray",
+      "images": [
+        "33",
+        0
+      ]
+    }
+  },
+  "lora_stabilizer": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "clip": [
+        "lora_detail",
+        1
+      ],
+      "lora_name": "stabilizer_animaginexl.safetensors",
+      "strength_model": 0.7,
+      "strength_clip": 0.7
+    }
+  },
+  "lora_style": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_stabilizer",
+        0
+      ],
+      "clip": [
+        "lora_stabilizer",
+        1
+      ],
+      "lora_name": "illustrious_style_pack.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 0.25
+    }
+  }
+}

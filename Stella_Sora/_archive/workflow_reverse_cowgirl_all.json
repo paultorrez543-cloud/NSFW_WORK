@@ -1,0 +1,4120 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "latent_shared": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1536,
+      "batch_size": 1
+    }
+  },
+  "clip_skip_virigia_default": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_virigia_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_virigia_default",
+        0
+      ],
+      "lora_name": "Stella-Virigia-v1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_virigia_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_virigia_default",
+        0
+      ],
+      "clip": [
+        "lora_char_virigia_default",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_virigia_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_virigia_default",
+        0
+      ],
+      "clip": [
+        "lora_depth_virigia_default",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_virigia_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_virigia_default",
+        0
+      ],
+      "clip": [
+        "lora_dp_virigia_default",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_virigia_default": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, holding mirror, red mirror, mirror",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "p_virigia_default_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, scared, nervous_sweat, struggling, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "k_virigia_default_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_default",
+        0
+      ],
+      "positive": [
+        "p_virigia_default_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg_virigia_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_default_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_default_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_default_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_default_01_miedo",
+      "images": [
+        "d_virigia_default_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_virigia_default_02_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, about_to_penetrate, penis_on_pussy, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, crying, (screaming:1.5), struggling, begging, sweat, tears_streaming, (motion lines:1.2), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "k_virigia_default_02_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_default",
+        0
+      ],
+      "positive": [
+        "p_virigia_default_02_resistencia",
+        0
+      ],
+      "negative": [
+        "neg_virigia_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_default_02_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_default_02_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_default_02_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_default_02_resistencia",
+      "images": [
+        "d_virigia_default_02_resistencia",
+        0
+      ]
+    }
+  },
+  "p_virigia_default_03_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, tip_in_pussy, first_insertion, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_gripping_sheets, (pain:1.3), tears_streaming, screaming, sweat, tears_streaming, (motion lines:1.3), (speed lines:1.2), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "k_virigia_default_03_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_default",
+        0
+      ],
+      "positive": [
+        "p_virigia_default_03_dolor",
+        0
+      ],
+      "negative": [
+        "neg_virigia_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_default_03_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_default_03_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_default_03_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_default_03_dolor",
+      "images": [
+        "d_virigia_default_03_dolor",
+        0
+      ]
+    }
+  },
+  "p_virigia_default_04_sufrimiento": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, half_insertion, stretching, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_gripping_sheets, (pain:1.4), sobbing, tears_streaming, sweat, tears_streaming, drooling, (motion lines:1.3), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "k_virigia_default_04_sufrimiento": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_default",
+        0
+      ],
+      "positive": [
+        "p_virigia_default_04_sufrimiento",
+        0
+      ],
+      "negative": [
+        "neg_virigia_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_default_04_sufrimiento": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_default_04_sufrimiento",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_default_04_sufrimiento": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_default_04_sufrimiento",
+      "images": [
+        "d_virigia_default_04_sufrimiento",
+        0
+      ]
+    }
+  },
+  "p_virigia_default_05_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, tears_streaming, broken_spirit, defeated, sweat_drops, tears_streaming, drooling, (motion lines:1.4), (speed lines:1.3), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "k_virigia_default_05_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_default",
+        0
+      ],
+      "positive": [
+        "p_virigia_default_05_quebranto",
+        0
+      ],
+      "negative": [
+        "neg_virigia_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_default_05_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_default_05_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_default_05_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_default_05_quebranto",
+      "images": [
+        "d_virigia_default_05_quebranto",
+        0
+      ]
+    }
+  },
+  "p_virigia_default_06_ahegao_inicio": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), full_penetration, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, rolled_back_eyes, tongue_out, drooling, ahegao, sweat_drops, tears_of_pleasure, drooling, (motion lines:1.4), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "k_virigia_default_06_ahegao_inicio": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_default",
+        0
+      ],
+      "positive": [
+        "p_virigia_default_06_ahegao_inicio",
+        0
+      ],
+      "negative": [
+        "neg_virigia_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_default_06_ahegao_inicio": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_default_06_ahegao_inicio",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_default_06_ahegao_inicio": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_default_06_ahegao_inicio",
+      "images": [
+        "d_virigia_default_06_ahegao_inicio",
+        0
+      ]
+    }
+  },
+  "p_virigia_default_07_ahegao_total": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), balls_deep, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, ahegao, heart_pupils, mind_break, excessive_cum, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), (speed lines:1.4), impact_lines, sound_effects, onomatopoeia, japanese_text_sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "k_virigia_default_07_ahegao_total": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_default",
+        0
+      ],
+      "positive": [
+        "p_virigia_default_07_ahegao_total",
+        0
+      ],
+      "negative": [
+        "neg_virigia_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_default_07_ahegao_total": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_default_07_ahegao_total",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_default_07_ahegao_total": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_default_07_ahegao_total",
+      "images": [
+        "d_virigia_default_07_ahegao_total",
+        0
+      ]
+    }
+  },
+  "p_virigia_default_08_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, balls_deep, gaping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, blank_eyes, mind_break, tears_streaming, excessive_sweat, tears_streaming, drooling, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "k_virigia_default_08_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_default",
+        0
+      ],
+      "positive": [
+        "p_virigia_default_08_rota",
+        0
+      ],
+      "negative": [
+        "neg_virigia_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_default_08_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_default_08_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_default_08_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_default_08_rota",
+      "images": [
+        "d_virigia_default_08_rota",
+        0
+      ]
+    }
+  },
+  "p_virigia_default_09_destruida": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, gaping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, exhausted, crying, semen_on_body, cum_pool, excessive_sweat, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "k_virigia_default_09_destruida": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_default",
+        0
+      ],
+      "positive": [
+        "p_virigia_default_09_destruida",
+        0
+      ],
+      "negative": [
+        "neg_virigia_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_default_09_destruida": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_default_09_destruida",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_default_09_destruida": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_default_09_destruida",
+      "images": [
+        "d_virigia_default_09_destruida",
+        0
+      ]
+    }
+  },
+  "p_virigia_default_10_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, sleeping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, sleeping, tears_streaming, semen_on_face, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "k_virigia_default_10_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_default",
+        0
+      ],
+      "positive": [
+        "p_virigia_default_10_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg_virigia_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_default_10_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_default_10_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_default_10_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_default_10_inconsciente",
+      "images": [
+        "d_virigia_default_10_inconsciente",
+        0
+      ]
+    }
+  },
+  "clip_skip_virigia_bunny": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_virigia_bunny": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_virigia_bunny",
+        0
+      ],
+      "lora_name": "Stella-Virigia-v1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_virigia_bunny": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_virigia_bunny",
+        0
+      ],
+      "clip": [
+        "lora_char_virigia_bunny",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_virigia_bunny": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_virigia_bunny",
+        0
+      ],
+      "clip": [
+        "lora_depth_virigia_bunny",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_virigia_bunny": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_virigia_bunny",
+        0
+      ],
+      "clip": [
+        "lora_dp_virigia_bunny",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_virigia_bunny": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, holding mirror, red mirror, mirror, tail, demon tail",
+      "clip": [
+        "lora_size_virigia_bunny",
+        1
+      ]
+    }
+  },
+  "p_virigia_bunny_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiabnuy, 1girl, white hair, long hair, half up braid, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, mole on hip, large breasts, fake animal ears, rabbit ears, lace hairband, black hairband, detached collar, red bowtie, lace collar, fur armlet, cleavage, white leotard, strapless leotard, side-tie leotard, cross-laced leotard, highleg leotard, crotch zipper, showgirl skirt, white thighhighs, single fishnet thighhigh, mismatched legwear, frilled thigh strap, heart o-ring, wrist cuffs, lace-trimmed wrist cuffs, ankle strap, red high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, scared, nervous_sweat, struggling, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_bunny",
+        1
+      ]
+    }
+  },
+  "k_virigia_bunny_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424250,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_bunny",
+        0
+      ],
+      "positive": [
+        "p_virigia_bunny_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg_virigia_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_bunny_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_bunny_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_bunny_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_bunny_01_miedo",
+      "images": [
+        "d_virigia_bunny_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_virigia_bunny_02_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiabnuy, 1girl, white hair, long hair, half up braid, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, mole on hip, large breasts, fake animal ears, rabbit ears, lace hairband, black hairband, detached collar, red bowtie, lace collar, fur armlet, cleavage, white leotard, strapless leotard, side-tie leotard, cross-laced leotard, highleg leotard, crotch zipper, showgirl skirt, white thighhighs, single fishnet thighhigh, mismatched legwear, frilled thigh strap, heart o-ring, wrist cuffs, lace-trimmed wrist cuffs, ankle strap, red high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, about_to_penetrate, penis_on_pussy, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, crying, (screaming:1.5), struggling, begging, sweat, tears_streaming, (motion lines:1.2), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_bunny",
+        1
+      ]
+    }
+  },
+  "k_virigia_bunny_02_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424250,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_bunny",
+        0
+      ],
+      "positive": [
+        "p_virigia_bunny_02_resistencia",
+        0
+      ],
+      "negative": [
+        "neg_virigia_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_bunny_02_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_bunny_02_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_bunny_02_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_bunny_02_resistencia",
+      "images": [
+        "d_virigia_bunny_02_resistencia",
+        0
+      ]
+    }
+  },
+  "p_virigia_bunny_03_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiabnuy, 1girl, white hair, long hair, half up braid, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, mole on hip, large breasts, fake animal ears, rabbit ears, lace hairband, black hairband, detached collar, red bowtie, lace collar, fur armlet, cleavage, white leotard, strapless leotard, side-tie leotard, cross-laced leotard, highleg leotard, crotch zipper, showgirl skirt, white thighhighs, single fishnet thighhigh, mismatched legwear, frilled thigh strap, heart o-ring, wrist cuffs, lace-trimmed wrist cuffs, ankle strap, red high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, tip_in_pussy, first_insertion, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_gripping_sheets, (pain:1.3), tears_streaming, screaming, sweat, tears_streaming, (motion lines:1.3), (speed lines:1.2), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_bunny",
+        1
+      ]
+    }
+  },
+  "k_virigia_bunny_03_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424250,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_bunny",
+        0
+      ],
+      "positive": [
+        "p_virigia_bunny_03_dolor",
+        0
+      ],
+      "negative": [
+        "neg_virigia_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_bunny_03_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_bunny_03_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_bunny_03_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_bunny_03_dolor",
+      "images": [
+        "d_virigia_bunny_03_dolor",
+        0
+      ]
+    }
+  },
+  "p_virigia_bunny_04_sufrimiento": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiabnuy, 1girl, white hair, long hair, half up braid, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, mole on hip, large breasts, fake animal ears, rabbit ears, lace hairband, black hairband, detached collar, red bowtie, lace collar, fur armlet, cleavage, white leotard, strapless leotard, side-tie leotard, cross-laced leotard, highleg leotard, crotch zipper, showgirl skirt, white thighhighs, single fishnet thighhigh, mismatched legwear, frilled thigh strap, heart o-ring, wrist cuffs, lace-trimmed wrist cuffs, ankle strap, red high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, half_insertion, stretching, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_gripping_sheets, (pain:1.4), sobbing, tears_streaming, sweat, tears_streaming, drooling, (motion lines:1.3), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_bunny",
+        1
+      ]
+    }
+  },
+  "k_virigia_bunny_04_sufrimiento": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424250,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_bunny",
+        0
+      ],
+      "positive": [
+        "p_virigia_bunny_04_sufrimiento",
+        0
+      ],
+      "negative": [
+        "neg_virigia_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_bunny_04_sufrimiento": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_bunny_04_sufrimiento",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_bunny_04_sufrimiento": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_bunny_04_sufrimiento",
+      "images": [
+        "d_virigia_bunny_04_sufrimiento",
+        0
+      ]
+    }
+  },
+  "p_virigia_bunny_05_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiabnuy, 1girl, white hair, long hair, half up braid, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, mole on hip, large breasts, fake animal ears, rabbit ears, lace hairband, black hairband, detached collar, red bowtie, lace collar, fur armlet, cleavage, white leotard, strapless leotard, side-tie leotard, cross-laced leotard, highleg leotard, crotch zipper, showgirl skirt, white thighhighs, single fishnet thighhigh, mismatched legwear, frilled thigh strap, heart o-ring, wrist cuffs, lace-trimmed wrist cuffs, ankle strap, red high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, tears_streaming, broken_spirit, defeated, sweat_drops, tears_streaming, drooling, (motion lines:1.4), (speed lines:1.3), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_bunny",
+        1
+      ]
+    }
+  },
+  "k_virigia_bunny_05_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424250,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_bunny",
+        0
+      ],
+      "positive": [
+        "p_virigia_bunny_05_quebranto",
+        0
+      ],
+      "negative": [
+        "neg_virigia_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_bunny_05_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_bunny_05_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_bunny_05_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_bunny_05_quebranto",
+      "images": [
+        "d_virigia_bunny_05_quebranto",
+        0
+      ]
+    }
+  },
+  "p_virigia_bunny_06_ahegao_inicio": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiabnuy, 1girl, white hair, long hair, half up braid, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, mole on hip, large breasts, fake animal ears, rabbit ears, lace hairband, black hairband, detached collar, red bowtie, lace collar, fur armlet, cleavage, white leotard, strapless leotard, side-tie leotard, cross-laced leotard, highleg leotard, crotch zipper, showgirl skirt, white thighhighs, single fishnet thighhigh, mismatched legwear, frilled thigh strap, heart o-ring, wrist cuffs, lace-trimmed wrist cuffs, ankle strap, red high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), full_penetration, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, rolled_back_eyes, tongue_out, drooling, ahegao, sweat_drops, tears_of_pleasure, drooling, (motion lines:1.4), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_bunny",
+        1
+      ]
+    }
+  },
+  "k_virigia_bunny_06_ahegao_inicio": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424250,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_bunny",
+        0
+      ],
+      "positive": [
+        "p_virigia_bunny_06_ahegao_inicio",
+        0
+      ],
+      "negative": [
+        "neg_virigia_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_bunny_06_ahegao_inicio": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_bunny_06_ahegao_inicio",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_bunny_06_ahegao_inicio": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_bunny_06_ahegao_inicio",
+      "images": [
+        "d_virigia_bunny_06_ahegao_inicio",
+        0
+      ]
+    }
+  },
+  "p_virigia_bunny_07_ahegao_total": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiabnuy, 1girl, white hair, long hair, half up braid, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, mole on hip, large breasts, fake animal ears, rabbit ears, lace hairband, black hairband, detached collar, red bowtie, lace collar, fur armlet, cleavage, white leotard, strapless leotard, side-tie leotard, cross-laced leotard, highleg leotard, crotch zipper, showgirl skirt, white thighhighs, single fishnet thighhigh, mismatched legwear, frilled thigh strap, heart o-ring, wrist cuffs, lace-trimmed wrist cuffs, ankle strap, red high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), balls_deep, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, ahegao, heart_pupils, mind_break, excessive_cum, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), (speed lines:1.4), impact_lines, sound_effects, onomatopoeia, japanese_text_sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_bunny",
+        1
+      ]
+    }
+  },
+  "k_virigia_bunny_07_ahegao_total": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424250,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_bunny",
+        0
+      ],
+      "positive": [
+        "p_virigia_bunny_07_ahegao_total",
+        0
+      ],
+      "negative": [
+        "neg_virigia_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_bunny_07_ahegao_total": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_bunny_07_ahegao_total",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_bunny_07_ahegao_total": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_bunny_07_ahegao_total",
+      "images": [
+        "d_virigia_bunny_07_ahegao_total",
+        0
+      ]
+    }
+  },
+  "p_virigia_bunny_08_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiabnuy, 1girl, white hair, long hair, half up braid, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, mole on hip, large breasts, fake animal ears, rabbit ears, lace hairband, black hairband, detached collar, red bowtie, lace collar, fur armlet, cleavage, white leotard, strapless leotard, side-tie leotard, cross-laced leotard, highleg leotard, crotch zipper, showgirl skirt, white thighhighs, single fishnet thighhigh, mismatched legwear, frilled thigh strap, heart o-ring, wrist cuffs, lace-trimmed wrist cuffs, ankle strap, red high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, balls_deep, gaping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, blank_eyes, mind_break, tears_streaming, excessive_sweat, tears_streaming, drooling, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_bunny",
+        1
+      ]
+    }
+  },
+  "k_virigia_bunny_08_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424250,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_bunny",
+        0
+      ],
+      "positive": [
+        "p_virigia_bunny_08_rota",
+        0
+      ],
+      "negative": [
+        "neg_virigia_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_bunny_08_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_bunny_08_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_bunny_08_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_bunny_08_rota",
+      "images": [
+        "d_virigia_bunny_08_rota",
+        0
+      ]
+    }
+  },
+  "p_virigia_bunny_09_destruida": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiabnuy, 1girl, white hair, long hair, half up braid, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, mole on hip, large breasts, fake animal ears, rabbit ears, lace hairband, black hairband, detached collar, red bowtie, lace collar, fur armlet, cleavage, white leotard, strapless leotard, side-tie leotard, cross-laced leotard, highleg leotard, crotch zipper, showgirl skirt, white thighhighs, single fishnet thighhigh, mismatched legwear, frilled thigh strap, heart o-ring, wrist cuffs, lace-trimmed wrist cuffs, ankle strap, red high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, gaping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, exhausted, crying, semen_on_body, cum_pool, excessive_sweat, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_bunny",
+        1
+      ]
+    }
+  },
+  "k_virigia_bunny_09_destruida": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424250,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_bunny",
+        0
+      ],
+      "positive": [
+        "p_virigia_bunny_09_destruida",
+        0
+      ],
+      "negative": [
+        "neg_virigia_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_bunny_09_destruida": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_bunny_09_destruida",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_bunny_09_destruida": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_bunny_09_destruida",
+      "images": [
+        "d_virigia_bunny_09_destruida",
+        0
+      ]
+    }
+  },
+  "p_virigia_bunny_10_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiabnuy, 1girl, white hair, long hair, half up braid, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, mole on hip, large breasts, fake animal ears, rabbit ears, lace hairband, black hairband, detached collar, red bowtie, lace collar, fur armlet, cleavage, white leotard, strapless leotard, side-tie leotard, cross-laced leotard, highleg leotard, crotch zipper, showgirl skirt, white thighhighs, single fishnet thighhigh, mismatched legwear, frilled thigh strap, heart o-ring, wrist cuffs, lace-trimmed wrist cuffs, ankle strap, red high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, sleeping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, sleeping, tears_streaming, semen_on_face, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_bunny",
+        1
+      ]
+    }
+  },
+  "k_virigia_bunny_10_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424250,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_bunny",
+        0
+      ],
+      "positive": [
+        "p_virigia_bunny_10_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg_virigia_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_bunny_10_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_bunny_10_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_bunny_10_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_virigia_bunny_10_inconsciente",
+      "images": [
+        "d_virigia_bunny_10_inconsciente",
+        0
+      ]
+    }
+  },
+  "clip_skip_shia": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_shia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_shia",
+        0
+      ],
+      "lora_name": "Shia_Stella_Sora__シア_ステラソラ.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_shia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_shia",
+        0
+      ],
+      "clip": [
+        "lora_char_shia",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_shia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_shia",
+        0
+      ],
+      "clip": [
+        "lora_depth_shia",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_shia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_shia",
+        0
+      ],
+      "clip": [
+        "lora_dp_shia",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_shia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, tail, demon tail",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "p_shia_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, shia, stella sora, 1girl, (large breasts:1.3), bunny girl, bunny ears, sailor collar, top, bikini, covered midriff, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, scared, nervous_sweat, struggling, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "k_shia_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424251,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_shia",
+        0
+      ],
+      "positive": [
+        "p_shia_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg_shia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_shia_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_shia_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_shia_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_shia_01_miedo",
+      "images": [
+        "d_shia_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_shia_02_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, shia, stella sora, 1girl, (large breasts:1.3), bunny girl, bunny ears, sailor collar, top, bikini, covered midriff, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, about_to_penetrate, penis_on_pussy, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, crying, (screaming:1.5), struggling, begging, sweat, tears_streaming, (motion lines:1.2), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "k_shia_02_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424251,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_shia",
+        0
+      ],
+      "positive": [
+        "p_shia_02_resistencia",
+        0
+      ],
+      "negative": [
+        "neg_shia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_shia_02_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_shia_02_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_shia_02_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_shia_02_resistencia",
+      "images": [
+        "d_shia_02_resistencia",
+        0
+      ]
+    }
+  },
+  "p_shia_03_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, shia, stella sora, 1girl, (large breasts:1.3), bunny girl, bunny ears, sailor collar, top, bikini, covered midriff, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, tip_in_pussy, first_insertion, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_gripping_sheets, (pain:1.3), tears_streaming, screaming, sweat, tears_streaming, (motion lines:1.3), (speed lines:1.2), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "k_shia_03_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424251,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_shia",
+        0
+      ],
+      "positive": [
+        "p_shia_03_dolor",
+        0
+      ],
+      "negative": [
+        "neg_shia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_shia_03_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_shia_03_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_shia_03_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_shia_03_dolor",
+      "images": [
+        "d_shia_03_dolor",
+        0
+      ]
+    }
+  },
+  "p_shia_04_sufrimiento": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, shia, stella sora, 1girl, (large breasts:1.3), bunny girl, bunny ears, sailor collar, top, bikini, covered midriff, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, half_insertion, stretching, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_gripping_sheets, (pain:1.4), sobbing, tears_streaming, sweat, tears_streaming, drooling, (motion lines:1.3), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "k_shia_04_sufrimiento": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424251,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_shia",
+        0
+      ],
+      "positive": [
+        "p_shia_04_sufrimiento",
+        0
+      ],
+      "negative": [
+        "neg_shia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_shia_04_sufrimiento": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_shia_04_sufrimiento",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_shia_04_sufrimiento": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_shia_04_sufrimiento",
+      "images": [
+        "d_shia_04_sufrimiento",
+        0
+      ]
+    }
+  },
+  "p_shia_05_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, shia, stella sora, 1girl, (large breasts:1.3), bunny girl, bunny ears, sailor collar, top, bikini, covered midriff, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, tears_streaming, broken_spirit, defeated, sweat_drops, tears_streaming, drooling, (motion lines:1.4), (speed lines:1.3), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "k_shia_05_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424251,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_shia",
+        0
+      ],
+      "positive": [
+        "p_shia_05_quebranto",
+        0
+      ],
+      "negative": [
+        "neg_shia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_shia_05_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_shia_05_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_shia_05_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_shia_05_quebranto",
+      "images": [
+        "d_shia_05_quebranto",
+        0
+      ]
+    }
+  },
+  "p_shia_06_ahegao_inicio": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, shia, stella sora, 1girl, (large breasts:1.3), bunny girl, bunny ears, sailor collar, top, bikini, covered midriff, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), full_penetration, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, rolled_back_eyes, tongue_out, drooling, ahegao, sweat_drops, tears_of_pleasure, drooling, (motion lines:1.4), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "k_shia_06_ahegao_inicio": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424251,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_shia",
+        0
+      ],
+      "positive": [
+        "p_shia_06_ahegao_inicio",
+        0
+      ],
+      "negative": [
+        "neg_shia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_shia_06_ahegao_inicio": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_shia_06_ahegao_inicio",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_shia_06_ahegao_inicio": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_shia_06_ahegao_inicio",
+      "images": [
+        "d_shia_06_ahegao_inicio",
+        0
+      ]
+    }
+  },
+  "p_shia_07_ahegao_total": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, shia, stella sora, 1girl, (large breasts:1.3), bunny girl, bunny ears, sailor collar, top, bikini, covered midriff, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), balls_deep, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, ahegao, heart_pupils, mind_break, excessive_cum, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), (speed lines:1.4), impact_lines, sound_effects, onomatopoeia, japanese_text_sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "k_shia_07_ahegao_total": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424251,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_shia",
+        0
+      ],
+      "positive": [
+        "p_shia_07_ahegao_total",
+        0
+      ],
+      "negative": [
+        "neg_shia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_shia_07_ahegao_total": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_shia_07_ahegao_total",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_shia_07_ahegao_total": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_shia_07_ahegao_total",
+      "images": [
+        "d_shia_07_ahegao_total",
+        0
+      ]
+    }
+  },
+  "p_shia_08_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, shia, stella sora, 1girl, (large breasts:1.3), bunny girl, bunny ears, sailor collar, top, bikini, covered midriff, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, balls_deep, gaping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, blank_eyes, mind_break, tears_streaming, excessive_sweat, tears_streaming, drooling, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "k_shia_08_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424251,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_shia",
+        0
+      ],
+      "positive": [
+        "p_shia_08_rota",
+        0
+      ],
+      "negative": [
+        "neg_shia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_shia_08_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_shia_08_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_shia_08_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_shia_08_rota",
+      "images": [
+        "d_shia_08_rota",
+        0
+      ]
+    }
+  },
+  "p_shia_09_destruida": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, shia, stella sora, 1girl, (large breasts:1.3), bunny girl, bunny ears, sailor collar, top, bikini, covered midriff, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, gaping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, exhausted, crying, semen_on_body, cum_pool, excessive_sweat, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "k_shia_09_destruida": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424251,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_shia",
+        0
+      ],
+      "positive": [
+        "p_shia_09_destruida",
+        0
+      ],
+      "negative": [
+        "neg_shia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_shia_09_destruida": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_shia_09_destruida",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_shia_09_destruida": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_shia_09_destruida",
+      "images": [
+        "d_shia_09_destruida",
+        0
+      ]
+    }
+  },
+  "p_shia_10_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, shia, stella sora, 1girl, (large breasts:1.3), bunny girl, bunny ears, sailor collar, top, bikini, covered midriff, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, sleeping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, sleeping, tears_streaming, semen_on_face, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "k_shia_10_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424251,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_shia",
+        0
+      ],
+      "positive": [
+        "p_shia_10_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg_shia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_shia_10_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_shia_10_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_shia_10_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_shia_10_inconsciente",
+      "images": [
+        "d_shia_10_inconsciente",
+        0
+      ]
+    }
+  },
+  "clip_skip_bernina_default": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_bernina_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_bernina_default",
+        0
+      ],
+      "lora_name": "Stella-Bernina-v1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_bernina_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_bernina_default",
+        0
+      ],
+      "clip": [
+        "lora_char_bernina_default",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_bernina_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_bernina_default",
+        0
+      ],
+      "clip": [
+        "lora_depth_bernina_default",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_bernina_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_bernina_default",
+        0
+      ],
+      "clip": [
+        "lora_dp_bernina_default",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_bernina_default": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, tail, demon tail, lantern, holding lantern",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "p_bernina_default_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninadef, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), maid headdress, white shrug, puffy sleeves, wide sleeves, black dress, red dress, two-tone dress, hobble dress, long dress, layered dress, strapless, red o-ring, buttons, see-through cleavage, fishnet top, black gloves, fishnet gloves, black bow, high heels boots, black boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, scared, nervous_sweat, struggling, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "k_bernina_default_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424253,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_default",
+        0
+      ],
+      "positive": [
+        "p_bernina_default_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg_bernina_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_default_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_default_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_default_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_default_01_miedo",
+      "images": [
+        "d_bernina_default_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_bernina_default_02_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninadef, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), maid headdress, white shrug, puffy sleeves, wide sleeves, black dress, red dress, two-tone dress, hobble dress, long dress, layered dress, strapless, red o-ring, buttons, see-through cleavage, fishnet top, black gloves, fishnet gloves, black bow, high heels boots, black boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, about_to_penetrate, penis_on_pussy, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, crying, (screaming:1.5), struggling, begging, sweat, tears_streaming, (motion lines:1.2), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "k_bernina_default_02_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424253,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_default",
+        0
+      ],
+      "positive": [
+        "p_bernina_default_02_resistencia",
+        0
+      ],
+      "negative": [
+        "neg_bernina_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_default_02_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_default_02_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_default_02_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_default_02_resistencia",
+      "images": [
+        "d_bernina_default_02_resistencia",
+        0
+      ]
+    }
+  },
+  "p_bernina_default_03_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninadef, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), maid headdress, white shrug, puffy sleeves, wide sleeves, black dress, red dress, two-tone dress, hobble dress, long dress, layered dress, strapless, red o-ring, buttons, see-through cleavage, fishnet top, black gloves, fishnet gloves, black bow, high heels boots, black boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, tip_in_pussy, first_insertion, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_gripping_sheets, (pain:1.3), tears_streaming, screaming, sweat, tears_streaming, (motion lines:1.3), (speed lines:1.2), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "k_bernina_default_03_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424253,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_default",
+        0
+      ],
+      "positive": [
+        "p_bernina_default_03_dolor",
+        0
+      ],
+      "negative": [
+        "neg_bernina_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_default_03_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_default_03_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_default_03_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_default_03_dolor",
+      "images": [
+        "d_bernina_default_03_dolor",
+        0
+      ]
+    }
+  },
+  "p_bernina_default_04_sufrimiento": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninadef, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), maid headdress, white shrug, puffy sleeves, wide sleeves, black dress, red dress, two-tone dress, hobble dress, long dress, layered dress, strapless, red o-ring, buttons, see-through cleavage, fishnet top, black gloves, fishnet gloves, black bow, high heels boots, black boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, half_insertion, stretching, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_gripping_sheets, (pain:1.4), sobbing, tears_streaming, sweat, tears_streaming, drooling, (motion lines:1.3), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "k_bernina_default_04_sufrimiento": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424253,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_default",
+        0
+      ],
+      "positive": [
+        "p_bernina_default_04_sufrimiento",
+        0
+      ],
+      "negative": [
+        "neg_bernina_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_default_04_sufrimiento": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_default_04_sufrimiento",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_default_04_sufrimiento": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_default_04_sufrimiento",
+      "images": [
+        "d_bernina_default_04_sufrimiento",
+        0
+      ]
+    }
+  },
+  "p_bernina_default_05_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninadef, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), maid headdress, white shrug, puffy sleeves, wide sleeves, black dress, red dress, two-tone dress, hobble dress, long dress, layered dress, strapless, red o-ring, buttons, see-through cleavage, fishnet top, black gloves, fishnet gloves, black bow, high heels boots, black boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, tears_streaming, broken_spirit, defeated, sweat_drops, tears_streaming, drooling, (motion lines:1.4), (speed lines:1.3), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "k_bernina_default_05_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424253,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_default",
+        0
+      ],
+      "positive": [
+        "p_bernina_default_05_quebranto",
+        0
+      ],
+      "negative": [
+        "neg_bernina_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_default_05_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_default_05_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_default_05_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_default_05_quebranto",
+      "images": [
+        "d_bernina_default_05_quebranto",
+        0
+      ]
+    }
+  },
+  "p_bernina_default_06_ahegao_inicio": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninadef, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), maid headdress, white shrug, puffy sleeves, wide sleeves, black dress, red dress, two-tone dress, hobble dress, long dress, layered dress, strapless, red o-ring, buttons, see-through cleavage, fishnet top, black gloves, fishnet gloves, black bow, high heels boots, black boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), full_penetration, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, rolled_back_eyes, tongue_out, drooling, ahegao, sweat_drops, tears_of_pleasure, drooling, (motion lines:1.4), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "k_bernina_default_06_ahegao_inicio": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424253,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_default",
+        0
+      ],
+      "positive": [
+        "p_bernina_default_06_ahegao_inicio",
+        0
+      ],
+      "negative": [
+        "neg_bernina_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_default_06_ahegao_inicio": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_default_06_ahegao_inicio",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_default_06_ahegao_inicio": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_default_06_ahegao_inicio",
+      "images": [
+        "d_bernina_default_06_ahegao_inicio",
+        0
+      ]
+    }
+  },
+  "p_bernina_default_07_ahegao_total": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninadef, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), maid headdress, white shrug, puffy sleeves, wide sleeves, black dress, red dress, two-tone dress, hobble dress, long dress, layered dress, strapless, red o-ring, buttons, see-through cleavage, fishnet top, black gloves, fishnet gloves, black bow, high heels boots, black boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), balls_deep, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, ahegao, heart_pupils, mind_break, excessive_cum, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), (speed lines:1.4), impact_lines, sound_effects, onomatopoeia, japanese_text_sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "k_bernina_default_07_ahegao_total": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424253,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_default",
+        0
+      ],
+      "positive": [
+        "p_bernina_default_07_ahegao_total",
+        0
+      ],
+      "negative": [
+        "neg_bernina_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_default_07_ahegao_total": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_default_07_ahegao_total",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_default_07_ahegao_total": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_default_07_ahegao_total",
+      "images": [
+        "d_bernina_default_07_ahegao_total",
+        0
+      ]
+    }
+  },
+  "p_bernina_default_08_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninadef, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), maid headdress, white shrug, puffy sleeves, wide sleeves, black dress, red dress, two-tone dress, hobble dress, long dress, layered dress, strapless, red o-ring, buttons, see-through cleavage, fishnet top, black gloves, fishnet gloves, black bow, high heels boots, black boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, balls_deep, gaping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, blank_eyes, mind_break, tears_streaming, excessive_sweat, tears_streaming, drooling, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "k_bernina_default_08_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424253,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_default",
+        0
+      ],
+      "positive": [
+        "p_bernina_default_08_rota",
+        0
+      ],
+      "negative": [
+        "neg_bernina_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_default_08_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_default_08_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_default_08_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_default_08_rota",
+      "images": [
+        "d_bernina_default_08_rota",
+        0
+      ]
+    }
+  },
+  "p_bernina_default_09_destruida": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninadef, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), maid headdress, white shrug, puffy sleeves, wide sleeves, black dress, red dress, two-tone dress, hobble dress, long dress, layered dress, strapless, red o-ring, buttons, see-through cleavage, fishnet top, black gloves, fishnet gloves, black bow, high heels boots, black boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, gaping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, exhausted, crying, semen_on_body, cum_pool, excessive_sweat, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "k_bernina_default_09_destruida": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424253,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_default",
+        0
+      ],
+      "positive": [
+        "p_bernina_default_09_destruida",
+        0
+      ],
+      "negative": [
+        "neg_bernina_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_default_09_destruida": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_default_09_destruida",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_default_09_destruida": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_default_09_destruida",
+      "images": [
+        "d_bernina_default_09_destruida",
+        0
+      ]
+    }
+  },
+  "p_bernina_default_10_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninadef, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), maid headdress, white shrug, puffy sleeves, wide sleeves, black dress, red dress, two-tone dress, hobble dress, long dress, layered dress, strapless, red o-ring, buttons, see-through cleavage, fishnet top, black gloves, fishnet gloves, black bow, high heels boots, black boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, sleeping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, sleeping, tears_streaming, semen_on_face, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "k_bernina_default_10_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424253,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_default",
+        0
+      ],
+      "positive": [
+        "p_bernina_default_10_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg_bernina_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_default_10_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_default_10_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_default_10_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_default_10_inconsciente",
+      "images": [
+        "d_bernina_default_10_inconsciente",
+        0
+      ]
+    }
+  },
+  "clip_skip_bernina_bunny": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_bernina_bunny": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_bernina_bunny",
+        0
+      ],
+      "lora_name": "Stella-Bernina-v1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_bernina_bunny": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_bernina_bunny",
+        0
+      ],
+      "clip": [
+        "lora_char_bernina_bunny",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_bernina_bunny": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_bernina_bunny",
+        0
+      ],
+      "clip": [
+        "lora_depth_bernina_bunny",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_bernina_bunny": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_bernina_bunny",
+        0
+      ],
+      "clip": [
+        "lora_dp_bernina_bunny",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_bernina_bunny": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, tail, demon tail",
+      "clip": [
+        "lora_size_bernina_bunny",
+        1
+      ]
+    }
+  },
+  "p_bernina_bunny_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninabnuy, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), fake animal ears, rabbit ears, detached collar, red necktie, necktie between breasts, black leotard, strapless, highleg leotard, side-tie leotard, half gloves, black gloves, fishnet pantyhose, thigh belt, red high heels, tight clothes, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, scared, nervous_sweat, struggling, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_bunny",
+        1
+      ]
+    }
+  },
+  "k_bernina_bunny_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424254,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_bunny",
+        0
+      ],
+      "positive": [
+        "p_bernina_bunny_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg_bernina_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_bunny_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_bunny_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_bunny_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_bunny_01_miedo",
+      "images": [
+        "d_bernina_bunny_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_bernina_bunny_02_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninabnuy, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), fake animal ears, rabbit ears, detached collar, red necktie, necktie between breasts, black leotard, strapless, highleg leotard, side-tie leotard, half gloves, black gloves, fishnet pantyhose, thigh belt, red high heels, tight clothes, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, about_to_penetrate, penis_on_pussy, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, crying, (screaming:1.5), struggling, begging, sweat, tears_streaming, (motion lines:1.2), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_bunny",
+        1
+      ]
+    }
+  },
+  "k_bernina_bunny_02_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424254,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_bunny",
+        0
+      ],
+      "positive": [
+        "p_bernina_bunny_02_resistencia",
+        0
+      ],
+      "negative": [
+        "neg_bernina_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_bunny_02_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_bunny_02_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_bunny_02_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_bunny_02_resistencia",
+      "images": [
+        "d_bernina_bunny_02_resistencia",
+        0
+      ]
+    }
+  },
+  "p_bernina_bunny_03_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninabnuy, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), fake animal ears, rabbit ears, detached collar, red necktie, necktie between breasts, black leotard, strapless, highleg leotard, side-tie leotard, half gloves, black gloves, fishnet pantyhose, thigh belt, red high heels, tight clothes, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, tip_in_pussy, first_insertion, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_gripping_sheets, (pain:1.3), tears_streaming, screaming, sweat, tears_streaming, (motion lines:1.3), (speed lines:1.2), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_bunny",
+        1
+      ]
+    }
+  },
+  "k_bernina_bunny_03_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424254,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_bunny",
+        0
+      ],
+      "positive": [
+        "p_bernina_bunny_03_dolor",
+        0
+      ],
+      "negative": [
+        "neg_bernina_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_bunny_03_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_bunny_03_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_bunny_03_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_bunny_03_dolor",
+      "images": [
+        "d_bernina_bunny_03_dolor",
+        0
+      ]
+    }
+  },
+  "p_bernina_bunny_04_sufrimiento": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninabnuy, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), fake animal ears, rabbit ears, detached collar, red necktie, necktie between breasts, black leotard, strapless, highleg leotard, side-tie leotard, half gloves, black gloves, fishnet pantyhose, thigh belt, red high heels, tight clothes, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, half_insertion, stretching, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_gripping_sheets, (pain:1.4), sobbing, tears_streaming, sweat, tears_streaming, drooling, (motion lines:1.3), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_bunny",
+        1
+      ]
+    }
+  },
+  "k_bernina_bunny_04_sufrimiento": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424254,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_bunny",
+        0
+      ],
+      "positive": [
+        "p_bernina_bunny_04_sufrimiento",
+        0
+      ],
+      "negative": [
+        "neg_bernina_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_bunny_04_sufrimiento": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_bunny_04_sufrimiento",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_bunny_04_sufrimiento": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_bunny_04_sufrimiento",
+      "images": [
+        "d_bernina_bunny_04_sufrimiento",
+        0
+      ]
+    }
+  },
+  "p_bernina_bunny_05_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninabnuy, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), fake animal ears, rabbit ears, detached collar, red necktie, necktie between breasts, black leotard, strapless, highleg leotard, side-tie leotard, half gloves, black gloves, fishnet pantyhose, thigh belt, red high heels, tight clothes, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, tears_streaming, broken_spirit, defeated, sweat_drops, tears_streaming, drooling, (motion lines:1.4), (speed lines:1.3), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_bunny",
+        1
+      ]
+    }
+  },
+  "k_bernina_bunny_05_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424254,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_bunny",
+        0
+      ],
+      "positive": [
+        "p_bernina_bunny_05_quebranto",
+        0
+      ],
+      "negative": [
+        "neg_bernina_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_bunny_05_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_bunny_05_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_bunny_05_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_bunny_05_quebranto",
+      "images": [
+        "d_bernina_bunny_05_quebranto",
+        0
+      ]
+    }
+  },
+  "p_bernina_bunny_06_ahegao_inicio": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninabnuy, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), fake animal ears, rabbit ears, detached collar, red necktie, necktie between breasts, black leotard, strapless, highleg leotard, side-tie leotard, half gloves, black gloves, fishnet pantyhose, thigh belt, red high heels, tight clothes, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), full_penetration, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, rolled_back_eyes, tongue_out, drooling, ahegao, sweat_drops, tears_of_pleasure, drooling, (motion lines:1.4), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_bunny",
+        1
+      ]
+    }
+  },
+  "k_bernina_bunny_06_ahegao_inicio": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424254,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_bunny",
+        0
+      ],
+      "positive": [
+        "p_bernina_bunny_06_ahegao_inicio",
+        0
+      ],
+      "negative": [
+        "neg_bernina_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_bunny_06_ahegao_inicio": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_bunny_06_ahegao_inicio",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_bunny_06_ahegao_inicio": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_bunny_06_ahegao_inicio",
+      "images": [
+        "d_bernina_bunny_06_ahegao_inicio",
+        0
+      ]
+    }
+  },
+  "p_bernina_bunny_07_ahegao_total": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninabnuy, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), fake animal ears, rabbit ears, detached collar, red necktie, necktie between breasts, black leotard, strapless, highleg leotard, side-tie leotard, half gloves, black gloves, fishnet pantyhose, thigh belt, red high heels, tight clothes, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), balls_deep, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, ahegao, heart_pupils, mind_break, excessive_cum, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), (speed lines:1.4), impact_lines, sound_effects, onomatopoeia, japanese_text_sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_bunny",
+        1
+      ]
+    }
+  },
+  "k_bernina_bunny_07_ahegao_total": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424254,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_bunny",
+        0
+      ],
+      "positive": [
+        "p_bernina_bunny_07_ahegao_total",
+        0
+      ],
+      "negative": [
+        "neg_bernina_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_bunny_07_ahegao_total": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_bunny_07_ahegao_total",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_bunny_07_ahegao_total": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_bunny_07_ahegao_total",
+      "images": [
+        "d_bernina_bunny_07_ahegao_total",
+        0
+      ]
+    }
+  },
+  "p_bernina_bunny_08_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninabnuy, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), fake animal ears, rabbit ears, detached collar, red necktie, necktie between breasts, black leotard, strapless, highleg leotard, side-tie leotard, half gloves, black gloves, fishnet pantyhose, thigh belt, red high heels, tight clothes, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, balls_deep, gaping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, blank_eyes, mind_break, tears_streaming, excessive_sweat, tears_streaming, drooling, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_bunny",
+        1
+      ]
+    }
+  },
+  "k_bernina_bunny_08_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424254,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_bunny",
+        0
+      ],
+      "positive": [
+        "p_bernina_bunny_08_rota",
+        0
+      ],
+      "negative": [
+        "neg_bernina_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_bunny_08_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_bunny_08_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_bunny_08_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_bunny_08_rota",
+      "images": [
+        "d_bernina_bunny_08_rota",
+        0
+      ]
+    }
+  },
+  "p_bernina_bunny_09_destruida": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninabnuy, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), fake animal ears, rabbit ears, detached collar, red necktie, necktie between breasts, black leotard, strapless, highleg leotard, side-tie leotard, half gloves, black gloves, fishnet pantyhose, thigh belt, red high heels, tight clothes, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, gaping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, exhausted, crying, semen_on_body, cum_pool, excessive_sweat, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_bunny",
+        1
+      ]
+    }
+  },
+  "k_bernina_bunny_09_destruida": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424254,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_bunny",
+        0
+      ],
+      "positive": [
+        "p_bernina_bunny_09_destruida",
+        0
+      ],
+      "negative": [
+        "neg_bernina_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_bunny_09_destruida": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_bunny_09_destruida",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_bunny_09_destruida": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_bunny_09_destruida",
+      "images": [
+        "d_bernina_bunny_09_destruida",
+        0
+      ]
+    }
+  },
+  "p_bernina_bunny_10_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninabnuy, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), fake animal ears, rabbit ears, detached collar, red necktie, necktie between breasts, black leotard, strapless, highleg leotard, side-tie leotard, half gloves, black gloves, fishnet pantyhose, thigh belt, red high heels, tight clothes, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, sleeping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, sleeping, tears_streaming, semen_on_face, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_bunny",
+        1
+      ]
+    }
+  },
+  "k_bernina_bunny_10_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424254,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_bunny",
+        0
+      ],
+      "positive": [
+        "p_bernina_bunny_10_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg_bernina_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_bunny_10_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_bunny_10_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_bunny_10_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_bernina_bunny_10_inconsciente",
+      "images": [
+        "d_bernina_bunny_10_inconsciente",
+        0
+      ]
+    }
+  },
+  "clip_skip_reisen": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_reisen": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_reisen",
+        0
+      ],
+      "lora_name": "Reisen_ridge_-_Stella_Sora.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_reisen": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_reisen",
+        0
+      ],
+      "clip": [
+        "lora_char_reisen",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_reisen": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_reisen",
+        0
+      ],
+      "clip": [
+        "lora_depth_reisen",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_reisen": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_reisen",
+        0
+      ],
+      "clip": [
+        "lora_dp_reisen",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_reisen": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "p_reisen_01_miedo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ReisenStellaS, 1girl, blonde hair, antenna hair, very long hair, low-tied long hair, yellow eyes, thick thighs, large breasts, mask on head, plague doctor mask, goggles, goggles on head, jacket, black jacket, open jacket, bowtie, black bowtie, white shirt, underbust, brown belt, shorts, black shorts, white thighhighs, skindentation, black boots, fold-over boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (imminent penetration:1.2), reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, scared, nervous_sweat, struggling, nervous_sweat, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "k_reisen_01_miedo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424255,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_reisen",
+        0
+      ],
+      "positive": [
+        "p_reisen_01_miedo",
+        0
+      ],
+      "negative": [
+        "neg_reisen",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reisen_01_miedo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reisen_01_miedo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reisen_01_miedo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_reisen_01_miedo",
+      "images": [
+        "d_reisen_01_miedo",
+        0
+      ]
+    }
+  },
+  "p_reisen_02_resistencia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ReisenStellaS, 1girl, blonde hair, antenna hair, very long hair, low-tied long hair, yellow eyes, thick thighs, large breasts, mask on head, plague doctor mask, goggles, goggles on head, jacket, black jacket, open jacket, bowtie, black bowtie, white shirt, underbust, brown belt, shorts, black shorts, white thighhighs, skindentation, black boots, fold-over boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, about_to_penetrate, penis_on_pussy, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, crying, (screaming:1.5), struggling, begging, sweat, tears_streaming, (motion lines:1.2), dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "k_reisen_02_resistencia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424255,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_reisen",
+        0
+      ],
+      "positive": [
+        "p_reisen_02_resistencia",
+        0
+      ],
+      "negative": [
+        "neg_reisen",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reisen_02_resistencia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reisen_02_resistencia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reisen_02_resistencia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_reisen_02_resistencia",
+      "images": [
+        "d_reisen_02_resistencia",
+        0
+      ]
+    }
+  },
+  "p_reisen_03_dolor": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ReisenStellaS, 1girl, blonde hair, antenna hair, very long hair, low-tied long hair, yellow eyes, thick thighs, large breasts, mask on head, plague doctor mask, goggles, goggles on head, jacket, black jacket, open jacket, bowtie, black bowtie, white shirt, underbust, brown belt, shorts, black shorts, white thighhighs, skindentation, black boots, fold-over boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, tip_in_pussy, first_insertion, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_gripping_sheets, (pain:1.3), tears_streaming, screaming, sweat, tears_streaming, (motion lines:1.3), (speed lines:1.2), sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "k_reisen_03_dolor": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424255,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_reisen",
+        0
+      ],
+      "positive": [
+        "p_reisen_03_dolor",
+        0
+      ],
+      "negative": [
+        "neg_reisen",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reisen_03_dolor": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reisen_03_dolor",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reisen_03_dolor": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_reisen_03_dolor",
+      "images": [
+        "d_reisen_03_dolor",
+        0
+      ]
+    }
+  },
+  "p_reisen_04_sufrimiento": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ReisenStellaS, 1girl, blonde hair, antenna hair, very long hair, low-tied long hair, yellow eyes, thick thighs, large breasts, mask on head, plague doctor mask, goggles, goggles on head, jacket, black jacket, open jacket, bowtie, black bowtie, white shirt, underbust, brown belt, shorts, black shorts, white thighhighs, skindentation, black boots, fold-over boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, half_insertion, stretching, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_gripping_sheets, (pain:1.4), sobbing, tears_streaming, sweat, tears_streaming, drooling, (motion lines:1.3), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "k_reisen_04_sufrimiento": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424255,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_reisen",
+        0
+      ],
+      "positive": [
+        "p_reisen_04_sufrimiento",
+        0
+      ],
+      "negative": [
+        "neg_reisen",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reisen_04_sufrimiento": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reisen_04_sufrimiento",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reisen_04_sufrimiento": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_reisen_04_sufrimiento",
+      "images": [
+        "d_reisen_04_sufrimiento",
+        0
+      ]
+    }
+  },
+  "p_reisen_05_quebranto": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ReisenStellaS, 1girl, blonde hair, antenna hair, very long hair, low-tied long hair, yellow eyes, thick thighs, large breasts, mask on head, plague doctor mask, goggles, goggles on head, jacket, black jacket, open jacket, bowtie, black bowtie, white shirt, underbust, brown belt, shorts, black shorts, white thighhighs, skindentation, black boots, fold-over boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.3), reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, tears_streaming, broken_spirit, defeated, sweat_drops, tears_streaming, drooling, (motion lines:1.4), (speed lines:1.3), sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "k_reisen_05_quebranto": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424255,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_reisen",
+        0
+      ],
+      "positive": [
+        "p_reisen_05_quebranto",
+        0
+      ],
+      "negative": [
+        "neg_reisen",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reisen_05_quebranto": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reisen_05_quebranto",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reisen_05_quebranto": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_reisen_05_quebranto",
+      "images": [
+        "d_reisen_05_quebranto",
+        0
+      ]
+    }
+  },
+  "p_reisen_06_ahegao_inicio": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ReisenStellaS, 1girl, blonde hair, antenna hair, very long hair, low-tied long hair, yellow eyes, thick thighs, large breasts, mask on head, plague doctor mask, goggles, goggles on head, jacket, black jacket, open jacket, bowtie, black bowtie, white shirt, underbust, brown belt, shorts, black shorts, white thighhighs, skindentation, black boots, fold-over boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), full_penetration, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, rolled_back_eyes, tongue_out, drooling, ahegao, sweat_drops, tears_of_pleasure, drooling, (motion lines:1.4), impact_lines, sound_effects, onomatopoeia, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "k_reisen_06_ahegao_inicio": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424255,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_reisen",
+        0
+      ],
+      "positive": [
+        "p_reisen_06_ahegao_inicio",
+        0
+      ],
+      "negative": [
+        "neg_reisen",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reisen_06_ahegao_inicio": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reisen_06_ahegao_inicio",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reisen_06_ahegao_inicio": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_reisen_06_ahegao_inicio",
+      "images": [
+        "d_reisen_06_ahegao_inicio",
+        0
+      ]
+    }
+  },
+  "p_reisen_07_ahegao_total": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ReisenStellaS, 1girl, blonde hair, antenna hair, very long hair, low-tied long hair, yellow eyes, thick thighs, large breasts, mask on head, plague doctor mask, goggles, goggles on head, jacket, black jacket, open jacket, bowtie, black bowtie, white shirt, underbust, brown belt, shorts, black shorts, white thighhighs, skindentation, black boots, fold-over boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.5), balls_deep, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_on_floor, ahegao, heart_pupils, mind_break, excessive_cum, creampie, excessive_sweat, tears_of_pleasure, drooling, (motion lines:1.5), (speed lines:1.4), impact_lines, sound_effects, onomatopoeia, japanese_text_sound_effects, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "k_reisen_07_ahegao_total": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424255,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_reisen",
+        0
+      ],
+      "positive": [
+        "p_reisen_07_ahegao_total",
+        0
+      ],
+      "negative": [
+        "neg_reisen",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reisen_07_ahegao_total": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reisen_07_ahegao_total",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reisen_07_ahegao_total": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_reisen_07_ahegao_total",
+      "images": [
+        "d_reisen_07_ahegao_total",
+        0
+      ]
+    }
+  },
+  "p_reisen_08_rota": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ReisenStellaS, 1girl, blonde hair, antenna hair, very long hair, low-tied long hair, yellow eyes, thick thighs, large breasts, mask on head, plague doctor mask, goggles, goggles on head, jacket, black jacket, open jacket, bowtie, black bowtie, white shirt, underbust, brown belt, shorts, black shorts, white thighhighs, skindentation, black boots, fold-over boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, balls_deep, gaping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, blank_eyes, mind_break, tears_streaming, excessive_sweat, tears_streaming, drooling, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "k_reisen_08_rota": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424255,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_reisen",
+        0
+      ],
+      "positive": [
+        "p_reisen_08_rota",
+        0
+      ],
+      "negative": [
+        "neg_reisen",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reisen_08_rota": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reisen_08_rota",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reisen_08_rota": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_reisen_08_rota",
+      "images": [
+        "d_reisen_08_rota",
+        0
+      ]
+    }
+  },
+  "p_reisen_09_destruida": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ReisenStellaS, 1girl, blonde hair, antenna hair, very long hair, low-tied long hair, yellow eyes, thick thighs, large breasts, mask on head, plague doctor mask, goggles, goggles on head, jacket, black jacket, open jacket, bowtie, black bowtie, white shirt, underbust, brown belt, shorts, black shorts, white thighhighs, skindentation, black boots, fold-over boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, gaping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, exhausted, crying, semen_on_body, cum_pool, excessive_sweat, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "k_reisen_09_destruida": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424255,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_reisen",
+        0
+      ],
+      "positive": [
+        "p_reisen_09_destruida",
+        0
+      ],
+      "negative": [
+        "neg_reisen",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reisen_09_destruida": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reisen_09_destruida",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reisen_09_destruida": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_reisen_09_destruida",
+      "images": [
+        "d_reisen_09_destruida",
+        0
+      ]
+    }
+  },
+  "p_reisen_10_inconsciente": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ReisenStellaS, 1girl, blonde hair, antenna hair, very long hair, low-tied long hair, yellow eyes, thick thighs, large breasts, mask on head, plague doctor mask, goggles, goggles on head, jacket, black jacket, open jacket, bowtie, black bowtie, white shirt, underbust, brown belt, shorts, black shorts, white thighhighs, skindentation, black boots, fold-over boots, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, after_sex, sleeping, reverse_cowgirl, girl_on_top, facing_away, looking_back, front_view, hands_resting, limp_arms, sleeping, tears_streaming, semen_on_face, dried_tears, semen_on_body, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "k_reisen_10_inconsciente": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424255,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_reisen",
+        0
+      ],
+      "positive": [
+        "p_reisen_10_inconsciente",
+        0
+      ],
+      "negative": [
+        "neg_reisen",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reisen_10_inconsciente": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reisen_10_inconsciente",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reisen_10_inconsciente": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "revcowgirl_reisen_10_inconsciente",
+      "images": [
+        "d_reisen_10_inconsciente",
+        0
+      ]
+    }
+  }
+}

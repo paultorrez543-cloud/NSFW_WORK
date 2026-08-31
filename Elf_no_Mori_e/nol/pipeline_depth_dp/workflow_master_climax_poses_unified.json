@@ -1,0 +1,358 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "lora_name": "Nol_Youkoso_Sukebe_Elf_no_Mori_e.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0,
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "lora_dp": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 0.65,
+      "strength_clip": 0.65,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "lowres, bad anatomy, bad hands, deformed, extra digits, (bright lighting, bright room, daylight, sunlight, high key, well-lit, illuminated room, bright lamps, oversaturated, hyper-saturated, vivid colors, neon lighting:1.5), (blue light, blue tint, blue hue, blue room, blue lighting, cool lighting, cyan tint, blue background cast, cool color cast:1.4)",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "latent_base": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "p_pose_1_missionary": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "k_pose_1_missionary": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_depth_deep",
+        0
+      ],
+      "positive": [
+        "p_pose_1_missionary",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_base",
+        0
+      ]
+    }
+  },
+  "d_pose_1_missionary": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_pose_1_missionary",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_pose_1_missionary": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "climax_unified_01_missionary",
+      "images": [
+        "d_pose_1_missionary",
+        0
+      ]
+    }
+  },
+  "p_pose_2_doggystyle": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "k_pose_2_doggystyle": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_depth_deep",
+        0
+      ],
+      "positive": [
+        "p_pose_2_doggystyle",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_pose_1_missionary",
+        0
+      ]
+    }
+  },
+  "d_pose_2_doggystyle": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_pose_2_doggystyle",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_pose_2_doggystyle": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "climax_unified_02_doggystyle",
+      "images": [
+        "d_pose_2_doggystyle",
+        0
+      ]
+    }
+  },
+  "p_pose_3_cowgirl": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "k_pose_3_cowgirl": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_depth_deep",
+        0
+      ],
+      "positive": [
+        "p_pose_3_cowgirl",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_pose_2_doggystyle",
+        0
+      ]
+    }
+  },
+  "d_pose_3_cowgirl": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_pose_3_cowgirl",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_pose_3_cowgirl": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "climax_unified_03_cowgirl",
+      "images": [
+        "d_pose_3_cowgirl",
+        0
+      ]
+    }
+  },
+  "p_pose_4_prone_bone": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "k_pose_4_prone_bone": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_depth_deep",
+        0
+      ],
+      "positive": [
+        "p_pose_4_prone_bone",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_pose_3_cowgirl",
+        0
+      ]
+    }
+  },
+  "d_pose_4_prone_bone": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_pose_4_prone_bone",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_pose_4_prone_bone": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "climax_unified_04_prone_bone",
+      "images": [
+        "d_pose_4_prone_bone",
+        0
+      ]
+    }
+  },
+  "p_pose_5_standing": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "k_pose_5_standing": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "lora_depth_deep",
+        0
+      ],
+      "positive": [
+        "p_pose_5_standing",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "k_pose_4_prone_bone",
+        0
+      ]
+    }
+  },
+  "d_pose_5_standing": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_pose_5_standing",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_pose_5_standing": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "climax_unified_05_standing",
+      "images": [
+        "d_pose_5_standing",
+        0
+      ]
+    }
+  }
+}

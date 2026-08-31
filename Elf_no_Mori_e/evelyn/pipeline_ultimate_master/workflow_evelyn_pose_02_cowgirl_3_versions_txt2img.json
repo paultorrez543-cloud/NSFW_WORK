@@ -1,0 +1,254 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "latent_base": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "lora_name": "evelyn_celebrian-koto-illustrious.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8,
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "lora_ugly": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "lora_name": "faceless-ugly-man-illustriousxl-lora-nochekaiser.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "lora_cowgirl": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "lora_name": "cowgirl_position.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8,
+      "model": [
+        "lora_ugly",
+        0
+      ],
+      "clip": [
+        "lora_ugly",
+        1
+      ]
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "lowres, bad anatomy, bad hands, deformed, extra digits, (bright lighting, bright room, daylight, sunlight, high key, well-lit, illuminated room, bright lamps, oversaturated, hyper-saturated, vivid colors, neon lighting:1.5), (blue light, blue tint, blue hue, blue room, blue lighting, cool lighting, cyan tint, blue background cast, cool color cast:1.4), (fair skin, light skin, pale skin, white skin, pale female skin, light-skinned female:1.4)",
+      "clip": [
+        "lora_cowgirl",
+        1
+      ]
+    }
+  },
+  "p_v1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, cowgirl_position, riding_position, female_on_top, straddling, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), shadow on body, shaded, low key, natural skin tones, blushing, open mouth, slight sweat, anticipation, hands_on_male_chest",
+      "clip": [
+        "lora_cowgirl",
+        1
+      ]
+    }
+  },
+  "k_v1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424241,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_cowgirl",
+        0
+      ],
+      "positive": [
+        "p_v1",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_base",
+        0
+      ]
+    }
+  },
+  "d_v1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_v1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_v1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_cowgirl/v1_inicio/evelyn_v1",
+      "images": [
+        "d_v1",
+        0
+      ]
+    }
+  },
+  "p_v2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, cowgirl_position, riding_position, female_on_top, straddling, bouncing, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), shadow on body, shaded, low key, natural skin tones, penetration, motion_lines, speed_lines, intense_sex, sweating, heavy_breathing, drooling, open_mouth, rolled_back_eyes, ahegao",
+      "clip": [
+        "lora_cowgirl",
+        1
+      ]
+    }
+  },
+  "k_v2": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_cowgirl",
+        0
+      ],
+      "positive": [
+        "p_v2",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_base",
+        0
+      ]
+    }
+  },
+  "d_v2": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_v2",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_v2": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_cowgirl/v2_movimiento/evelyn_v2",
+      "images": [
+        "d_v2",
+        0
+      ]
+    }
+  },
+  "p_v3": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, evelyn, evelycede, 1girl, huge breasts, dark elf, dark-skinned female, pointy ears, yellow eyes, sidelocks, white hair, blunt bangs, tress ribbon, hair ribbon, red ribbon, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, cowgirl_position, riding_position, female_on_top, straddling, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), shadow on body, shaded, low key, natural skin tones, climax, orgasmic_expression, heart_pupils, ahegao, tongue_out, drooling_from_mouth, tears_of_pleasure, sound_effects, sound_effect, onomatopoeia, Japanese_text_sound_effects, excessive_cum, creampie",
+      "clip": [
+        "lora_cowgirl",
+        1
+      ]
+    }
+  },
+  "k_v3": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424243,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_cowgirl",
+        0
+      ],
+      "positive": [
+        "p_v3",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_base",
+        0
+      ]
+    }
+  },
+  "d_v3": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_v3",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_v3": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "evelyn_cowgirl/v3_climax/evelyn_v3",
+      "images": [
+        "d_v3",
+        0
+      ]
+    }
+  }
+}

@@ -1,0 +1,410 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "lora_name": "lancelot_illustrious.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8
+    }
+  },
+  "lora_face": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "Face_Detailed_v2.safetensors",
+      "strength_model": 0.85,
+      "strength_clip": 0.85
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "lowres, bad anatomy, bad eyes, deformed eyes, extra eyes, crossed eyes, bad hands, extra fingers, worst_quality, blurry, ugly, censored, thick lines, black outlines, lineart, heavy_linework, dark_lines, cel_shading",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "100": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, lancelot, lancelot_skin2, hair_ornament, navel, swimsuit, flower, hair_flower, huge_breasts, mole_under_mouth, slingshot_swimsuit, cowgirl_position, girl_on_top, straddling, penis_on_pussy, about_to_penetrate, eye_contact, blush, tension, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, simple background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "101": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "102": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 35,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "100",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "101",
+        0
+      ]
+    }
+  },
+  "103": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "102",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "104": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "workflow_img2img_cowgirl/01_imminent",
+      "images": [
+        "103",
+        0
+      ]
+    }
+  },
+  "105": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, lancelot, lancelot_skin2, hair_ornament, navel, swimsuit, flower, hair_flower, huge_breasts, mole_under_mouth, slingshot_swimsuit, cowgirl_position, girl_on_top, straddling, vaginal, first_insertion, stretching, pain, tears, gripping, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, simple background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "106": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "104",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "107": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 25,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 0.4,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "105",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "106",
+        0
+      ]
+    }
+  },
+  "108": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "107",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "109": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "workflow_img2img_cowgirl/02_entry",
+      "images": [
+        "108",
+        0
+      ]
+    }
+  },
+  "110": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, lancelot, lancelot_skin2, hair_ornament, navel, swimsuit, flower, hair_flower, huge_breasts, mole_under_mouth, slingshot_swimsuit, cowgirl_position, girl_on_top, straddling, vaginal, thrusting, bouncing, ahegao, hands_on_chest, dominant, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, simple background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "111": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "109",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "112": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 25,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 0.4,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "110",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "111",
+        0
+      ]
+    }
+  },
+  "113": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "112",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "114": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "workflow_img2img_cowgirl/03_riding",
+      "images": [
+        "113",
+        0
+      ]
+    }
+  },
+  "115": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, lancelot, lancelot_skin2, hair_ornament, navel, swimsuit, flower, hair_flower, huge_breasts, mole_under_mouth, slingshot_swimsuit, cowgirl_position, girl_on_top, straddling, vaginal, deep, balls_deep, ahegao, rolled_back_eyes, drooling, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, simple background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "116": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "114",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "117": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 25,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 0.4,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "115",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "116",
+        0
+      ]
+    }
+  },
+  "118": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "117",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "119": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "workflow_img2img_cowgirl/04_deep",
+      "images": [
+        "118",
+        0
+      ]
+    }
+  },
+  "120": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, lancelot, lancelot_skin2, hair_ornament, navel, swimsuit, flower, hair_flower, huge_breasts, mole_under_mouth, slingshot_swimsuit, cowgirl_position, girl_on_top, straddling, climax, cum_in_pussy, creampie, forced_orgasm, convulsing, arched_back, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, simple background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "121": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "119",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "122": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 25,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 0.4,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "120",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "121",
+        0
+      ]
+    }
+  },
+  "123": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "122",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "124": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "workflow_img2img_cowgirl/05_climax",
+      "images": [
+        "123",
+        0
+      ]
+    }
+  }
+}

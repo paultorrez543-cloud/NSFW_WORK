@@ -1,0 +1,406 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "lora_name": "pyra_xenoblade.safetensors",
+      "strength_model": 1,
+      "strength_clip": 1
+    }
+  },
+  "lora_comic": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "hentai_comic_generator.safetensors",
+      "strength_model": 0.35,
+      "strength_clip": 0.35
+    }
+  },
+  "lora_detail": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_comic",
+        0
+      ],
+      "clip": [
+        "lora_comic",
+        1
+      ],
+      "lora_name": "add-detail-xl.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "stand, full body standing, Character illustration, text_bubbles, speech_bubble, dialogue, onomatopoeia, japanese_text, english_text, white_box, text_box, letter, word, nude, naked, exposed_breasts, exposed_pussy, completely_nude, lowres, bad_anatomy, bad_hands, extra_fingers, worst_quality, blurry, ugly, censored, mosaic, watermark, text, male_face, male_head, male_eyes, male_hair, male_beard, shiny_skin, wet_skin, glossy, plastic, doll_joints, mannequin, blended_features, male_with_female_clothing, male_with_breasts, male_wearing_dress, male_with_long_hair, crossdressing, feminine_male, effeminate, flat_colors, simple_background, 3d_render, cgi, ai_generated, smooth, airbrushed, perfect_anatomy, flawless_skin, bloom, glowing, masterpiece, best_quality, absurdres, ultra_detailed",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "10": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "prsum, red eyes, red hair, short hair, tiara, earrings, chest jewel, large breasts, 1girl, one-piece swimsuit, clothes_lift, clothes_pulled_aside, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, mating_press, folded, shoulders_pressed, legs_on_shoulders, pinned, deep, both_erect, penis_presented, penis_on_pussy, penis_on_anus, imminent_double, about_to_penetrate, nervous, anticipation, blush, sweat, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "11": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "12": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 5555,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "10",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "11",
+        0
+      ]
+    }
+  },
+  "13": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "12",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "14": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pyra_nor_dp_mating_press_inicio",
+      "images": [
+        "13",
+        0
+      ]
+    }
+  },
+  "15": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "prsum, red eyes, red hair, short hair, tiara, earrings, chest jewel, large breasts, 1girl, one-piece swimsuit, clothes_lift, clothes_pulled_aside, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, mating_press, folded, shoulders_pressed, legs_on_shoulders, pinned, deep, double_penetration, simultaneous_insertion, both_holes, tip_in_pussy, tip_in_ass, first_insertion, stretching, pain, tears, screaming, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "16": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "17": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 5555,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "15",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "16",
+        0
+      ]
+    }
+  },
+  "18": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "17",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "19": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pyra_nor_dp_mating_press_entrada",
+      "images": [
+        "18",
+        0
+      ]
+    }
+  },
+  "20": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "prsum, red eyes, red hair, short hair, tiara, earrings, chest jewel, large breasts, 1girl, one-piece swimsuit, clothes_lift, clothes_pulled_aside, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, mating_press, folded, shoulders_pressed, legs_on_shoulders, pinned, deep, double_penetration, vaginal, anal, deep, balls_deep, full_insertion, both_holes, pussy_and_ass, thrusting, ahegao, rolled_back_eyes, drooling, forced_orgasm, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "21": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "22": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 5555,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "20",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "21",
+        0
+      ]
+    }
+  },
+  "23": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "22",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "24": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pyra_nor_dp_mating_press_penetrada",
+      "images": [
+        "23",
+        0
+      ]
+    }
+  },
+  "25": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "prsum, red eyes, red hair, short hair, tiara, earrings, chest jewel, large breasts, 1girl, one-piece swimsuit, clothes_lift, clothes_pulled_aside, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, mating_press, folded, shoulders_pressed, legs_on_shoulders, pinned, deep, double_penetration, climax, vaginal, anal, cum, cum_in_pussy, cum_in_ass, both_cumming, ahegao, forced_orgasm, mind_break, convulsing, heavy_sweat, excessive_cum, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "26": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "27": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 5555,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "25",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "26",
+        0
+      ]
+    }
+  },
+  "28": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "27",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "29": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pyra_nor_dp_mating_press_final",
+      "images": [
+        "28",
+        0
+      ]
+    }
+  },
+  "30": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "prsum, red eyes, red hair, short hair, tiara, earrings, chest jewel, large breasts, 1girl, one-piece swimsuit, clothes_lift, clothes_pulled_aside, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, short_hair, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, focus_foreground, mating_press, folded, shoulders_pressed, legs_on_shoulders, pinned, deep, double_penetration, x-ray, internal_shot, cross-section, vaginal, anal, deep, both_holes, penis_inside, stomach_bulge, internal_cumshot, cum_in_pussy, cum_in_ass, ahegao, mind_break, Hentai comic style, multi-view, 2-4 panels, detailed_face, good_facial_details, (focus lines:1.3), (vibration lines:1.3), sound effects, comic-style facial expressions, bedroom, bed, dark_room, dim_lighting, film_grain, doujin_style, depth_of_field, matte_skin, vivid_colors, high_contrast, sharp_focus, doujin_style, film_grain, depth_of_field, matte_skin, detailed_background, detailed_skin, detailed_eyes, detailed_face, good_facial_details, eyelashes, detailed_eyelashes, hair_detail, sweaty, moist_skin, veins, muscle_lines, long_eyelashes, natural_lighting, (blurred background:1.3), (bokeh:0.3)",
+      "clip": [
+        "lora_detail",
+        1
+      ]
+    }
+  },
+  "31": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "32": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 5555,
+      "steps": 20,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_detail",
+        0
+      ],
+      "positive": [
+        "30",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "31",
+        0
+      ]
+    }
+  },
+  "33": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "32",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "34": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "pyra_nor_dp_mating_press_xray",
+      "images": [
+        "33",
+        0
+      ]
+    }
+  }
+}

@@ -1,0 +1,669 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "UnholyDesireMixSinisterAesthetic_V5_Illustrious.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "lora_name": "ryuuou_kiyotaki_keika.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8
+    }
+  },
+  "lora_face": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_style",
+        0
+      ],
+      "clip": [
+        "lora_style",
+        1
+      ],
+      "lora_name": "Face_Detailed_v2.safetensors",
+      "strength_model": 0.85,
+      "strength_clip": 0.85
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "lowres, bad anatomy, bad eyes, deformed eyes, asymmetrical_eyes, different_sized_eyes, bad hands, extra fingers, worst_quality, blurry, ugly, censored, thick lines, black outlines, lineart, (deformed:1.5), (bad hand:1.3), extra finger, mutated, bad eyes, poorly drawn face, character fusion, fused males, merged males, conjoined twins, connected bodies, double heads, duplicate limbs, fused bodies, (duplicate panties:1.4), (multiple panties:1.4), (two panties:1.4), extra underwear, duplicate bra, wrong hair length, mutated hair, mature, old woman, hag, wrinkled skin, adult female, semi-realistic, 3d, 3d render, photorealistic, realistic, real life, 3d model, cg render, photography, black_hair",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "p100": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "unholy-aesthetic, unholy-detailing, soft lighting, dramatic lighting, dim lighting, reflections, masterpiece, best_quality, absurdres, Kiyotaki Keika, 1girl, brown hair, short_hair, hair_scrunchy, hoodie, casual, cowgirl_position, girl_on_top, straddling, warm candlelight, soft lighting, blush, neat_hair, smooth_skin, looking at viewer, eye_contact, eye_level, full_body, steamy_atmosphere, simple background, dark background, gradient background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "e100": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "k100": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 798040526,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "p100",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e100",
+        0
+      ],
+      "control_after_generate": "increment"
+    }
+  },
+  "d100": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k100",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "base": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "keika_kiyotaki_scene/00_base",
+      "images": [
+        "d100",
+        0
+      ]
+    }
+  },
+  "200": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Kiyotaki Keika, 1girl, adult, (brown_hair:1.2), long_hair, ponytail, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, cowgirl_position, girl_on_top, straddling, clothes_lift, skirt_lift, panty_pull_aside, clothes_pulled_aside, penis_presented, penis_on_pussy, about_to_penetrate, tension, black_lace_panties, warm candlelight, soft golden glow, intimate bedroom lighting, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), shadows on body, unholy-aesthetic, unholy-detailing, flushed_face, sweat, heavy_breathing, anime, anime style, 2d, anime artwork, anime coloring, cel shading, vibrant colors, detailed anime style, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "201": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "base",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "202": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.65,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "200",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "201",
+        0
+      ],
+      "control_after_generate": "increment"
+    }
+  },
+  "203": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "202",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "204": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "keika_kiyotaki_scene/01_inminente",
+      "images": [
+        "203",
+        0
+      ]
+    }
+  },
+  "205": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Kiyotaki Keika, 1girl, adult, (brown_hair:1.2), long_hair, ponytail, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, cowgirl_position, girl_on_top, straddling, clothes_lift, skirt_lift, panty_pull_aside, clothes_pulled_aside, tip_in_pussy, first_insertion, stretching, moist_air, black_lace_panties, warm candlelight, soft golden glow, intimate bedroom lighting, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), shadows on body, unholy-aesthetic, unholy-detailing, flushed_face, sweat, heavy_breathing, anime, anime style, 2d, anime artwork, anime coloring, cel shading, vibrant colors, detailed anime style, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "206": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "203",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "207": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.65,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "205",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "206",
+        0
+      ],
+      "control_after_generate": "increment"
+    }
+  },
+  "208": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "207",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "209": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "keika_kiyotaki_scene/02_punta",
+      "images": [
+        "208",
+        0
+      ]
+    }
+  },
+  "210": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Kiyotaki Keika, 1girl, adult, (brown_hair:1.2), long_hair, ponytail, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, cowgirl_position, girl_on_top, straddling, bouncing, thrusting, clothes_lift, skirt_lift, panty_pull_aside, clothes_pulled_aside, vaginal_penetration, deep_penetration, full_insertion, moaning, heavy_breathing, black_lace_panties, warm candlelight, soft golden glow, intimate bedroom lighting, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), shadows on body, unholy-aesthetic, unholy-detailing, flushed_face, sweat, heavy_breathing, anime, anime style, 2d, anime artwork, anime coloring, cel shading, vibrant colors, detailed anime style, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "211": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "208",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "212": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.65,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "210",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "211",
+        0
+      ],
+      "control_after_generate": "increment"
+    }
+  },
+  "213": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "212",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "214": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "keika_kiyotaki_scene/03_entrada_total",
+      "images": [
+        "213",
+        0
+      ]
+    }
+  },
+  "215": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Kiyotaki Keika, 1girl, adult, (brown_hair:1.2), long_hair, ponytail, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, cowgirl_position, girl_on_top, straddling, bouncing, thrusting, clothes_lift, skirt_lift, panty_pull_aside, clothes_pulled_aside, climax, vaginal_penetration, ahegao, rolled_back_eyes, tongue_out, drooling, forced_orgasm, black_lace_panties, warm candlelight, soft golden glow, intimate bedroom lighting, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), shadows on body, unholy-aesthetic, unholy-detailing, flushed_face, sweat, heavy_breathing, anime, anime style, 2d, anime artwork, anime coloring, cel shading, vibrant colors, detailed anime style, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "216": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "213",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "217": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.65,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "215",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "216",
+        0
+      ],
+      "control_after_generate": "increment"
+    }
+  },
+  "218": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "217",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "219": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "keika_kiyotaki_scene/04_movimiento",
+      "images": [
+        "218",
+        0
+      ]
+    }
+  },
+  "220": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Kiyotaki Keika, 1girl, adult, (brown_hair:1.2), long_hair, ponytail, 1boy, male, huge_penis, size_difference, simple_background_male, generic_man, anonymous_male, masculine, head_out_of_frame, faceless_male, cropped_male_face, no_male_face, male_from_neck_down, male_body_only, female_focus, cowgirl_position, girl_on_top, straddling, clothes_lift, skirt_lift, panty_pull_aside, clothes_pulled_aside, post_coital, cum_in_pussy, excessive_cum, aftermath, exhausted, heavy_sweat, black_lace_panties, warm candlelight, soft golden glow, intimate bedroom lighting, depth_of_field, (blurred background:1.3), indoor, (dark room:1.1), shadows on body, unholy-aesthetic, unholy-detailing, flushed_face, sweat, heavy_breathing, anime, anime style, 2d, anime artwork, anime coloring, cel shading, vibrant colors, detailed anime style, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "221": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "218",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "222": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.65,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "220",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "221",
+        0
+      ],
+      "control_after_generate": "increment"
+    }
+  },
+  "223": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "222",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "224": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "keika_kiyotaki_scene/05_cum_ella",
+      "images": [
+        "223",
+        0
+      ]
+    }
+  },
+  "225": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "unholy-aesthetic, unholy-detailing, soft lighting, dramatic lighting, dim lighting, reflections, masterpiece, best_quality, absurdres, Kiyotaki Keika, 1girl, brown hair, short_hair, hair_scrunchy, hoodie, casual, cowgirl_position, girl_on_top, straddling, clinical lighting, exhausted_sweat, ruined_hairstyle, flushed_body, blank_eyes, mind_break, ahegao, overhead_shot, wide_shot, completely_nude, naked, cum_in_pussy, internal_cumshot, semen, intense_climax, echo, climax, simultaneous_orgasm, x-ray, internal_shot, internal_lines, aah, mind_break_lines, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, simple background, dark background, gradient background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "226": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "223",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "227": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.65,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "225",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "226",
+        0
+      ],
+      "control_after_generate": "increment"
+    }
+  },
+  "228": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "227",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "229": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "keika_kiyotaki_scene/06_xray",
+      "images": [
+        "228",
+        0
+      ]
+    }
+  },
+  "lora_stabilizer": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "stabilizer_animaginexl.safetensors",
+      "strength_model": 0.7,
+      "strength_clip": 0.7
+    }
+  },
+  "lora_style": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_stabilizer",
+        0
+      ],
+      "clip": [
+        "lora_stabilizer",
+        1
+      ],
+      "lora_name": "illustrious_style_pack.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 0.25
+    }
+  },
+  "230": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "unholy-aesthetic, unholy-detailing, soft lighting, dramatic lighting, dim lighting, reflections, masterpiece, best_quality, absurdres, Kiyotaki Keika, 1girl, brown hair, short_hair, hair_scrunchy, hoodie, casual, completely_nude, naked, lying in bed, resting, after sex, post-coital, exhausted, tired, heavy breathing, disheveled hair, flushed cheeks, sweaty, sweat drops, satisfied smile, afterglow, messy sheets, bed sheets, covered by blanket, blanket pull, simple background, dark background, gradient background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "231": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "228",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "232": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.65,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "230",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "231",
+        0
+      ],
+      "control_after_generate": "increment"
+    }
+  },
+  "233": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "232",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "234": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "keika_kiyotaki_scene/07_aftermath",
+      "images": [
+        "233",
+        0
+      ]
+    }
+  }
+}

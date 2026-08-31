@@ -1,0 +1,107 @@
+{
+  "1": {
+    "inputs": {
+      "model_name": "wan2.1_t2v_1.3B_fp8.safetensors",
+      "base_precision": "fp8_e4m3fn",
+      "quantization": "fp8_e4m3fn"
+    },
+    "class_type": "WanVideoModelLoader",
+    "_meta": {
+      "title": "WanVideo Model Loader (1.3B FP8)"
+    }
+  },
+  "2": {
+    "inputs": {
+      "vae_name": "wan_2.1_vae.safetensors"
+    },
+    "class_type": "WanVideoVAELoader",
+    "_meta": {
+      "title": "WanVideo VAE Loader"
+    }
+  },
+  "3": {
+    "inputs": {
+      "text": "masterpiece, best quality, 1girl, highly detailed anime art style, dynamic pose, standing in a futuristic city, glowing neon lights, wind blowing through hair and clothes, smooth motion"
+    },
+    "class_type": "WanVideoTextEncode",
+    "_meta": {
+      "title": "WanVideo Text Encode (UMT5)"
+    }
+  },
+  "4": {
+    "inputs": {
+      "lora_name": "wan2.1_lightx2v_4step.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0,
+      "model": [
+        "1",
+        0
+      ],
+      "clip": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "LoraLoader",
+    "_meta": {
+      "title": "Wan 2.1 Lightning LoRA (4 Steps)"
+    }
+  },
+  "5": {
+    "inputs": {
+      "width": 832,
+      "height": 480,
+      "length": 81,
+      "steps": 4,
+      "cfg": 1.0,
+      "seed": 42424242,
+      "model": [
+        "4",
+        0
+      ],
+      "conditioning": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "WanVideoSampler",
+    "_meta": {
+      "title": "WanVideo Sampler (Coherencia Temporal 3D)"
+    }
+  },
+  "6": {
+    "inputs": {
+      "samples": [
+        "5",
+        0
+      ],
+      "vae": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "WanVideoDecode",
+    "_meta": {
+      "title": "WanVideo Decode"
+    }
+  },
+  "7": {
+    "inputs": {
+      "frame_rate": 16,
+      "loop_count": 0,
+      "filename_prefix": "wan2.1_coherent_video",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 19,
+      "save_metadata": true,
+      "images": [
+        "6",
+        0
+      ]
+    },
+    "class_type": "VHS_VideoCombine",
+    "_meta": {
+      "title": "VHS Video Combine (Exportar MP4)"
+    }
+  }
+}

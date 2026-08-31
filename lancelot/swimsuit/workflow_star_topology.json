@@ -1,0 +1,410 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "lora_name": "lancelot_illustrious.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8
+    }
+  },
+  "lora_face": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "Face_Detailed_v2.safetensors",
+      "strength_model": 0.85,
+      "strength_clip": 0.85
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "lowres, bad anatomy, bad eyes, deformed eyes, extra eyes, crossed eyes, bad hands, extra fingers, worst_quality, blurry, ugly, censored, thick lines, black outlines, lineart",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "p100": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, lancelot, lancelot_skin2, hair_ornament, navel, swimsuit, flower, hair_flower, huge_breasts, mole_under_mouth, slingshot_swimsuit, cowgirl_position, girl_on_top, straddling, penis_on_pussy, about_to_penetrate, blush, tension, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, simple background, dark background, gradient background, plain_background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "e100": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "k100": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 35,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "p100",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e100",
+        0
+      ]
+    }
+  },
+  "d100": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k100",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "base": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "lancelot_star/base",
+      "images": [
+        "d100",
+        0
+      ]
+    }
+  },
+  "200": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, lancelot, lancelot_skin2, hair_ornament, navel, swimsuit, flower, hair_flower, huge_breasts, mole_under_mouth, slingshot_swimsuit, cowgirl_position, girl_on_top, straddling, vaginal, first_insertion, stretching, pain, tears, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, simple background, dark background, gradient background, plain_background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "201": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "base",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "202": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 25,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "simple",
+      "denoise": 0.4,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "200",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "201",
+        0
+      ]
+    }
+  },
+  "203": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "202",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "204": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "lancelot_star/entry",
+      "images": [
+        "203",
+        0
+      ]
+    }
+  },
+  "205": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, lancelot, lancelot_skin2, hair_ornament, navel, swimsuit, flower, hair_flower, huge_breasts, mole_under_mouth, slingshot_swimsuit, cowgirl_position, girl_on_top, straddling, vaginal, thrusting, bouncing, ahegao, hands_on_chest, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, simple background, dark background, gradient background, plain_background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "206": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "base",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "207": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 25,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "simple",
+      "denoise": 0.4,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "205",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "206",
+        0
+      ]
+    }
+  },
+  "208": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "207",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "209": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "lancelot_star/riding",
+      "images": [
+        "208",
+        0
+      ]
+    }
+  },
+  "210": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, lancelot, lancelot_skin2, hair_ornament, navel, swimsuit, flower, hair_flower, huge_breasts, mole_under_mouth, slingshot_swimsuit, cowgirl_position, girl_on_top, straddling, vaginal, deep, balls_deep, ahegao, rolled_back_eyes, drooling, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, simple background, dark background, gradient background, plain_background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "211": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "base",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "212": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 25,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "simple",
+      "denoise": 0.4,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "210",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "211",
+        0
+      ]
+    }
+  },
+  "213": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "212",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "214": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "lancelot_star/deep",
+      "images": [
+        "213",
+        0
+      ]
+    }
+  },
+  "215": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, 1girl, lancelot, lancelot_skin2, hair_ornament, navel, swimsuit, flower, hair_flower, huge_breasts, mole_under_mouth, slingshot_swimsuit, cowgirl_position, girl_on_top, straddling, climax, cum_in_pussy, creampie, forced_orgasm, convulsing, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, simple background, dark background, gradient background, plain_background, game cg, semi-realistic, soft shading, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_face",
+        1
+      ]
+    }
+  },
+  "216": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "base",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "217": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 25,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "simple",
+      "denoise": 0.4,
+      "model": [
+        "lora_face",
+        0
+      ],
+      "positive": [
+        "215",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "216",
+        0
+      ]
+    }
+  },
+  "218": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "217",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "219": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "lancelot_star/climax",
+      "images": [
+        "218",
+        0
+      ]
+    }
+  }
+}

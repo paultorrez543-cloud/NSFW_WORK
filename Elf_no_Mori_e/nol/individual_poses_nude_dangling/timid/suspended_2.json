@@ -1,0 +1,102 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "lora_name": "Nol_Youkoso_Sukebe_Elf_no_Mori_e.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "lowres, bad anatomy, bad hands, deformed, extra digits, (bright lighting, bright room, daylight, sunlight, high key, well-lit, illuminated room, bright lamps, oversaturated, hyper-saturated, vivid colors, neon lighting:1.5), (blue light, blue tint, blue hue, blue room, blue lighting, cool lighting, cyan tint, blue background cast, cool color cast:1.4)",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "e100": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "p100": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k100": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p100",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e100",
+        0
+      ]
+    }
+  },
+  "d100": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k100",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s100": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "nol_nude_dangling_timid/suspended_2",
+      "images": [
+        "d100",
+        0
+      ]
+    }
+  }
+}

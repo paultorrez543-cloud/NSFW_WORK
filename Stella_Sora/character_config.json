@@ -1,0 +1,20 @@
+{
+  "name": "Virigia / ヴェルジュ",
+  "series": "Stella Sora / ステラソラ",
+  "base": "Illustrious",
+  "lora_file": "Stella-Virigia-v1.safetensors",
+  "civitai_version": 2364713,
+  "outfits": {
+    "default": {
+      "trigger": "stell4virigiadef",
+      "desc": "1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts",
+      "outfit": "white bonnet, multicolored hat, white cloak, frilled cloak, tassel, detached collar, black bowtie, red ribbon, neck ribbon, cleavage, black dress, grey dress, two-tone dress, hobble dress, long dress, ribbed dress, strapless, see-through dress, black bow, black gloves, lace-trimmed gloves, white pantyhose, ankle lace-up, high heels, holding mirror, red mirror"
+    },
+    "bunny": {
+      "trigger": "stell4virigiabnuy",
+      "desc": "1girl, white hair, long hair, half up braid, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, mole on hip, large breasts",
+      "outfit": "bunny outfit, bunny ears, leotard, fishnet stockings, high heels"
+    }
+  },
+  "seed": 42424249
+}

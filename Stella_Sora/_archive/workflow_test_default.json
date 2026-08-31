@@ -1,0 +1,128 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip",
+        0
+      ],
+      "lora_name": "Stella-Virigia-v1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, holding mirror, red mirror, mirror",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "e": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1216,
+      "height": 832,
+      "batch_size": 1
+    }
+  },
+  "p": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, (white bonnet, multicolored hat, white cloak, frilled cloak, tassel, detached collar, black bowtie, red ribbon, neck ribbon, cleavage, black dress, grey dress, two-tone dress, hobble dress, long dress, ribbed dress, strapless, see-through dress, black bow, black gloves, lace-trimmed gloves, white pantyhose, ankle lace-up, high heels:1.2), disembodied_penis, floating_penis, invisible_man, penis, 2penises, doublepen, vaginal, anal, double_penetration, both_holes, pussy_and_ass, cowgirl_position, girl_on_top, straddling, blush, sweat, dimly_lit, dark_ambiance, soft_lighting, (dark lighting:1.5), (dim room:1.4), anime, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "k": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "positive": [
+        "p",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e",
+        0
+      ]
+    }
+  },
+  "d": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_test_default",
+      "images": [
+        "d",
+        0
+      ]
+    }
+  },
+  "clip_skip": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  }
+}

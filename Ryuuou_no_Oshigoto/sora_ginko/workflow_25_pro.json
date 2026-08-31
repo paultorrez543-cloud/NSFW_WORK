@@ -1,0 +1,1894 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "lora_name": "Ryuuou_no_Oshigoto-multicharacter-Illustrious.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8
+    }
+  },
+  "lora_face": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "Face_Detailed_v2.safetensors",
+      "strength_model": 0.85,
+      "strength_clip": 0.85
+    }
+  },
+  "lora_ohogao": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_face",
+        0
+      ],
+      "clip": [
+        "lora_face",
+        1
+      ],
+      "lora_name": "Ohogao_illustrious_v1.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 0.5
+    }
+  },
+  "lora_bukkake": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_ohogao",
+        0
+      ],
+      "clip": [
+        "lora_ohogao",
+        1
+      ],
+      "lora_name": "excessivecum.safetensors",
+      "strength_model": 0.6,
+      "strength_clip": 0.6
+    }
+  },
+  "lora_uterus": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_bukkake",
+        0
+      ],
+      "clip": [
+        "lora_bukkake",
+        1
+      ],
+      "lora_name": "uterus_1.0.safetensors",
+      "strength_model": 0.4,
+      "strength_clip": 0.4
+    }
+  },
+  "lora_xray_vag": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_uterus",
+        0
+      ],
+      "clip": [
+        "lora_uterus",
+        1
+      ],
+      "lora_name": "xray (1).safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 0.5
+    }
+  },
+  "lora_legs": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_xray_vag",
+        0
+      ],
+      "clip": [
+        "lora_xray_vag",
+        1
+      ],
+      "lora_name": "danglinglegs.safetensors",
+      "strength_model": 0.4,
+      "strength_clip": 0.4
+    }
+  },
+  "lora_depth": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_legs",
+        0
+      ],
+      "clip": [
+        "lora_legs",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 0.35,
+      "strength_clip": 0.35
+    }
+  },
+  "lora_pullout": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth",
+        0
+      ],
+      "clip": [
+        "lora_depth",
+        1
+      ],
+      "lora_name": "cumtrail_pullingout_v4_for_ILXL.safetensors",
+      "strength_model": 0.4,
+      "strength_clip": 0.4
+    }
+  },
+  "lora_dp": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_pullout",
+        0
+      ],
+      "clip": [
+        "lora_pullout",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 0.5
+    }
+  },
+  "lora_lactation": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "clip": [
+        "lora_dp",
+        1
+      ],
+      "lora_name": "lactationAlpha_2_Illustrious_DIM-16_sv_fro_0.95.safetensors",
+      "strength_model": 0.4,
+      "strength_clip": 0.4
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "lowres, bad anatomy, bad eyes, deformed eyes, asymmetrical_eyes, bad hands, extra fingers, worst_quality, blurry, ugly, censored, thick lines, lineart",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "100": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, standing, looking at viewer, full body, sparkle_eyes, catchlight, confident, smile, warm candlelight, eye_level, full_shot, simple background, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "101": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "102": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "100",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "101",
+        0
+      ]
+    }
+  },
+  "103": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "102",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "104": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/01_standing",
+      "images": [
+        "103",
+        0
+      ]
+    }
+  },
+  "105": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, sitting, chair, sparkle_eyes, catchlight, looking at viewer, shy, blush, warm candlelight, medium_shot, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "106": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "107": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "105",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "106",
+        0
+      ]
+    }
+  },
+  "108": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "107",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "109": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/02_sitting",
+      "images": [
+        "108",
+        0
+      ]
+    }
+  },
+  "110": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, from behind, looking back, sparkle_eyes, catchlight, pleated_skirt, surprised, blush, warm candlelight, medium_shot, from_behind, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "111": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "112": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "110",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "111",
+        0
+      ]
+    }
+  },
+  "113": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "112",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "114": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/03_back",
+      "images": [
+        "113",
+        0
+      ]
+    }
+  },
+  "115": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, kissing, eyes_closed, loving, dim_lighting, close-up, face_focus, heart_symbol, sparkle, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "116": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "117": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "115",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "116",
+        0
+      ]
+    }
+  },
+  "118": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "117",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "119": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/04_kiss",
+      "images": [
+        "118",
+        0
+      ]
+    }
+  },
+  "120": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, breast_groping, half-closed_eyes, fondling, embarassed, blush, dim_lighting, medium_shot, upper_body, sweat_drops, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, nipple_pinch, breast_sucking, tongue_out, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "121": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "122": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "120",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "121",
+        0
+      ]
+    }
+  },
+  "123": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "122",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "124": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/05_groping",
+      "images": [
+        "123",
+        0
+      ]
+    }
+  },
+  "125": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, fingering, half-closed_eyes, hand_in_panties, surprised, ahegao_start, blush, dim_lighting, close-up, lower_body, wet_pussy, sweat_drops, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, wet_pussy, steam, nipple_pinch, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "126": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "127": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "125",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "126",
+        0
+      ]
+    }
+  },
+  "128": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "127",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "129": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/06_fingering",
+      "images": [
+        "128",
+        0
+      ]
+    }
+  },
+  "130": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, lying, on_back, legs_up, spread_legs, vaginal, tip_in_pussy, eyes_closed, tears, first_insertion, stretching, pain, tears, biting_lip, dim red light, medium_shot, speed_lines, impact_lines, shock_symbol, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, penetrating, cervix, torn_skirt, clothes_damage, leg_lock, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "131": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "132": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "130",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "131",
+        0
+      ]
+    }
+  },
+  "133": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "132",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "134": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/07_missionary_entry",
+      "images": [
+        "133",
+        0
+      ]
+    }
+  },
+  "135": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, lying, on_back, legs_up, spread_legs, vaginal, thrusting, rhythmic, empty_eyes, no_catchlight, ahegao, rolled_back_eyes, drooling, dim red light, warm_lighting, eye_level, full_body, motion_lines, plap, squish, aah, sweat_drops, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, leg_lock, crossed_ankles, belly_bulge, mirror_reflection, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "136": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "137": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "135",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "136",
+        0
+      ]
+    }
+  },
+  "138": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "137",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "139": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/08_missionary_rhythm",
+      "images": [
+        "138",
+        0
+      ]
+    }
+  },
+  "140": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, lying, on_back, legs_up, spread_legs, vaginal, deep, balls_deep, blank_eyes, no_catchlight, ahegao, tongue_out, harsh spotlight, close-up, face_focus, depth_lines, aah, drenched_sweat, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, penetration_depth, stomach_bulge, cervix_penetration, arched_back, toe_curl, nipple_pinch, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "141": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "142": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "140",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "141",
+        0
+      ]
+    }
+  },
+  "143": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "142",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "144": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/09_missionary_deep",
+      "images": [
+        "143",
+        0
+      ]
+    }
+  },
+  "145": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, cowgirl_position, girl_on_top, straddling, vaginal, tip_in_pussy, eyes_closed, tears, pained, tears, looking_down, dim red light, slight_low_angle, impact_lines, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, dangling_legs, torn_skirt, clothes_damage, leg_lock, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "146": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "147": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "145",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "146",
+        0
+      ]
+    }
+  },
+  "148": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "147",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "149": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/10_cowgirl_entry",
+      "images": [
+        "148",
+        0
+      ]
+    }
+  },
+  "150": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, cowgirl_position, girl_on_top, straddling, vaginal, bouncing, empty_eyes, no_catchlight, ahegao, dominant, drooling, harsh spotlight, dutch_angle, dynamic_camera, motion_lines, speed_lines, plap, squish, aah, drenched_sweat, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, dangling_legs, arched_back, toe_curl, belly_bulge, nipple_pinch, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "151": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "152": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "150",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "151",
+        0
+      ]
+    }
+  },
+  "153": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "152",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "154": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/11_cowgirl_ride",
+      "images": [
+        "153",
+        0
+      ]
+    }
+  },
+  "155": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, doggystyle, empty_eyes, no_catchlight, from_behind, arched_back, vaginal, ahegao, rolled_back_eyes, dim red light, from_behind, full_body, motion_lines, plap, aah, sweat_drops, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, double_penetration, hair_pulling, grabbed_by_hair, messy_hair, arched_back, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "156": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "157": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "155",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "156",
+        0
+      ]
+    }
+  },
+  "158": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "157",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "159": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/12_doggystyle",
+      "images": [
+        "158",
+        0
+      ]
+    }
+  },
+  "160": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, standing_sex, held_up, empty_eyes, no_catchlight, legs_around_waist, vaginal, wall_pin, ahegao, surprised, drooling, harsh spotlight, slight_low_angle, full_body, motion_lines, aah, sweat_drops, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, dangling_legs, leg_wrap, window, moonlight, steam, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "161": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "162": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "160",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "161",
+        0
+      ]
+    }
+  },
+  "163": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "162",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "164": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/13_standing_carry",
+      "images": [
+        "163",
+        0
+      ]
+    }
+  },
+  "165": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, mating_press, blank_eyes, no_catchlight, folded, legs_on_shoulders, vaginal, deep, pinned, ahegao, mind_break_start, tears, intense spotlight, close-up, face_focus, depth_lines, convulsion_lines, aah, drenched_sweat, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, penetration_depth, stomach_bulge, arched_back, toe_curl, cervix_penetration, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "166": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "167": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "165",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "166",
+        0
+      ]
+    }
+  },
+  "168": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "167",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "169": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/14_mating_press",
+      "images": [
+        "168",
+        0
+      ]
+    }
+  },
+  "170": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, fellatio, blowjob, empty_eyes, teary_eyes, penis_in_mouth, deepthroat, ahegao, teary_eyes, looking_up, dim_lighting, POV, from_above, close-up, saliva_string, gagging, squish, aah, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, hair_pulling, tongue_out, long_tongue, messy_hair, cum_bubble, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "171": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "172": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "170",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "171",
+        0
+      ]
+    }
+  },
+  "173": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "172",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "174": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/15_oral",
+      "images": [
+        "173",
+        0
+      ]
+    }
+  },
+  "175": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, paizuri, titfuck, empty_eyes, no_catchlight, between_breasts, breast_sandwich, penis_between_breasts, ahegao, tongue_out, looking_up, dim_lighting, close-up, upper_body, licking_tip, aah, sweat_drops, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, lactation, milk, tongue_out, nipple_pinch, cum_bubble, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "176": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "177": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "175",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "176",
+        0
+      ]
+    }
+  },
+  "178": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "177",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "179": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/16_paizuri",
+      "images": [
+        "178",
+        0
+      ]
+    }
+  },
+  "180": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, full_nelson, blank_eyes, no_catchlight, restrained, legs_folded, vaginal, suspended, helpless, tears, ahegao, intense spotlight, slight_low_angle, full_body, motion_lines, convulsion_lines, aah, drenched_sweat, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, penetrating, cervix, belly_bulge, arched_back, toe_curl, handprint, red_mark, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "181": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "182": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "180",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "181",
+        0
+      ]
+    }
+  },
+  "183": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "182",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "184": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/17_full_nelson",
+      "images": [
+        "183",
+        0
+      ]
+    }
+  },
+  "185": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, spooning, sparkle_eyes, spoon_position, lying, on_side, from_behind, vaginal, loving, ahegao, warm candlelight, close-up, from_behind, heart_symbol, intimate, sweat_drops, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, leg_wrap, nipple_pinch, mirror_reflection, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "186": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "187": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "185",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "186",
+        0
+      ]
+    }
+  },
+  "188": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "187",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "189": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/18_spooning",
+      "images": [
+        "188",
+        0
+      ]
+    }
+  },
+  "190": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, lying, on_back, legs_up, spread_legs, climax, cum_in_pussy, blank_eyes, no_catchlight, creampie, ahegao, mind_break, clinical lighting, blue_tinted, overhead_shot, wide_shot, internal_lines, internal_cumshot, aah, drenched_sweat, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, x-ray, arched_back, toe_curl, stomach_bulge, cum_pool, steam, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "191": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "192": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "190",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "191",
+        0
+      ]
+    }
+  },
+  "193": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "192",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "194": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/19_climax_internal",
+      "images": [
+        "193",
+        0
+      ]
+    }
+  },
+  "195": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, cowgirl_position, girl_on_top, pulling_out, blank_eyes, no_catchlight, ahegao, surprised, drooling, harsh spotlight, dutch_angle, upper_body, cum_string, cum_on_body, splatter_lines, aah, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, cum_string, cum_bubble, arched_back, messy_hair, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "196": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "197": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "195",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "196",
+        0
+      ]
+    }
+  },
+  "198": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "197",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "199": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/20_pullout",
+      "images": [
+        "198",
+        0
+      ]
+    }
+  },
+  "200": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, fellatio, cum_in_mouth, blank_eyes, no_catchlight, cum_on_tongue, ahegao, teary_eyes, mind_break, dim_lighting, POV, close-up, face_focus, cum_drool, saliva_string, aah, 1boy, fat_man, fat_bastard, ugly_bastard, obese, bald, older_man, huge_penis, size_difference, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, cum_bubble, cum_string, tongue_out, long_tongue, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "201": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "202": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "200",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "201",
+        0
+      ]
+    }
+  },
+  "203": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "202",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "204": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/21_cum_swallow",
+      "images": [
+        "203",
+        0
+      ]
+    }
+  },
+  "205": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, lying, on_back, exhausted, ahegao, mind_break, blank_eyes, tongue_out, intense spotlight, overhead_shot, full_body, excessive_cum, cum_on_face, cum_on_body, splatter_lines, drip_lines, bukkake, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "206": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "207": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "205",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "206",
+        0
+      ]
+    }
+  },
+  "208": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "207",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "209": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/22_bukkake",
+      "images": [
+        "208",
+        0
+      ]
+    }
+  },
+  "210": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, lying, on_side, cuddling, peaceful_expression, peaceful, loving, soft afterglow, gentle_lighting, close-up, face_focus, afterglow, heart_symbol, sparkle, steam, window, moonlight, bite_mark, red_mark, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "211": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "212": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "210",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "211",
+        0
+      ]
+    }
+  },
+  "213": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "212",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "214": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/23_afterglow_cuddle",
+      "images": [
+        "213",
+        0
+      ]
+    }
+  },
+  "215": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, lying, on_back, legs_spread, empty_eyes, no_catchlight, exhausted, mind_break, soft afterglow, overhead_shot, full_body, cum_dripping, drenched_sweat, exhausted_lines, cum_pool, cum_dripping, handprint, bite_mark, messy_hair, steam, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "216": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "217": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "215",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "216",
+        0
+      ]
+    }
+  },
+  "218": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "217",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "219": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/24_exhausted",
+      "images": [
+        "218",
+        0
+      ]
+    }
+  },
+  "220": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Sora Ginko, 1girl, kimono, japanese_clothes, sleeping, lying, on_side, peaceful, eyes_closed, soft afterglow, dim_lighting, close-up, face_focus, covered_body, blanket, afterglow, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "221": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "222": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "220",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "221",
+        0
+      ]
+    }
+  },
+  "223": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "222",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "224": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sora_ginko_25/25_sleep",
+      "images": [
+        "223",
+        0
+      ]
+    }
+  }
+}

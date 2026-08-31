@@ -1,0 +1,1623 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "rinIllusionRNSFW_v30.safetensors"
+    }
+  },
+  "clip_skip": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip",
+        0
+      ],
+      "lora_name": "Stella-Virigia-v1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "load_ref": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "character_ref.png"
+    }
+  },
+  "vae_encode": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "load_ref",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, watermark, signature, text, logo, artist name, multiple views, multiple girls, 2girls",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "p_full_front": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, full_body, front_view, standing, neutral_expression, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_full_front": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_full_front",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_full_front": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_full_front",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_full_front": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_full_front",
+      "images": [
+        "d_full_front",
+        0
+      ]
+    }
+  },
+  "p_full_back": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, full_body, back_view, standing, neutral_expression, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_full_back": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_full_back",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_full_back": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_full_back",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_full_back": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_full_back",
+      "images": [
+        "d_full_back",
+        0
+      ]
+    }
+  },
+  "p_full_side": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, full_body, side_view, standing, neutral_expression, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_full_side": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_full_side",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_full_side": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_full_side",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_full_side": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_full_side",
+      "images": [
+        "d_full_side",
+        0
+      ]
+    }
+  },
+  "p_full_34": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, full_body, three-quarter_view, standing, neutral_expression, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_full_34": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_full_34",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_full_34": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_full_34",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_full_34": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_full_34",
+      "images": [
+        "d_full_34",
+        0
+      ]
+    }
+  },
+  "p_full_sit": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, full_body, sitting, legs_together, front_view, neutral_expression, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_full_sit": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_full_sit",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_full_sit": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_full_sit",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_full_sit": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_full_sit",
+      "images": [
+        "d_full_sit",
+        0
+      ]
+    }
+  },
+  "p_full_walk": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, full_body, walking, side_view, neutral_expression, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_full_walk": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_full_walk",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_full_walk": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_full_walk",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_full_walk": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_full_walk",
+      "images": [
+        "d_full_walk",
+        0
+      ]
+    }
+  },
+  "p_full_hips": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, full_body, hands_on_hips, front_view, neutral_expression, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_full_hips": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_full_hips",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_full_hips": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_full_hips",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_full_hips": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_full_hips",
+      "images": [
+        "d_full_hips",
+        0
+      ]
+    }
+  },
+  "p_full_arms": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, full_body, arms_crossed, front_view, neutral_expression, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_full_arms": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_full_arms",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_full_arms": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_full_arms",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_full_arms": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_full_arms",
+      "images": [
+        "d_full_arms",
+        0
+      ]
+    }
+  },
+  "p_upper_front": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, upper_body, front_view, neutral_expression, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_upper_front": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_upper_front",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_upper_front": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_upper_front",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_upper_front": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_upper_front",
+      "images": [
+        "d_upper_front",
+        0
+      ]
+    }
+  },
+  "p_upper_34": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, upper_body, three-quarter_view, neutral_expression, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_upper_34": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_upper_34",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_upper_34": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_upper_34",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_upper_34": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_upper_34",
+      "images": [
+        "d_upper_34",
+        0
+      ]
+    }
+  },
+  "p_upper_side": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, upper_body, side_view, neutral_expression, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_upper_side": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_upper_side",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_upper_side": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_upper_side",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_upper_side": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_upper_side",
+      "images": [
+        "d_upper_side",
+        0
+      ]
+    }
+  },
+  "p_upper_back": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, upper_body, back_view, neutral_expression, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_upper_back": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_upper_back",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_upper_back": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_upper_back",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_upper_back": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_upper_back",
+      "images": [
+        "d_upper_back",
+        0
+      ]
+    }
+  },
+  "p_upper_above": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, upper_body, from_above, looking_up, neutral_expression, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_upper_above": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_upper_above",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_upper_above": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_upper_above",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_upper_above": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_upper_above",
+      "images": [
+        "d_upper_above",
+        0
+      ]
+    }
+  },
+  "p_upper_below": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, upper_body, from_below, looking_down, neutral_expression, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_upper_below": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_upper_below",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_upper_below": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_upper_below",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_upper_below": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_upper_below",
+      "images": [
+        "d_upper_below",
+        0
+      ]
+    }
+  },
+  "p_face_neutral": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, portrait, front_view, neutral_expression, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_face_neutral": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_face_neutral",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_face_neutral": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_face_neutral",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_face_neutral": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_face_neutral",
+      "images": [
+        "d_face_neutral",
+        0
+      ]
+    }
+  },
+  "p_face_smile": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, portrait, front_view, smile, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_face_smile": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_face_smile",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_face_smile": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_face_smile",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_face_smile": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_face_smile",
+      "images": [
+        "d_face_smile",
+        0
+      ]
+    }
+  },
+  "p_face_angry": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, portrait, front_view, angry, furrowed_brow, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_face_angry": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_face_angry",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_face_angry": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_face_angry",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_face_angry": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_face_angry",
+      "images": [
+        "d_face_angry",
+        0
+      ]
+    }
+  },
+  "p_face_shy": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, portrait, three-quarter_view, shy, blush, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_face_shy": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_face_shy",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_face_shy": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_face_shy",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_face_shy": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_face_shy",
+      "images": [
+        "d_face_shy",
+        0
+      ]
+    }
+  },
+  "p_face_surprise": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, portrait, front_view, surprised, open_mouth, wide_eyes, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_face_surprise": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_face_surprise",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_face_surprise": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_face_surprise",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_face_surprise": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_face_surprise",
+      "images": [
+        "d_face_surprise",
+        0
+      ]
+    }
+  },
+  "p_face_happy": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, portrait, front_view, happy, closed_eyes, smile, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_face_happy": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_face_happy",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_face_happy": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_face_happy",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_face_happy": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_face_happy",
+      "images": [
+        "d_face_happy",
+        0
+      ]
+    }
+  },
+  "p_face_sad": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, portrait, three-quarter_view, sad, downcast_eyes, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_face_sad": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_face_sad",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_face_sad": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_face_sad",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_face_sad": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_face_sad",
+      "images": [
+        "d_face_sad",
+        0
+      ]
+    }
+  },
+  "p_face_serious": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, portrait, front_view, serious, flat_expression, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_face_serious": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_face_serious",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_face_serious": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_face_serious",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_face_serious": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_face_serious",
+      "images": [
+        "d_face_serious",
+        0
+      ]
+    }
+  },
+  "p_full_smile": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, full_body, front_view, standing, smile, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_full_smile": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_full_smile",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_full_smile": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_full_smile",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_full_smile": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_full_smile",
+      "images": [
+        "d_full_smile",
+        0
+      ]
+    }
+  },
+  "p_full_shy": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, full_body, three-quarter_view, standing, shy, blush, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_full_shy": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_full_shy",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_full_shy": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_full_shy",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_full_shy": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_full_shy",
+      "images": [
+        "d_full_shy",
+        0
+      ]
+    }
+  },
+  "p_full_angry": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, full_body, front_view, standing, angry, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_full_angry": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_full_angry",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_full_angry": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_full_angry",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_full_angry": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_full_angry",
+      "images": [
+        "d_full_angry",
+        0
+      ]
+    }
+  },
+  "p_full_lookback": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, full_body, back_view, looking_back, neutral_expression, source_anime, simple_background, white_background, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_full_lookback": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.6,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_full_lookback",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "vae_encode",
+        0
+      ]
+    }
+  },
+  "d_full_lookback": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_full_lookback",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_full_lookback": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "dataset_img2img_full_lookback",
+      "images": [
+        "d_full_lookback",
+        0
+      ]
+    }
+  }
+}

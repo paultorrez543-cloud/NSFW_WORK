@@ -1,0 +1,4912 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "latent_shared": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1536,
+      "batch_size": 1
+    }
+  },
+  "clip_skip_virigia_default": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_virigia_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_virigia_default",
+        0
+      ],
+      "lora_name": "Stella-Virigia-v1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_virigia_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_virigia_default",
+        0
+      ],
+      "clip": [
+        "lora_char_virigia_default",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_virigia_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_virigia_default",
+        0
+      ],
+      "clip": [
+        "lora_depth_virigia_default",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_virigia_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_virigia_default",
+        0
+      ],
+      "clip": [
+        "lora_dp_virigia_default",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_virigia_default": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, holding mirror, red mirror, mirror",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "p_virigia_default": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_default",
+        1
+      ]
+    }
+  },
+  "k_virigia_default": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_default",
+        0
+      ],
+      "positive": [
+        "p_virigia_default",
+        0
+      ],
+      "negative": [
+        "neg_virigia_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_default": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_default",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_default": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_virigia_default",
+      "images": [
+        "d_virigia_default",
+        0
+      ]
+    }
+  },
+  "clip_skip_virigia_bunny": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_virigia_bunny": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_virigia_bunny",
+        0
+      ],
+      "lora_name": "Stella-Virigia-v1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_virigia_bunny": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_virigia_bunny",
+        0
+      ],
+      "clip": [
+        "lora_char_virigia_bunny",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_virigia_bunny": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_virigia_bunny",
+        0
+      ],
+      "clip": [
+        "lora_depth_virigia_bunny",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_virigia_bunny": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_virigia_bunny",
+        0
+      ],
+      "clip": [
+        "lora_dp_virigia_bunny",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_virigia_bunny": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, holding mirror, red mirror, mirror, tail, demon tail",
+      "clip": [
+        "lora_size_virigia_bunny",
+        1
+      ]
+    }
+  },
+  "p_virigia_bunny": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiabnuy, 1girl, white hair, long hair, half up braid, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, mole on hip, large breasts, fake animal ears, rabbit ears, lace hairband, black hairband, detached collar, red bowtie, lace collar, fur armlet, cleavage, white leotard, strapless leotard, side-tie leotard, cross-laced leotard, highleg leotard, crotch zipper, showgirl skirt, white thighhighs, single fishnet thighhigh, mismatched legwear, frilled thigh strap, heart o-ring, wrist cuffs, lace-trimmed wrist cuffs, ankle strap, red high heels, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_virigia_bunny",
+        1
+      ]
+    }
+  },
+  "k_virigia_bunny": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424250,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_virigia_bunny",
+        0
+      ],
+      "positive": [
+        "p_virigia_bunny",
+        0
+      ],
+      "negative": [
+        "neg_virigia_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_virigia_bunny": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_virigia_bunny",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_virigia_bunny": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_virigia_bunny",
+      "images": [
+        "d_virigia_bunny",
+        0
+      ]
+    }
+  },
+  "clip_skip_shia": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_shia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_shia",
+        0
+      ],
+      "lora_name": "Shia_Stella_Sora.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_shia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_shia",
+        0
+      ],
+      "clip": [
+        "lora_char_shia",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_shia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_shia",
+        0
+      ],
+      "clip": [
+        "lora_depth_shia",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_shia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_shia",
+        0
+      ],
+      "clip": [
+        "lora_dp_shia",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_shia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, tail, demon tail",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "p_shia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, shia, stella sora, 1girl, (large breasts:1.3), bunny girl, bunny ears, sailor collar, top, bikini, covered midriff, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_shia",
+        1
+      ]
+    }
+  },
+  "k_shia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424251,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_shia",
+        0
+      ],
+      "positive": [
+        "p_shia",
+        0
+      ],
+      "negative": [
+        "neg_shia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_shia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_shia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_shia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_shia",
+      "images": [
+        "d_shia",
+        0
+      ]
+    }
+  },
+  "clip_skip_bernina_default": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_bernina_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_bernina_default",
+        0
+      ],
+      "lora_name": "Stella-Bernina-v1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_bernina_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_bernina_default",
+        0
+      ],
+      "clip": [
+        "lora_char_bernina_default",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_bernina_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_bernina_default",
+        0
+      ],
+      "clip": [
+        "lora_depth_bernina_default",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_bernina_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_bernina_default",
+        0
+      ],
+      "clip": [
+        "lora_dp_bernina_default",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_bernina_default": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, tail, demon tail, lantern, holding lantern",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "p_bernina_default": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninadef, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), maid headdress, white shrug, puffy sleeves, wide sleeves, black dress, red dress, two-tone dress, hobble dress, long dress, layered dress, strapless, red o-ring, buttons, see-through cleavage, fishnet top, black gloves, fishnet gloves, black bow, high heels boots, black boots, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_default",
+        1
+      ]
+    }
+  },
+  "k_bernina_default": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424253,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_default",
+        0
+      ],
+      "positive": [
+        "p_bernina_default",
+        0
+      ],
+      "negative": [
+        "neg_bernina_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_default": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_default",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_default": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_bernina_default",
+      "images": [
+        "d_bernina_default",
+        0
+      ]
+    }
+  },
+  "clip_skip_bernina_bunny": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_bernina_bunny": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_bernina_bunny",
+        0
+      ],
+      "lora_name": "Stella-Bernina-v1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_bernina_bunny": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_bernina_bunny",
+        0
+      ],
+      "clip": [
+        "lora_char_bernina_bunny",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_bernina_bunny": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_bernina_bunny",
+        0
+      ],
+      "clip": [
+        "lora_depth_bernina_bunny",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_bernina_bunny": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_bernina_bunny",
+        0
+      ],
+      "clip": [
+        "lora_dp_bernina_bunny",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_bernina_bunny": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, tail, demon tail",
+      "clip": [
+        "lora_size_bernina_bunny",
+        1
+      ]
+    }
+  },
+  "p_bernina_bunny": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4berninabnuy, 1girl, pink hair, gradient hair, short hair with long locks, red hair ribbon, inverted cross, pink eyes, curled horns, low wings, (large breasts:1.3), fake animal ears, rabbit ears, detached collar, red necktie, necktie between breasts, black leotard, strapless, highleg leotard, side-tie leotard, half gloves, black gloves, fishnet pantyhose, thigh belt, red high heels, tight clothes, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bernina_bunny",
+        1
+      ]
+    }
+  },
+  "k_bernina_bunny": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424254,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bernina_bunny",
+        0
+      ],
+      "positive": [
+        "p_bernina_bunny",
+        0
+      ],
+      "negative": [
+        "neg_bernina_bunny",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bernina_bunny": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bernina_bunny",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bernina_bunny": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_bernina_bunny",
+      "images": [
+        "d_bernina_bunny",
+        0
+      ]
+    }
+  },
+  "clip_skip_reisen": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_reisen": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_reisen",
+        0
+      ],
+      "lora_name": "Reisen_ridge_-_Stella_Sora.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_reisen": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_reisen",
+        0
+      ],
+      "clip": [
+        "lora_char_reisen",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_reisen": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_reisen",
+        0
+      ],
+      "clip": [
+        "lora_depth_reisen",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_reisen": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_reisen",
+        0
+      ],
+      "clip": [
+        "lora_dp_reisen",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_reisen": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "p_reisen": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ReisenStellaS, 1girl, blonde hair, antenna hair, very long hair, low-tied long hair, yellow eyes, thick thighs, large breasts, mask on head, plague doctor mask, goggles, goggles on head, jacket, black jacket, open jacket, bowtie, black bowtie, white shirt, underbust, brown belt, shorts, black shorts, white thighhighs, skindentation, black boots, fold-over boots, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_reisen",
+        1
+      ]
+    }
+  },
+  "k_reisen": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424255,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_reisen",
+        0
+      ],
+      "positive": [
+        "p_reisen",
+        0
+      ],
+      "negative": [
+        "neg_reisen",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_reisen": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_reisen",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_reisen": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_reisen",
+      "images": [
+        "d_reisen",
+        0
+      ]
+    }
+  },
+  "clip_skip_amber": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_amber": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_amber",
+        0
+      ],
+      "lora_name": "Amber_Stella_Sora.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_amber": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_amber",
+        0
+      ],
+      "clip": [
+        "lora_char_amber",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_amber": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_amber",
+        0
+      ],
+      "clip": [
+        "lora_depth_amber",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_amber": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_amber",
+        0
+      ],
+      "clip": [
+        "lora_dp_amber",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_amber": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, black cat",
+      "clip": [
+        "lora_size_amber",
+        1
+      ]
+    }
+  },
+  "p_amber": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, AmberSora, 1girl, black hair, yellow eyes, hair ornament, hood down, fingerless gloves, white dress, sideless dress, thighhighs, thigh boots, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_amber",
+        1
+      ]
+    }
+  },
+  "k_amber": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424261,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_amber",
+        0
+      ],
+      "positive": [
+        "p_amber",
+        0
+      ],
+      "negative": [
+        "neg_amber",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_amber": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_amber",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_amber": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_amber",
+      "images": [
+        "d_amber",
+        0
+      ]
+    }
+  },
+  "clip_skip_portia": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_portia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_portia",
+        0
+      ],
+      "lora_name": "Portia_Stella_Sora.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_portia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_portia",
+        0
+      ],
+      "clip": [
+        "lora_char_portia",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_portia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_portia",
+        0
+      ],
+      "clip": [
+        "lora_depth_portia",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_portia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_portia",
+        0
+      ],
+      "clip": [
+        "lora_dp_portia",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_portia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_portia",
+        1
+      ]
+    }
+  },
+  "p_portia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, Portia, 1girl, visor cap, long hair, green hair, mole under eye, mole under mouth, employee uniform, strap slip, button gap, waist apron, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_portia",
+        1
+      ]
+    }
+  },
+  "k_portia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424262,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_portia",
+        0
+      ],
+      "positive": [
+        "p_portia",
+        0
+      ],
+      "negative": [
+        "neg_portia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_portia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_portia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_portia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_portia",
+      "images": [
+        "d_portia",
+        0
+      ]
+    }
+  },
+  "clip_skip_freesia": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_freesia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_freesia",
+        0
+      ],
+      "lora_name": "Freesia_Stella-10.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_freesia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_freesia",
+        0
+      ],
+      "clip": [
+        "lora_char_freesia",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_freesia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_freesia",
+        0
+      ],
+      "clip": [
+        "lora_depth_freesia",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_freesia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_freesia",
+        0
+      ],
+      "clip": [
+        "lora_dp_freesia",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_freesia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_freesia",
+        1
+      ]
+    }
+  },
+  "p_freesia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, Freesia_Stella, 1girl, long hair, red eyes, side ponytail, grey hair, hair ornament, hair flower, white flower, sidelocks, blunt bangs, long sleeves, red shirt, collared shirt, double-breasted, buttons, pleated skirt, miniskirt, grey skirt, blue jacket, peaked cap, military hat, black headwear, military uniform, necktie, white pantyhose, thigh strap, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_freesia",
+        1
+      ]
+    }
+  },
+  "k_freesia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424263,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_freesia",
+        0
+      ],
+      "positive": [
+        "p_freesia",
+        0
+      ],
+      "negative": [
+        "neg_freesia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_freesia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_freesia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_freesia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_freesia",
+      "images": [
+        "d_freesia",
+        0
+      ]
+    }
+  },
+  "clip_skip_laru": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_laru": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_laru",
+        0
+      ],
+      "lora_name": "Laru_Dovellys.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_laru": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_laru",
+        0
+      ],
+      "clip": [
+        "lora_char_laru",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_laru": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_laru",
+        0
+      ],
+      "clip": [
+        "lora_depth_laru",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_laru": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_laru",
+        0
+      ],
+      "clip": [
+        "lora_dp_laru",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_laru": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_laru",
+        1
+      ]
+    }
+  },
+  "p_laru": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, laru stella sora, 1girl, twintails, grey hair, purple eyes, skin fang, peaked cap, blue headwear, white dress, puffy long sleeves, blue cape, blue jacket, white thighhighs, blue footwear, high heels, high heel boots, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_laru",
+        1
+      ]
+    }
+  },
+  "k_laru": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424264,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_laru",
+        0
+      ],
+      "positive": [
+        "p_laru",
+        0
+      ],
+      "negative": [
+        "neg_laru",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_laru": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_laru",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_laru": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_laru",
+      "images": [
+        "d_laru",
+        0
+      ]
+    }
+  },
+  "clip_skip_nazuka": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_nazuka": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_nazuka",
+        0
+      ],
+      "lora_name": "Nazuka_Dovellys.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_nazuka": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_nazuka",
+        0
+      ],
+      "clip": [
+        "lora_char_nazuka",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_nazuka": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_nazuka",
+        0
+      ],
+      "clip": [
+        "lora_depth_nazuka",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_nazuka": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_nazuka",
+        0
+      ],
+      "clip": [
+        "lora_dp_nazuka",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_nazuka": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, staff, holding staff",
+      "clip": [
+        "lora_size_nazuka",
+        1
+      ]
+    }
+  },
+  "p_nazuka": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, nazuka stella sora, 1girl, black hair, red eyes, hairband, hair flower, hair ornament, short dress, orange dress, white shirt, blue cape, detached sleeves, frilled sleeves, white choker, frilled choker, frilled gloves, white gloves, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_nazuka",
+        1
+      ]
+    }
+  },
+  "k_nazuka": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424265,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_nazuka",
+        0
+      ],
+      "positive": [
+        "p_nazuka",
+        0
+      ],
+      "negative": [
+        "neg_nazuka",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_nazuka": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_nazuka",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_nazuka": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_nazuka",
+      "images": [
+        "d_nazuka",
+        0
+      ]
+    }
+  },
+  "clip_skip_kaede": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_kaede": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_kaede",
+        0
+      ],
+      "lora_name": "Kaede_Dovellys.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_kaede": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_kaede",
+        0
+      ],
+      "clip": [
+        "lora_char_kaede",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_kaede": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_kaede",
+        0
+      ],
+      "clip": [
+        "lora_depth_kaede",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_kaede": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_kaede",
+        0
+      ],
+      "clip": [
+        "lora_dp_kaede",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_kaede": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_kaede",
+        1
+      ]
+    }
+  },
+  "p_kaede": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, kaede stella sora, 1girl, pink hair, blue eyes, hair ornament, hair flower, white dress, fur collar, bare shoulders, puffy long sleeves, red shawl, yellow bow, black pantyhose, black footwear, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_kaede",
+        1
+      ]
+    }
+  },
+  "k_kaede": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424266,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_kaede",
+        0
+      ],
+      "positive": [
+        "p_kaede",
+        0
+      ],
+      "negative": [
+        "neg_kaede",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_kaede": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_kaede",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_kaede": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_kaede",
+      "images": [
+        "d_kaede",
+        0
+      ]
+    }
+  },
+  "clip_skip_tilia": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_tilia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_tilia",
+        0
+      ],
+      "lora_name": "Tilia_Dovellys.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_tilia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_tilia",
+        0
+      ],
+      "clip": [
+        "lora_char_tilia",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_tilia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_tilia",
+        0
+      ],
+      "clip": [
+        "lora_depth_tilia",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_tilia": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_tilia",
+        0
+      ],
+      "clip": [
+        "lora_dp_tilia",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_tilia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_tilia",
+        1
+      ]
+    }
+  },
+  "p_tilia": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tilia stella sora, 1girl, blonde hair, red eyes, hairclip, hair ornament, ahoge, side ponytail, black shirt, white collar, shoulder armor, gauntlets, pauldrons, blue skirt, white thighhighs, armored boots, high heel boots, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_tilia",
+        1
+      ]
+    }
+  },
+  "k_tilia": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424267,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_tilia",
+        0
+      ],
+      "positive": [
+        "p_tilia",
+        0
+      ],
+      "negative": [
+        "neg_tilia",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_tilia": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_tilia",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_tilia": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_tilia",
+      "images": [
+        "d_tilia",
+        0
+      ]
+    }
+  },
+  "clip_skip_canace": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_canace": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_canace",
+        0
+      ],
+      "lora_name": "Canace_Dovellys.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_canace": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_canace",
+        0
+      ],
+      "clip": [
+        "lora_char_canace",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_canace": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_canace",
+        0
+      ],
+      "clip": [
+        "lora_depth_canace",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_canace": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_canace",
+        0
+      ],
+      "clip": [
+        "lora_dp_canace",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_canace": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_canace",
+        1
+      ]
+    }
+  },
+  "p_canace": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, canace stella sora, 1girl, purple eyes, semi-rimless eyewear, purple hair, grey hair, hair ribbon, white dress, bare shoulders, red necktie, necktie between breasts, miniskirt, pleated skirt, white skirt, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_canace",
+        1
+      ]
+    }
+  },
+  "k_canace": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424268,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_canace",
+        0
+      ],
+      "positive": [
+        "p_canace",
+        0
+      ],
+      "negative": [
+        "neg_canace",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_canace": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_canace",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_canace": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_canace",
+      "images": [
+        "d_canace",
+        0
+      ]
+    }
+  },
+  "clip_skip_caramel": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_caramel": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_caramel",
+        0
+      ],
+      "lora_name": "Caramel_Dovellys.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_caramel": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_caramel",
+        0
+      ],
+      "clip": [
+        "lora_char_caramel",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_caramel": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_caramel",
+        0
+      ],
+      "clip": [
+        "lora_depth_caramel",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_caramel": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_caramel",
+        0
+      ],
+      "clip": [
+        "lora_dp_caramel",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_caramel": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_caramel",
+        1
+      ]
+    }
+  },
+  "p_caramel": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, caramel stella sora, 1girl, animal ears, animal ear fluff, multicolored hair, blonde hair, twintails, drill hair, hair ribbon, black dress, purple jacket, striped clothes, spiked collar, black collar, frilled skirt, black skirt, asymmetrical legwear, mismatched legwear, fishnets, lace-trimmed legwear, striped thighhighs, o-ring thigh strap, knee boots, pink ribbon, purple ribbon, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_caramel",
+        1
+      ]
+    }
+  },
+  "k_caramel": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424269,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_caramel",
+        0
+      ],
+      "positive": [
+        "p_caramel",
+        0
+      ],
+      "negative": [
+        "neg_caramel",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_caramel": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_caramel",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_caramel": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_caramel",
+      "images": [
+        "d_caramel",
+        0
+      ]
+    }
+  },
+  "clip_skip_cosette": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_cosette": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_cosette",
+        0
+      ],
+      "lora_name": "Cosette_Dovellys.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_cosette": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_cosette",
+        0
+      ],
+      "clip": [
+        "lora_char_cosette",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_cosette": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_cosette",
+        0
+      ],
+      "clip": [
+        "lora_depth_cosette",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_cosette": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_cosette",
+        0
+      ],
+      "clip": [
+        "lora_dp_cosette",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_cosette": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, bandage",
+      "clip": [
+        "lora_size_cosette",
+        1
+      ]
+    }
+  },
+  "p_cosette": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, cosette stella sora, 1girl, green eyes, two-tone hair, multicolored hair, white hair, black hair, hair ornament, black dress, clothing cutout, stomach cutout, navel cutout, cleavage cutout, pelvic curtain, black cloak, blue cape, torn thighhighs, blue thighhighs, single thighhigh, asymmetrical legwear, leg tattoo, o-ring, o-ring bottom, thigh strap, black footwear, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_cosette",
+        1
+      ]
+    }
+  },
+  "k_cosette": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424270,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_cosette",
+        0
+      ],
+      "positive": [
+        "p_cosette",
+        0
+      ],
+      "negative": [
+        "neg_cosette",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_cosette": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_cosette",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_cosette": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_cosette",
+      "images": [
+        "d_cosette",
+        0
+      ]
+    }
+  },
+  "clip_skip_fuyuka": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_fuyuka": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_fuyuka",
+        0
+      ],
+      "lora_name": "FuyukaSS-10.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_fuyuka": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_fuyuka",
+        0
+      ],
+      "clip": [
+        "lora_char_fuyuka",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_fuyuka": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_fuyuka",
+        0
+      ],
+      "clip": [
+        "lora_depth_fuyuka",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_fuyuka": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_fuyuka",
+        0
+      ],
+      "clip": [
+        "lora_dp_fuyuka",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_fuyuka": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_fuyuka",
+        1
+      ]
+    }
+  },
+  "p_fuyuka": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, fuyuka_ss, 1girl, long hair, red eyes, white hair, large breasts, long sleeves, black gloves, white shorts, yellow boots, gold gauntlets, cleavage cutout, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_fuyuka",
+        1
+      ]
+    }
+  },
+  "k_fuyuka": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424271,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_fuyuka",
+        0
+      ],
+      "positive": [
+        "p_fuyuka",
+        0
+      ],
+      "negative": [
+        "neg_fuyuka",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_fuyuka": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_fuyuka",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_fuyuka": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_fuyuka",
+      "images": [
+        "d_fuyuka",
+        0
+      ]
+    }
+  },
+  "clip_skip_firefly": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_firefly": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_firefly",
+        0
+      ],
+      "lora_name": "FFSS-10.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_firefly": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_firefly",
+        0
+      ],
+      "clip": [
+        "lora_char_firefly",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_firefly": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_firefly",
+        0
+      ],
+      "clip": [
+        "lora_depth_firefly",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_firefly": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_firefly",
+        0
+      ],
+      "clip": [
+        "lora_dp_firefly",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_firefly": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_firefly",
+        1
+      ]
+    }
+  },
+  "p_firefly": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, ffstella, 1girl, short hair, huge ahoge, ahoge, red eyes, brown hair, streaked hair, white hair, scarf, white dress, sleeveless dress, black hairband, socks, loafers, bare shoulders, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_firefly",
+        1
+      ]
+    }
+  },
+  "k_firefly": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424272,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_firefly",
+        0
+      ],
+      "positive": [
+        "p_firefly",
+        0
+      ],
+      "negative": [
+        "neg_firefly",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_firefly": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_firefly",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_firefly": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_firefly",
+      "images": [
+        "d_firefly",
+        0
+      ]
+    }
+  },
+  "clip_skip_iris": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_iris": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_iris",
+        0
+      ],
+      "lora_name": "IrisStellaSora_IXL.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_iris": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_iris",
+        0
+      ],
+      "clip": [
+        "lora_char_iris",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_iris": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_iris",
+        0
+      ],
+      "clip": [
+        "lora_depth_iris",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_iris": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_iris",
+        0
+      ],
+      "clip": [
+        "lora_dp_iris",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_iris": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_iris",
+        1
+      ]
+    }
+  },
+  "p_iris": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, zzIris, 1girl, red eyes, purple hair, long hair, hair ornament, long sleeves, hat, white shirt, hairclip, puffy sleeves, black skirt, cape, black pantyhose, black headwear, beret, knee boots, juliet sleeves, red necktie, cross-laced footwear, high heel boots, high-waist skirt, lace-up boots, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_iris",
+        1
+      ]
+    }
+  },
+  "k_iris": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424273,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_iris",
+        0
+      ],
+      "positive": [
+        "p_iris",
+        0
+      ],
+      "negative": [
+        "neg_iris",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_iris": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_iris",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_iris": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_iris",
+      "images": [
+        "d_iris",
+        0
+      ]
+    }
+  },
+  "clip_skip_mistique": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_mistique": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_mistique",
+        0
+      ],
+      "lora_name": "MistiqueStellaSora_IXL.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_mistique": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_mistique",
+        0
+      ],
+      "clip": [
+        "lora_char_mistique",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_mistique": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_mistique",
+        0
+      ],
+      "clip": [
+        "lora_depth_mistique",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_mistique": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_mistique",
+        0
+      ],
+      "clip": [
+        "lora_dp_mistique",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_mistique": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_mistique",
+        1
+      ]
+    }
+  },
+  "p_mistique": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, zzMistique, 1girl, orange eyes, orange hair, hair between eyes, long hair, twintails, witch, black dress, frilled dress, pink bow, purple bow, juliet sleeves, puffy sleeves, garter straps, witch hat, brooch, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_mistique",
+        1
+      ]
+    }
+  },
+  "k_mistique": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424274,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_mistique",
+        0
+      ],
+      "positive": [
+        "p_mistique",
+        0
+      ],
+      "negative": [
+        "neg_mistique",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_mistique": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_mistique",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_mistique": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_mistique",
+      "images": [
+        "d_mistique",
+        0
+      ]
+    }
+  },
+  "clip_skip_nazuna": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_nazuna": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_nazuna",
+        0
+      ],
+      "lora_name": "NazunaStellaSora_IXL.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_nazuna": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_nazuna",
+        0
+      ],
+      "clip": [
+        "lora_char_nazuna",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_nazuna": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_nazuna",
+        0
+      ],
+      "clip": [
+        "lora_depth_nazuna",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_nazuna": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_nazuna",
+        0
+      ],
+      "clip": [
+        "lora_dp_nazuna",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_nazuna": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_nazuna",
+        1
+      ]
+    }
+  },
+  "p_nazuna": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, zzNazuna, 1girl, pink eyes, purple eyes, green hair, hair between eyes, long hair, multicolored hair, streaked hair, two-tone hair, white hair, twin braids, brown beret, loose socks, sleeves past fingers, white dress, yellow jacket, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_nazuna",
+        1
+      ]
+    }
+  },
+  "k_nazuna": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424281,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_nazuna",
+        0
+      ],
+      "positive": [
+        "p_nazuna",
+        0
+      ],
+      "negative": [
+        "neg_nazuna",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_nazuna": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_nazuna",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_nazuna": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_nazuna",
+      "images": [
+        "d_nazuna",
+        0
+      ]
+    }
+  },
+  "clip_skip_bastelina": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_bastelina": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_bastelina",
+        0
+      ],
+      "lora_name": "bastelina_stellasora-v01.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_bastelina": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_bastelina",
+        0
+      ],
+      "clip": [
+        "lora_char_bastelina",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_bastelina": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_bastelina",
+        0
+      ],
+      "clip": [
+        "lora_depth_bastelina",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_bastelina": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_bastelina",
+        0
+      ],
+      "clip": [
+        "lora_dp_bastelina",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_bastelina": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_bastelina",
+        1
+      ]
+    }
+  },
+  "p_bastelina": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, bastelina_stella, 1girl, folded braids, white hair, green eyes, white coat, white hat, white pencil dress, exposed shoulders, white pantyhose, white belt, multiple belts, gold trim, white bag, shoes, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_bastelina",
+        1
+      ]
+    }
+  },
+  "k_bastelina": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424282,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_bastelina",
+        0
+      ],
+      "positive": [
+        "p_bastelina",
+        0
+      ],
+      "negative": [
+        "neg_bastelina",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_bastelina": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_bastelina",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_bastelina": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_bastelina",
+      "images": [
+        "d_bastelina",
+        0
+      ]
+    }
+  },
+  "clip_skip_flora": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_flora": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_flora",
+        0
+      ],
+      "lora_name": "Flora_Stella_Sora.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_flora": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_flora",
+        0
+      ],
+      "clip": [
+        "lora_char_flora",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_flora": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_flora",
+        0
+      ],
+      "clip": [
+        "lora_depth_flora",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_flora": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_flora",
+        0
+      ],
+      "clip": [
+        "lora_dp_flora",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_flora": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_flora",
+        1
+      ]
+    }
+  },
+  "p_flora": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, Flora stella sora, 1girl, hat, elbow gloves, detached sleeves, pantyhose, dress, high heels, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_flora",
+        1
+      ]
+    }
+  },
+  "k_flora": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424283,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_flora",
+        0
+      ],
+      "positive": [
+        "p_flora",
+        0
+      ],
+      "negative": [
+        "neg_flora",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_flora": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_flora",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_flora": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_flora",
+      "images": [
+        "d_flora",
+        0
+      ]
+    }
+  },
+  "clip_skip_tyrant": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_tyrant": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_tyrant",
+        0
+      ],
+      "lora_name": "tyrant_v2.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8
+    }
+  },
+  "lora_depth_tyrant": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_tyrant",
+        0
+      ],
+      "clip": [
+        "lora_char_tyrant",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_tyrant": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_tyrant",
+        0
+      ],
+      "clip": [
+        "lora_depth_tyrant",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_tyrant": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_tyrant",
+        0
+      ],
+      "clip": [
+        "lora_dp_tyrant",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_tyrant": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_tyrant",
+        1
+      ]
+    }
+  },
+  "p_tyrant": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tyrant, 1girl, grey hair, long hair, blue eyes, pointy ears, gloves, thighhighs, dress, white thighhighs, black gloves, hairband, blue dress, sleeveless, blue hairband, necktie, sleeveless dress, collared dress, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_tyrant",
+        1
+      ]
+    }
+  },
+  "k_tyrant": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424284,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_tyrant",
+        0
+      ],
+      "positive": [
+        "p_tyrant",
+        0
+      ],
+      "negative": [
+        "neg_tyrant",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_tyrant": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_tyrant",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_tyrant": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_tyrant",
+      "images": [
+        "d_tyrant",
+        0
+      ]
+    }
+  },
+  "clip_skip_otoha": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_otoha": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_otoha",
+        0
+      ],
+      "lora_name": "Otoha_stella_sora.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_otoha": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_otoha",
+        0
+      ],
+      "clip": [
+        "lora_char_otoha",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_otoha": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_otoha",
+        0
+      ],
+      "clip": [
+        "lora_depth_otoha",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_otoha": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_otoha",
+        0
+      ],
+      "clip": [
+        "lora_dp_otoha",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_otoha": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, holding umbrella",
+      "clip": [
+        "lora_size_otoha",
+        1
+      ]
+    }
+  },
+  "p_otoha": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stsroto, 1girl, long hair, half up braid, white hair, grey hair, mole, blue eyes, animal ear fluff, animal ears, fox ears, fox tail, large breasts, wa maid, cleavage, long sleeves, detached sleeves, wide sleeves, frills, floral print, frilled apron, white apron, waist apron, maid apron, blue kimono, sash, obi, purple gemstone, star-shaped gem, elbow gloves, white gloves, pleated skirt, long skirt, side slit, white thighhighs, hair ornament, hair flower, maid headdress, white flower, black footwear, high heels, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_otoha",
+        1
+      ]
+    }
+  },
+  "k_otoha": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424285,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_otoha",
+        0
+      ],
+      "positive": [
+        "p_otoha",
+        0
+      ],
+      "negative": [
+        "neg_otoha",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_otoha": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_otoha",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_otoha": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_otoha",
+      "images": [
+        "d_otoha",
+        0
+      ]
+    }
+  },
+  "clip_skip_chitose_default": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_chitose_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_chitose_default",
+        0
+      ],
+      "lora_name": "Chitose_Dovellys.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_chitose_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_chitose_default",
+        0
+      ],
+      "clip": [
+        "lora_char_chitose_default",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_chitose_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_chitose_default",
+        0
+      ],
+      "clip": [
+        "lora_depth_chitose_default",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_chitose_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_chitose_default",
+        0
+      ],
+      "clip": [
+        "lora_dp_chitose_default",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_chitose_default": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_chitose_default",
+        1
+      ]
+    }
+  },
+  "p_chitose_default": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, dvydfchitose, 1girl, purple eyes, bright pupils, white pupils, multicolored hair, colored inner hair, black hair, purple hair, ahoge, one side up, two-tone hair, hair ornament, black serafuku, black sailor collar, collared shirt, crop top overhang, purple ribbon, black skirt, bandaged leg, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_chitose_default",
+        1
+      ]
+    }
+  },
+  "k_chitose_default": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424291,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_chitose_default",
+        0
+      ],
+      "positive": [
+        "p_chitose_default",
+        0
+      ],
+      "negative": [
+        "neg_chitose_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_chitose_default": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_chitose_default",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_chitose_default": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_chitose_default",
+      "images": [
+        "d_chitose_default",
+        0
+      ]
+    }
+  },
+  "clip_skip_chitose_kimono": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_chitose_kimono": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_chitose_kimono",
+        0
+      ],
+      "lora_name": "Chitose_Dovellys.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_chitose_kimono": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_chitose_kimono",
+        0
+      ],
+      "clip": [
+        "lora_char_chitose_kimono",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_chitose_kimono": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_chitose_kimono",
+        0
+      ],
+      "clip": [
+        "lora_depth_chitose_kimono",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_chitose_kimono": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_chitose_kimono",
+        0
+      ],
+      "clip": [
+        "lora_dp_chitose_kimono",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_chitose_kimono": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_chitose_kimono",
+        1
+      ]
+    }
+  },
+  "p_chitose_kimono": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, dvykmchitose, 1girl, purple eyes, bright pupils, white pupils, multicolored hair, colored inner hair, black hair, purple hair, twintails, japanese clothes, white kimono, bare shoulders, wide sleeves, long sleeves, puffy sleeves, ribbon trimmed sleeves, off shoulder, pom pom hair ornament, blue hairclip, x hair ornament, detached collar, blue collar, obi, purple sash, hakama skirt, pleated skirt, miniskirt, blue skirt, blue hakama, white thigh strap, thighhighs, white thighhighs, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_chitose_kimono",
+        1
+      ]
+    }
+  },
+  "k_chitose_kimono": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424292,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_chitose_kimono",
+        0
+      ],
+      "positive": [
+        "p_chitose_kimono",
+        0
+      ],
+      "negative": [
+        "neg_chitose_kimono",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_chitose_kimono": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_chitose_kimono",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_chitose_kimono": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_chitose_kimono",
+      "images": [
+        "d_chitose_kimono",
+        0
+      ]
+    }
+  },
+  "clip_skip_chitose_swimsuit": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_chitose_swimsuit": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_chitose_swimsuit",
+        0
+      ],
+      "lora_name": "Chitose_Dovellys.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_chitose_swimsuit": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_chitose_swimsuit",
+        0
+      ],
+      "clip": [
+        "lora_char_chitose_swimsuit",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_chitose_swimsuit": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_chitose_swimsuit",
+        0
+      ],
+      "clip": [
+        "lora_depth_chitose_swimsuit",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_chitose_swimsuit": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_chitose_swimsuit",
+        0
+      ],
+      "clip": [
+        "lora_dp_chitose_swimsuit",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_chitose_swimsuit": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_chitose_swimsuit",
+        1
+      ]
+    }
+  },
+  "p_chitose_swimsuit": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, dvyswchitose, 1girl, purple eyes, bright pupils, white pupils, multicolored hair, colored inner hair, black hair, purple hair, high ponytail, large breasts, side-tie bikini bottom, multi-strapped bikini bottom, string bikini, highleg bikini, o-ring bikini, o-ring top, front-tie top, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_chitose_swimsuit",
+        1
+      ]
+    }
+  },
+  "k_chitose_swimsuit": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424293,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_chitose_swimsuit",
+        0
+      ],
+      "positive": [
+        "p_chitose_swimsuit",
+        0
+      ],
+      "negative": [
+        "neg_chitose_swimsuit",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_chitose_swimsuit": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_chitose_swimsuit",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_chitose_swimsuit": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_chitose_swimsuit",
+      "images": [
+        "d_chitose_swimsuit",
+        0
+      ]
+    }
+  },
+  "clip_skip_noya_default": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_noya_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_noya_default",
+        0
+      ],
+      "lora_name": "Noya_stella_sora.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_noya_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_noya_default",
+        0
+      ],
+      "clip": [
+        "lora_char_noya_default",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_noya_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_noya_default",
+        0
+      ],
+      "clip": [
+        "lora_depth_noya_default",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_noya_default": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_noya_default",
+        0
+      ],
+      "clip": [
+        "lora_dp_noya_default",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_noya_default": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_noya_default",
+        1
+      ]
+    }
+  },
+  "p_noya_default": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stsrnya, 1girl, blonde hair, long hair, blue eyes, star-shaped pupils, single earring, gradient hair, half crown braid, streaked hair, ahoge, large breasts, white dress, two-tone dress, high-low dress, jewelry, red ribbon, shirt, sideboob, navel, belt, pouch, teddy bear, white skirt, black frills, arm strap, black gloves, thighs, black footwear, boots, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_noya_default",
+        1
+      ]
+    }
+  },
+  "k_noya_default": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424294,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_noya_default",
+        0
+      ],
+      "positive": [
+        "p_noya_default",
+        0
+      ],
+      "negative": [
+        "neg_noya_default",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_noya_default": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_noya_default",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_noya_default": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_noya_default",
+      "images": [
+        "d_noya_default",
+        0
+      ]
+    }
+  },
+  "clip_skip_noya_loungewear": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_noya_loungewear": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_noya_loungewear",
+        0
+      ],
+      "lora_name": "Noya_stella_sora.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_noya_loungewear": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_noya_loungewear",
+        0
+      ],
+      "clip": [
+        "lora_char_noya_loungewear",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_noya_loungewear": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_noya_loungewear",
+        0
+      ],
+      "clip": [
+        "lora_depth_noya_loungewear",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_noya_loungewear": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_noya_loungewear",
+        0
+      ],
+      "clip": [
+        "lora_dp_noya_loungewear",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_noya_loungewear": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_noya_loungewear",
+        1
+      ]
+    }
+  },
+  "p_noya_loungewear": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stsrnya, 1girl, blonde hair, long hair, blue eyes, star-shaped pupils, single earring, gradient hair, half crown braid, streaked hair, ahoge, large breasts, cropped shirt, yellow shirt, print shirt, clothes writing, drawstring, crop top overhang, bra strap, sleeves past wrists, long sleeves, bare shoulders, off shoulder, open jacket, white jacket, open clothes, midriff, short shorts, yellow shorts, teddy bear, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_noya_loungewear",
+        1
+      ]
+    }
+  },
+  "k_noya_loungewear": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424295,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_noya_loungewear",
+        0
+      ],
+      "positive": [
+        "p_noya_loungewear",
+        0
+      ],
+      "negative": [
+        "neg_noya_loungewear",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_noya_loungewear": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_noya_loungewear",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_noya_loungewear": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_noya_loungewear",
+      "images": [
+        "d_noya_loungewear",
+        0
+      ]
+    }
+  },
+  "clip_skip_noya_bikini": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_noya_bikini": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_noya_bikini",
+        0
+      ],
+      "lora_name": "Noya_stella_sora.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_noya_bikini": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_noya_bikini",
+        0
+      ],
+      "clip": [
+        "lora_char_noya_bikini",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_noya_bikini": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_noya_bikini",
+        0
+      ],
+      "clip": [
+        "lora_depth_noya_bikini",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_noya_bikini": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_noya_bikini",
+        0
+      ],
+      "clip": [
+        "lora_dp_noya_bikini",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_noya_bikini": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_noya_bikini",
+        1
+      ]
+    }
+  },
+  "p_noya_bikini": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stsrnya, 1girl, blonde hair, long hair, blue eyes, star-shaped pupils, single earring, gradient hair, half crown braid, streaked hair, ahoge, large breasts, vertical-striped bikini, red-framed eyewear, sunglasses, eyewear on head, heart-shaped eyewear, halterneck, aqua bikini, white bikini, black trim, white straps, thigh belt, bead necklace, star necklace, black straps, mismatched bikini, front-tie bikini top, wrist scrunchie, white belt, studded belt, heart o-ring, highleg bikini, teddy bear, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_noya_bikini",
+        1
+      ]
+    }
+  },
+  "k_noya_bikini": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424296,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_noya_bikini",
+        0
+      ],
+      "positive": [
+        "p_noya_bikini",
+        0
+      ],
+      "negative": [
+        "neg_noya_bikini",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_noya_bikini": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_noya_bikini",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_noya_bikini": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_noya_bikini",
+      "images": [
+        "d_noya_bikini",
+        0
+      ]
+    }
+  },
+  "clip_skip_otoha_ninja": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_otoha_ninja": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_otoha_ninja",
+        0
+      ],
+      "lora_name": "Otoha_stella_sora.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_otoha_ninja": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_otoha_ninja",
+        0
+      ],
+      "clip": [
+        "lora_char_otoha_ninja",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_otoha_ninja": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_otoha_ninja",
+        0
+      ],
+      "clip": [
+        "lora_depth_otoha_ninja",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_otoha_ninja": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_otoha_ninja",
+        0
+      ],
+      "clip": [
+        "lora_dp_otoha_ninja",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_otoha_ninja": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_otoha_ninja",
+        1
+      ]
+    }
+  },
+  "p_otoha_ninja": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stsroto, 1girl, long hair, half up braid, white hair, grey hair, mole, blue eyes, animal ear fluff, animal ears, fox ears, fox tail, large breasts, ninja, black leotard, highleg leotard, sleeveless leotard, bare shoulders, cleavage cutout, sarashi, underbust, belt, neck flower, red tassel, black gloves, elbow gloves, fingerless gloves, brown pantyhose, thighs, hair ornament, hair flower, black footwear, high heels, knee boots, high heel boots, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_otoha_ninja",
+        1
+      ]
+    }
+  },
+  "k_otoha_ninja": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424286,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_otoha_ninja",
+        0
+      ],
+      "positive": [
+        "p_otoha_ninja",
+        0
+      ],
+      "negative": [
+        "neg_otoha_ninja",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_otoha_ninja": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_otoha_ninja",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_otoha_ninja": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_otoha_ninja",
+      "images": [
+        "d_otoha_ninja",
+        0
+      ]
+    }
+  },
+  "clip_skip_tyrant_pijama": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_tyrant_pijama": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_tyrant_pijama",
+        0
+      ],
+      "lora_name": "tyrant_v2.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8
+    }
+  },
+  "lora_depth_tyrant_pijama": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_tyrant_pijama",
+        0
+      ],
+      "clip": [
+        "lora_char_tyrant_pijama",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_tyrant_pijama": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_tyrant_pijama",
+        0
+      ],
+      "clip": [
+        "lora_depth_tyrant_pijama",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_tyrant_pijama": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_tyrant_pijama",
+        0
+      ],
+      "clip": [
+        "lora_dp_tyrant_pijama",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_tyrant_pijama": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_tyrant_pijama",
+        1
+      ]
+    }
+  },
+  "p_tyrant_pijama": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tyrant, 1girl, grey hair, long hair, blue eyes, pointy ears, white dress, sleep mask, jewelry, sleeveless dress, necklace, mask on head, wrist scrunchie, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_tyrant_pijama",
+        1
+      ]
+    }
+  },
+  "k_tyrant_pijama": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424287,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_tyrant_pijama",
+        0
+      ],
+      "positive": [
+        "p_tyrant_pijama",
+        0
+      ],
+      "negative": [
+        "neg_tyrant_pijama",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_tyrant_pijama": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_tyrant_pijama",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_tyrant_pijama": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_tyrant_pijama",
+      "images": [
+        "d_tyrant_pijama",
+        0
+      ]
+    }
+  },
+  "clip_skip_tyrant_bikini": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char_tyrant_bikini": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip_tyrant_bikini",
+        0
+      ],
+      "lora_name": "tyrant_v2.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8
+    }
+  },
+  "lora_depth_tyrant_bikini": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char_tyrant_bikini",
+        0
+      ],
+      "clip": [
+        "lora_char_tyrant_bikini",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_tyrant_bikini": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_tyrant_bikini",
+        0
+      ],
+      "clip": [
+        "lora_depth_tyrant_bikini",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_tyrant_bikini": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_tyrant_bikini",
+        0
+      ],
+      "clip": [
+        "lora_dp_tyrant_bikini",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_tyrant_bikini": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_size_tyrant_bikini",
+        1
+      ]
+    }
+  },
+  "p_tyrant_bikini": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, tyrant, 1girl, grey hair, long hair, blue eyes, pointy ears, alternate costume, bikini, frilled bikini, single leg garter, highleg, bare legs, hairband, clothes_lift, disembodied_penis, 2penises, doublepen, vaginal, anal, double_penetration, (deep penetration:1.4), full_penetration, on_back, legs_up, spread_legs, feet_in_air, legs_lifted, missionary_position, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_tyrant_bikini",
+        1
+      ]
+    }
+  },
+  "k_tyrant_bikini": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424288,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_tyrant_bikini",
+        0
+      ],
+      "positive": [
+        "p_tyrant_bikini",
+        0
+      ],
+      "negative": [
+        "neg_tyrant_bikini",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_tyrant_bikini": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_tyrant_bikini",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_tyrant_bikini": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "cucaracha_tyrant_bikini",
+      "images": [
+        "d_tyrant_bikini",
+        0
+      ]
+    }
+  }
+}

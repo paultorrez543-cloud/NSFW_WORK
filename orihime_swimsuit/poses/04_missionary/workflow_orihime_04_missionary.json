@@ -1,0 +1,678 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "illustrious-xl-v0.1.safetensors"
+    },
+    "_meta": {
+      "title": "Base Model (Illustrious XL)"
+    }
+  },
+  "2": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "clip": [
+        "1",
+        1
+      ],
+      "lora_name": "lora_orihime_swimsuit.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8
+    },
+    "_meta": {
+      "title": "LoRA 1: Orihime"
+    }
+  },
+  "3": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "clip": [
+        "2",
+        1
+      ],
+      "lora_name": "lora_bbc_interracial.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    },
+    "_meta": {
+      "title": "LoRA 2: BBC Interracial"
+    }
+  },
+  "4": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "3",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    },
+    "_meta": {
+      "title": "CLIP Set Last Layer (CLIP Skip -2)"
+    }
+  },
+  "5": {
+    "class_type": "ControlNetLoader",
+    "inputs": {
+      "control_net_name": "controlnet-depth-sdxl-1.0.safetensors"
+    },
+    "_meta": {
+      "title": "ControlNet Depth Loader"
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "4",
+        0
+      ],
+      "text": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra fingers, clothed male, male clothes, shirt on male, pants on male, underwear on male, boxer shorts, male underwear, sex_toy, dildo, vibrator, strap-on, harness, artificial penis, glass dildo, silicone toy, machine, tentacles, disembodied_penis, floating penis, floating limbs, floating arms, floating legs, fused fingers, too many fingers, mutated hands, poorly drawn hands, poorly drawn face, fused limbs, bad proportions, unnatural body, distorted body, duplicate limbs, overlapping limbs, extra arms, extra legs, poorly drawn eyes, cross-eyed, asymmetrical eyes, detailed background, sharp background, complex background, bright background, white background, flat lighting, sunny, overexposed, lowres"
+    },
+    "_meta": {
+      "title": "Negative Prompt Master (Anti-Ropa Masculina / Anti-Deformidades)"
+    }
+  },
+  "7": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": -0.4,
+      "strength_clip": -0.4
+    },
+    "_meta": {
+      "title": "Slider Stage 1 (-0.40)"
+    }
+  },
+  "8": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "7",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, orihime inoue, bleach, bleach brave souls, long hair, orange hair, side braid, flower hair ornament, pearl chain, brown eyes, large breasts, 1girl, solo, swimsuit, bikini, pink swimsuit, frilled bikini, bows, bare shoulders, cleavage, navel, sandals, flip-flops, missionary_position, lying_on_back, legs_spread, spread_legs, legs_up, front_view, (blurry_background:1.4), (heavy_bokeh:1.3), (bloom:1.5), (heavy_bloom:1.4), (cinematic_bloom:1.4), (glowing_background:1.3), (glowing_bokeh:1.3), (volumetric_lighting:1.3), (light_rays:1.3), (god_rays:1.2), (glowing_particles:1.2), (lens_flare:1.3), (soft_glowing_rim_light:1.4), (backlighting:1.3), (depth_of_field:1.3), (extreme_depth_of_field:1.2), (dark_background:1.3), dark_room, dim_lighting, dramatic_shadows, dramatic_lighting, closed_legs, discrete, seductive smile, light blush, looking at viewer, flirting, playful, teasing, parted_lips, blushing, no_penetration, teasing_pose"
+    },
+    "_meta": {
+      "title": "Seducci\u00f3n y Teasing (Ropa Completa / Sin Pene) (Prompt)"
+    }
+  },
+  "9": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "Base Latent (832x1216 Vertical SDXL)"
+    }
+  },
+  "10": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "7",
+        0
+      ],
+      "positive": [
+        "8",
+        0
+      ],
+      "negative": [
+        "6",
+        0
+      ],
+      "latent_image": [
+        "9",
+        0
+      ],
+      "seed": 42424649,
+      "control_after_generate": "fixed",
+      "steps": 10,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "KSampler 01_seduccion"
+    }
+  },
+  "11": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "10",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode 01_seduccion"
+    }
+  },
+  "12": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "11",
+        0
+      ],
+      "filename_prefix": "orihime/poses/04_missionary/01_seduccion"
+    },
+    "_meta": {
+      "title": "Save 01_seduccion"
+    }
+  },
+  "13": {
+    "class_type": "MiDaS-DepthMapPreprocessor",
+    "inputs": {
+      "image": [
+        "11",
+        0
+      ],
+      "a": 6.28,
+      "bg_threshold": 0.1,
+      "resolution": 512
+    },
+    "_meta": {
+      "title": "Depth Preprocessor (Pose 04 3D Map)"
+    }
+  },
+  "14": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": 0.25,
+      "strength_clip": 0.25
+    },
+    "_meta": {
+      "title": "Slider Stage 2 (+0.25)"
+    }
+  },
+  "15": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "14",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, orihime inoue, bleach, bleach brave souls, long hair, orange hair, side braid, flower hair ornament, pearl chain, brown eyes, large breasts, 1girl, 1boy, 1man, nude male, naked male, completely naked man, dark-skinned male, tall male, muscular male, faceless male, bare chest, shirtless male, skin tone contrast, male body, muscular build, swimsuit, bikini, pink swimsuit, frilled bikini, bows, bare shoulders, cleavage, navel, sandals, flip-flops, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, missionary_position, lying_on_back, legs_spread, spread_legs, legs_up, front_view, (blurry_background:1.4), (heavy_bokeh:1.3), (bloom:1.5), (heavy_bloom:1.4), (cinematic_bloom:1.4), (glowing_background:1.3), (glowing_bokeh:1.3), (volumetric_lighting:1.3), (light_rays:1.3), (god_rays:1.2), (glowing_particles:1.2), (lens_flare:1.3), (soft_glowing_rim_light:1.4), (backlighting:1.3), (depth_of_field:1.3), (extreme_depth_of_field:1.2), (dark_background:1.3), dark_room, dim_lighting, dramatic_shadows, dramatic_lighting, teasing, blushing deeply, heavy_breathing, parted_lips, moaning, excited, anticipation, lust, glistening skin, light sweat, (imminent penetration:1.2), tip_touching, thigh_contact"
+    },
+    "_meta": {
+      "title": "Preliminares y Contacto Inminente (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "16": {
+    "class_type": "ControlNetApplyAdvanced",
+    "inputs": {
+      "positive": [
+        "15",
+        0
+      ],
+      "negative": [
+        "6",
+        0
+      ],
+      "control_net": [
+        "5",
+        0
+      ],
+      "image": [
+        "13",
+        0
+      ],
+      "strength": 0.6,
+      "start_percent": 0.0,
+      "end_percent": 0.7
+    },
+    "_meta": {
+      "title": "Apply ControlNet Advanced (0.0-0.70) [02_preliminares]"
+    }
+  },
+  "17": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "14",
+        0
+      ],
+      "positive": [
+        "16",
+        0
+      ],
+      "negative": [
+        "16",
+        1
+      ],
+      "latent_image": [
+        "10",
+        0
+      ],
+      "seed": 42424249,
+      "control_after_generate": "fixed",
+      "steps": 10,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.7
+    },
+    "_meta": {
+      "title": "KSampler 02_preliminares (Nace de Ancla 01)"
+    }
+  },
+  "18": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "17",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode 02_preliminares"
+    }
+  },
+  "19": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "18",
+        0
+      ],
+      "filename_prefix": "orihime/poses/04_missionary/02_preliminares"
+    },
+    "_meta": {
+      "title": "Save 02_preliminares"
+    }
+  },
+  "20": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 0.5
+    },
+    "_meta": {
+      "title": "Slider Stage 3 (+0.50)"
+    }
+  },
+  "21": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "20",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, orihime inoue, bleach, bleach brave souls, long hair, orange hair, side braid, flower hair ornament, pearl chain, brown eyes, large breasts, 1girl, 1boy, 1man, nude male, naked male, completely naked man, dark-skinned male, tall male, muscular male, faceless male, bare chest, shirtless male, skin tone contrast, male body, muscular build, swimsuit, bikini, pink swimsuit, frilled bikini, bows, bare shoulders, cleavage, navel, sandals, flip-flops, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, missionary_position, lying_on_back, legs_spread, spread_legs, legs_up, front_view, (blurry_background:1.4), (heavy_bokeh:1.3), (bloom:1.5), (heavy_bloom:1.4), (cinematic_bloom:1.4), (glowing_background:1.3), (glowing_bokeh:1.3), (volumetric_lighting:1.3), (light_rays:1.3), (god_rays:1.2), (glowing_particles:1.2), (lens_flare:1.3), (soft_glowing_rim_light:1.4), (backlighting:1.3), (depth_of_field:1.3), (extreme_depth_of_field:1.2), (dark_background:1.3), dark_room, dim_lighting, dramatic_shadows, dramatic_lighting, (spread pussy:1.1), stretching, pleasure, tears_of_pleasure, blushing, open_mouth, heavy_breathing, panting, moaning, sweat drops, flushed skin, (tip_in_pussy:1.3), (first_insertion:1.3), (real penis:1.4), (human male penis:1.4), (erect penis:1.4), (dark-skinned penis:1.3), testicles, (motion lines:1.2)"
+    },
+    "_meta": {
+      "title": "Pasi\u00f3n y Primera Inserci\u00f3n (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "22": {
+    "class_type": "ControlNetApplyAdvanced",
+    "inputs": {
+      "positive": [
+        "21",
+        0
+      ],
+      "negative": [
+        "6",
+        0
+      ],
+      "control_net": [
+        "5",
+        0
+      ],
+      "image": [
+        "13",
+        0
+      ],
+      "strength": 0.6,
+      "start_percent": 0.0,
+      "end_percent": 0.7
+    },
+    "_meta": {
+      "title": "Apply ControlNet Advanced (0.0-0.70) [03_primera_insercion]"
+    }
+  },
+  "23": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "20",
+        0
+      ],
+      "positive": [
+        "22",
+        0
+      ],
+      "negative": [
+        "22",
+        1
+      ],
+      "latent_image": [
+        "10",
+        0
+      ],
+      "seed": 42424249,
+      "control_after_generate": "fixed",
+      "steps": 10,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.7
+    },
+    "_meta": {
+      "title": "KSampler 03_primera_insercion (Nace de Ancla 01)"
+    }
+  },
+  "24": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "23",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode 03_primera_insercion"
+    }
+  },
+  "25": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "24",
+        0
+      ],
+      "filename_prefix": "orihime/poses/04_missionary/03_primera_insercion"
+    },
+    "_meta": {
+      "title": "Save 03_primera_insercion"
+    }
+  },
+  "26": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": 0.65,
+      "strength_clip": 0.65
+    },
+    "_meta": {
+      "title": "Slider Stage 4 (+0.65)"
+    }
+  },
+  "27": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "26",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, orihime inoue, bleach, bleach brave souls, long hair, orange hair, side braid, flower hair ornament, pearl chain, brown eyes, large breasts, 1girl, 1boy, 1man, nude_males, naked_males, completely_naked_men, dark-skinned_male, tall_male, muscular_male, faceless_male, bare_chest, shirtless_male, skin_tone_contrast, male_body, muscular_build, swimsuit, bikini, pink swimsuit, frilled bikini, bows, bare shoulders, cleavage, navel, sandals, flip-flops, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, missionary_position, lying_on_back, legs_spread, spread_legs, legs_up, front_view, (blurry_background:1.4), (heavy_bokeh:1.3), (bloom:1.5), (heavy_bloom:1.4), (cinematic_bloom:1.4), (glowing_background:1.3), (glowing_bokeh:1.3), (volumetric_lighting:1.3), (light_rays:1.3), (god_rays:1.2), (glowing_particles:1.2), (lens_flare:1.3), (soft_glowing_rim_light:1.4), (backlighting:1.3), (depth_of_field:1.3), (extreme_depth_of_field:1.2), (dark_background:1.3), dark_room, dim_lighting, dramatic_shadows, dramatic_lighting, (spread_pussy:1.2), (labia_spread:1.2), ecstasy, intense_pleasure, ahegao, heart_pupils, drooling, open_mouth, excessive_sweat, eye_contact, tears_of_pleasure, heavy_panting, (penis_in_pussy:1.4), (deep_penetration:1.4), (balls_deep:1.3), (creampie:1.2), (real_penis:1.4), (human_male_penis:1.4), (motion_lines:1.3), impact_lines"
+    },
+    "_meta": {
+      "title": "\u00c9xtasis, Cl\u00edmax y Corrida (Ropa Semi-Abierta) (Prompt)"
+    }
+  },
+  "28": {
+    "class_type": "ControlNetApplyAdvanced",
+    "inputs": {
+      "positive": [
+        "27",
+        0
+      ],
+      "negative": [
+        "6",
+        0
+      ],
+      "control_net": [
+        "5",
+        0
+      ],
+      "image": [
+        "13",
+        0
+      ],
+      "strength": 0.6,
+      "start_percent": 0.0,
+      "end_percent": 0.7
+    },
+    "_meta": {
+      "title": "Apply ControlNet Advanced (0.0-0.70) [04_extasis]"
+    }
+  },
+  "29": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "26",
+        0
+      ],
+      "positive": [
+        "28",
+        0
+      ],
+      "negative": [
+        "28",
+        1
+      ],
+      "latent_image": [
+        "10",
+        0
+      ],
+      "seed": 42424249,
+      "control_after_generate": "fixed",
+      "steps": 10,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.72
+    },
+    "_meta": {
+      "title": "KSampler 04_extasis (Nace de Ancla 01)"
+    }
+  },
+  "30": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "29",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode 04_extasis"
+    }
+  },
+  "31": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "30",
+        0
+      ],
+      "filename_prefix": "orihime/poses/04_missionary/04_extasis"
+    },
+    "_meta": {
+      "title": "Save 04_extasis"
+    }
+  },
+  "32": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": 0.55,
+      "strength_clip": 0.55
+    },
+    "_meta": {
+      "title": "Slider Stage 5 (+0.55)"
+    }
+  },
+  "33": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "32",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, orihime inoue, bleach, bleach brave souls, long hair, orange hair, side braid, flower hair ornament, pearl chain, brown eyes, large breasts, 1girl, 1boy, 1man, nude male, naked male, completely naked man, dark-skinned male, tall male, muscular male, faceless male, bare chest, skin tone contrast, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, missionary_position, lying_on_back, legs_spread, spread_legs, legs_up, front_view, (blurry_background:1.4), (heavy_bokeh:1.3), (bloom:1.5), (heavy_bloom:1.4), (cinematic_bloom:1.4), (glowing_background:1.3), (glowing_bokeh:1.3), (volumetric_lighting:1.3), (light_rays:1.3), (god_rays:1.2), (glowing_particles:1.2), (lens_flare:1.3), (soft_glowing_rim_light:1.4), (backlighting:1.3), (depth_of_field:1.3), (extreme_depth_of_field:1.2), (dark_background:1.3), dark_room, dim_lighting, dramatic_shadows, dramatic_lighting, (spread pussy:1.2), (gaping:1.2), afterglow, satisfied, gentle_smile, blushing, heavy_breathing, sweat, relaxed, exhausted_smile, half-closed eyes, (after_sex:1.2), (pull_out:1.2), (cum_leak:1.3), semen_drip, semen_on_body"
+    },
+    "_meta": {
+      "title": "Afterglow y Placer Satisfecho (Totalmente Desnuda) (Prompt)"
+    }
+  },
+  "34": {
+    "class_type": "ControlNetApplyAdvanced",
+    "inputs": {
+      "positive": [
+        "33",
+        0
+      ],
+      "negative": [
+        "6",
+        0
+      ],
+      "control_net": [
+        "5",
+        0
+      ],
+      "image": [
+        "13",
+        0
+      ],
+      "strength": 0.6,
+      "start_percent": 0.0,
+      "end_percent": 0.7
+    },
+    "_meta": {
+      "title": "Apply ControlNet Advanced (0.0-0.70) [05_afterglow]"
+    }
+  },
+  "35": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "32",
+        0
+      ],
+      "positive": [
+        "34",
+        0
+      ],
+      "negative": [
+        "34",
+        1
+      ],
+      "latent_image": [
+        "10",
+        0
+      ],
+      "seed": 42424249,
+      "control_after_generate": "fixed",
+      "steps": 10,
+      "cfg": 3.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.7
+    },
+    "_meta": {
+      "title": "KSampler 05_afterglow (Nace de Ancla 01)"
+    }
+  },
+  "36": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "35",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode 05_afterglow"
+    }
+  },
+  "37": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "36",
+        0
+      ],
+      "filename_prefix": "orihime/poses/04_missionary/05_afterglow"
+    },
+    "_meta": {
+      "title": "Save 05_afterglow"
+    }
+  }
+}

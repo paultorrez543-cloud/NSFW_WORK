@@ -1,0 +1,212 @@
+[
+  {
+    "id": "hinatsuru_ai_01",
+    "character": "hinatsuru_ai",
+    "prompt": "hinatsuru ai, 1girl, child, short hair, brown hair, brown eyes, hair ribbon, profile view, focused expression, casual summer dress, traditional japanese tatami room, shogi board, wooden sliding doors, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "hinatsuru_ai_02",
+    "character": "hinatsuru_ai",
+    "prompt": "hinatsuru ai, 1girl, child, short hair, brown hair, brown eyes, hair ribbon, close-up portrait, looking at viewer, casual summer dress, traditional japanese tatami room, shogi board, wooden sliding doors, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "hinatsuru_ai_03",
+    "character": "hinatsuru_ai",
+    "prompt": "hinatsuru ai, 1girl, child, short hair, brown hair, brown eyes, hair ribbon, full body, standing pose, cheerful expression, traditional yukata, floral pattern, sunlit room, cozy atmosphere, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "hinatsuru_ai_04",
+    "character": "hinatsuru_ai",
+    "prompt": "hinatsuru ai, 1girl, child, short hair, brown hair, brown eyes, hair ribbon, close-up portrait, looking at viewer, traditional yukata, floral pattern, japanese shogi hall, soft ambient indoor light, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "hinatsuru_ai_05",
+    "character": "hinatsuru_ai",
+    "prompt": "hinatsuru ai, 1girl, child, short hair, brown hair, brown eyes, hair ribbon, profile view, focused expression, casual summer dress, japanese shogi hall, soft ambient indoor light, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "yashajin_ai_01",
+    "character": "yashajin_ai",
+    "prompt": "yashajin ai, 1girl, child, twintails, black hair, red eyes, hair ribbon, close-up portrait, looking at viewer, school uniform, red ribbon, traditional japanese tatami room, shogi board, wooden sliding doors, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "yashajin_ai_02",
+    "character": "yashajin_ai",
+    "prompt": "yashajin ai, 1girl, child, twintails, black hair, red eyes, hair ribbon, close-up portrait, looking at viewer, gothic lolita dress, black frills, japanese shogi hall, soft ambient indoor light, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "yashajin_ai_03",
+    "character": "yashajin_ai",
+    "prompt": "yashajin ai, 1girl, child, twintails, black hair, red eyes, hair ribbon, full body, standing pose, cheerful expression, school uniform, red ribbon, japanese shogi hall, soft ambient indoor light, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "yashajin_ai_04",
+    "character": "yashajin_ai",
+    "prompt": "yashajin ai, 1girl, child, twintails, black hair, red eyes, hair ribbon, close-up portrait, looking at viewer, gothic lolita dress, black frills, simple neutral background, studio lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "yashajin_ai_05",
+    "character": "yashajin_ai",
+    "prompt": "yashajin ai, 1girl, child, twintails, black hair, red eyes, hair ribbon, full body, standing pose, cheerful expression, school uniform, red ribbon, simple neutral background, studio lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "sora_ginko_01",
+    "character": "sora_ginko",
+    "prompt": "sora ginko, 1girl, short hair, silver hair, blue eyes, sharp gaze, close-up portrait, looking at viewer, school uniform, blazer, japanese shogi hall, soft ambient indoor light, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "sora_ginko_02",
+    "character": "sora_ginko",
+    "prompt": "sora ginko, 1girl, short hair, silver hair, blue eyes, sharp gaze, profile view, focused expression, winter coat, scarf, cherry blossom garden background, falling sakura petals, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "sora_ginko_03",
+    "character": "sora_ginko",
+    "prompt": "sora ginko, 1girl, short hair, silver hair, blue eyes, sharp gaze, upper body, turning head with a warm smile, school uniform, blazer, cherry blossom garden background, falling sakura petals, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "sora_ginko_04",
+    "character": "sora_ginko",
+    "prompt": "sora ginko, 1girl, short hair, silver hair, blue eyes, sharp gaze, close-up portrait, looking at viewer, winter coat, scarf, sunlit room, cozy atmosphere, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "sora_ginko_05",
+    "character": "sora_ginko",
+    "prompt": "sora ginko, 1girl, short hair, silver hair, blue eyes, sharp gaze, close-up portrait, looking at viewer, formal dark dress, cherry blossom garden background, falling sakura petals, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "charlotte_izo_01",
+    "character": "charlotte_izo",
+    "prompt": "charlotte izo, 1girl, child, long hair, blonde hair, blue eyes, beret, medium shot, sitting at shogi board, holding shogi piece, french style outfit, beret, traditional japanese tatami room, shogi board, wooden sliding doors, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "charlotte_izo_02",
+    "character": "charlotte_izo",
+    "prompt": "charlotte izo, 1girl, child, long hair, blonde hair, blue eyes, beret, close-up portrait, looking at viewer, pink frilly dress, ribbon, sunlit room, cozy atmosphere, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "charlotte_izo_03",
+    "character": "charlotte_izo",
+    "prompt": "charlotte izo, 1girl, child, long hair, blonde hair, blue eyes, beret, profile view, focused expression, pink frilly dress, ribbon, traditional japanese tatami room, shogi board, wooden sliding doors, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "charlotte_izo_04",
+    "character": "charlotte_izo",
+    "prompt": "charlotte izo, 1girl, child, long hair, blonde hair, blue eyes, beret, close-up portrait, looking at viewer, pink frilly dress, ribbon, simple neutral background, studio lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "charlotte_izo_05",
+    "character": "charlotte_izo",
+    "prompt": "charlotte izo, 1girl, child, long hair, blonde hair, blue eyes, beret, profile view, focused expression, pink frilly dress, ribbon, sunlit room, cozy atmosphere, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "keika_kiyotaki_01",
+    "character": "keika_kiyotaki",
+    "prompt": "keika kiyotaki, 1girl, mature female, long hair, brown hair, brown eyes, ponytail, upper body, turning head with a warm smile, professional suit jacket, cherry blossom garden background, falling sakura petals, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "keika_kiyotaki_02",
+    "character": "keika_kiyotaki",
+    "prompt": "keika kiyotaki, 1girl, mature female, long hair, brown hair, brown eyes, ponytail, medium shot, sitting at shogi board, holding shogi piece, professional suit jacket, cherry blossom garden background, falling sakura petals, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "keika_kiyotaki_03",
+    "character": "keika_kiyotaki",
+    "prompt": "keika kiyotaki, 1girl, mature female, long hair, brown hair, brown eyes, ponytail, profile view, focused expression, casual sweater, traditional japanese tatami room, shogi board, wooden sliding doors, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "keika_kiyotaki_04",
+    "character": "keika_kiyotaki",
+    "prompt": "keika kiyotaki, 1girl, mature female, long hair, brown hair, brown eyes, ponytail, close-up portrait, looking at viewer, traditional japanese kimono, sunlit room, cozy atmosphere, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "keika_kiyotaki_05",
+    "character": "keika_kiyotaki",
+    "prompt": "keika kiyotaki, 1girl, mature female, long hair, brown hair, brown eyes, ponytail, medium shot, sitting at shogi board, holding shogi piece, traditional japanese kimono, cherry blossom garden background, falling sakura petals, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "ayano_sadatou_01",
+    "character": "ayano_sadatou",
+    "prompt": "ayano sadatou, 1girl, long hair, black hair, purple eyes, gentle expression, medium shot, sitting at shogi board, holding shogi piece, school uniform, cherry blossom garden background, falling sakura petals, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "ayano_sadatou_02",
+    "character": "ayano_sadatou",
+    "prompt": "ayano sadatou, 1girl, long hair, black hair, purple eyes, gentle expression, full body, standing pose, cheerful expression, stylish blouse and skirt, simple neutral background, studio lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "ayano_sadatou_03",
+    "character": "ayano_sadatou",
+    "prompt": "ayano sadatou, 1girl, long hair, black hair, purple eyes, gentle expression, full body, standing pose, cheerful expression, school uniform, japanese shogi hall, soft ambient indoor light, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "ayano_sadatou_04",
+    "character": "ayano_sadatou",
+    "prompt": "ayano sadatou, 1girl, long hair, black hair, purple eyes, gentle expression, close-up portrait, looking at viewer, stylish blouse and skirt, sunlit room, cozy atmosphere, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "ayano_sadatou_05",
+    "character": "ayano_sadatou",
+    "prompt": "ayano sadatou, 1girl, long hair, black hair, purple eyes, gentle expression, profile view, focused expression, elegant kimono, traditional japanese tatami room, shogi board, wooden sliding doors, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "mio_mizukoshi_01",
+    "character": "mio_mizukoshi",
+    "prompt": "mio mizukoshi, 1girl, short hair, orange hair, green eyes, energetic smile, full body, standing pose, cheerful expression, school uniform, cherry blossom garden background, falling sakura petals, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "mio_mizukoshi_02",
+    "character": "mio_mizukoshi",
+    "prompt": "mio mizukoshi, 1girl, short hair, orange hair, green eyes, energetic smile, upper body, turning head with a warm smile, casual t-shirt, shorts, sunlit room, cozy atmosphere, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "mio_mizukoshi_03",
+    "character": "mio_mizukoshi",
+    "prompt": "mio mizukoshi, 1girl, short hair, orange hair, green eyes, energetic smile, medium shot, sitting at shogi board, holding shogi piece, school uniform, simple neutral background, studio lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "mio_mizukoshi_04",
+    "character": "mio_mizukoshi",
+    "prompt": "mio mizukoshi, 1girl, short hair, orange hair, green eyes, energetic smile, upper body, turning head with a warm smile, sportswear tracksuit, simple neutral background, studio lighting, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  },
+  {
+    "id": "mio_mizukoshi_05",
+    "character": "mio_mizukoshi",
+    "prompt": "mio mizukoshi, 1girl, short hair, orange hair, green eyes, energetic smile, full body, standing pose, cheerful expression, school uniform, japanese shogi hall, soft ambient indoor light, masterpiece, best quality, ultra-detailed, anime style, 8k wallpaper",
+    "negative_prompt": "worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digit, cropped, watermark, blurry, 3d"
+  }
+]

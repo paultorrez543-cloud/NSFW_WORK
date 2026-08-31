@@ -1,0 +1,18 @@
+import os
+import json
+import sys
+
+# Dedicated builder for Nelliel Kamasutra workflow
+sys.path.append(r"E:\ComfyUI\characters")
+from build_vault_workflows_kamasutra import CHARACTERS, generate_kamasutra_workflow
+
+def build():
+    char_cfg = CHARACTERS["nelliel_heart"]
+    wf = generate_kamasutra_workflow("nelliel_heart", char_cfg)
+    out_path = os.path.join(os.path.dirname(__file__), "workflow_nelliel_kamasutra.json")
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(wf, f, indent=2)
+    print("Generated Kamasutra workflow JSON at:", out_path)
+
+if __name__ == "__main__":
+    build()

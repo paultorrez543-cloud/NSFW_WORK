@@ -1,0 +1,786 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "lora_name": "Nol_Youkoso_Sukebe_Elf_no_Mori_e.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0,
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ]
+    }
+  },
+  "lora_dp": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 0.65,
+      "strength_clip": 0.65,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "lowres, bad anatomy, bad hands, deformed, extra digits, (bright lighting, bright room, daylight, sunlight, high key, well-lit, illuminated room, bright lamps, oversaturated, hyper-saturated, vivid colors, neon lighting:1.5), (blue light, blue tint, blue hue, blue room, blue lighting, cool lighting, cyan tint, blue background cast, cool color cast:1.4)",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "p_shy": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "p_pain": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "p_pleasure": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "p_ahegao": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up, score_6_up, score_5_up, score_4_up, source_anime, rating_explicit, Nol_YSEnMe, 1girl, red hair, long hair, red eyes, pointy ears, elf, small breasts, 1boy, male, faceless ugly man, faceless, ugly man, fat, faceless male, fat, bald, mature male, six-nine, 69_position, mutual_oral, fellatio, cunnilingus, nude, bare_breasts, (dark lighting:1.3), (dim room:1.2), (dark room:1.2), shadow on body, shaded, low key, natural skin tones",
+      "clip": [
+        "lora_dp",
+        1
+      ]
+    }
+  },
+  "e_d04_shy": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "k_d04_shy": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_depth_d04",
+        0
+      ],
+      "positive": [
+        "p_shy",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_d04_shy",
+        0
+      ]
+    }
+  },
+  "d_d04_shy": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_d04_shy",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_d04_shy": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "master_dp_d04_01_shy",
+      "images": [
+        "d_d04_shy",
+        0
+      ]
+    }
+  },
+  "e_d04_pain": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "k_d04_pain": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_depth_d04",
+        0
+      ],
+      "positive": [
+        "p_pain",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_d04_pain",
+        0
+      ]
+    }
+  },
+  "d_d04_pain": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_d04_pain",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_d04_pain": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "master_dp_d04_02_pain",
+      "images": [
+        "d_d04_pain",
+        0
+      ]
+    }
+  },
+  "e_d04_pleasure": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "k_d04_pleasure": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_depth_d04",
+        0
+      ],
+      "positive": [
+        "p_pleasure",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_d04_pleasure",
+        0
+      ]
+    }
+  },
+  "d_d04_pleasure": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_d04_pleasure",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_d04_pleasure": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "master_dp_d04_03_pleasure",
+      "images": [
+        "d_d04_pleasure",
+        0
+      ]
+    }
+  },
+  "e_d04_ahegao": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "k_d04_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_depth_d04",
+        0
+      ],
+      "positive": [
+        "p_ahegao",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_d04_ahegao",
+        0
+      ]
+    }
+  },
+  "d_d04_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_d04_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_d04_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "master_dp_d04_04_ahegao",
+      "images": [
+        "d_d04_ahegao",
+        0
+      ]
+    }
+  },
+  "e_d07_shy": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "k_d07_shy": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_depth_d07",
+        0
+      ],
+      "positive": [
+        "p_shy",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_d07_shy",
+        0
+      ]
+    }
+  },
+  "d_d07_shy": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_d07_shy",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_d07_shy": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "master_dp_d07_05_shy",
+      "images": [
+        "d_d07_shy",
+        0
+      ]
+    }
+  },
+  "e_d07_pain": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "k_d07_pain": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_depth_d07",
+        0
+      ],
+      "positive": [
+        "p_pain",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_d07_pain",
+        0
+      ]
+    }
+  },
+  "d_d07_pain": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_d07_pain",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_d07_pain": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "master_dp_d07_06_pain",
+      "images": [
+        "d_d07_pain",
+        0
+      ]
+    }
+  },
+  "e_d07_pleasure": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "k_d07_pleasure": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_depth_d07",
+        0
+      ],
+      "positive": [
+        "p_pleasure",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_d07_pleasure",
+        0
+      ]
+    }
+  },
+  "d_d07_pleasure": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_d07_pleasure",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_d07_pleasure": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "master_dp_d07_07_pleasure",
+      "images": [
+        "d_d07_pleasure",
+        0
+      ]
+    }
+  },
+  "e_d07_ahegao": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "k_d07_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_depth_d07",
+        0
+      ],
+      "positive": [
+        "p_ahegao",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_d07_ahegao",
+        0
+      ]
+    }
+  },
+  "d_d07_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_d07_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_d07_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "master_dp_d07_08_ahegao",
+      "images": [
+        "d_d07_ahegao",
+        0
+      ]
+    }
+  },
+  "e_d10_shy": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "k_d10_shy": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_depth_d10",
+        0
+      ],
+      "positive": [
+        "p_shy",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_d10_shy",
+        0
+      ]
+    }
+  },
+  "d_d10_shy": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_d10_shy",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_d10_shy": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "master_dp_d10_09_shy",
+      "images": [
+        "d_d10_shy",
+        0
+      ]
+    }
+  },
+  "e_d10_pain": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "k_d10_pain": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_depth_d10",
+        0
+      ],
+      "positive": [
+        "p_pain",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_d10_pain",
+        0
+      ]
+    }
+  },
+  "d_d10_pain": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_d10_pain",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_d10_pain": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "master_dp_d10_10_pain",
+      "images": [
+        "d_d10_pain",
+        0
+      ]
+    }
+  },
+  "e_d10_pleasure": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "k_d10_pleasure": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_depth_d10",
+        0
+      ],
+      "positive": [
+        "p_pleasure",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_d10_pleasure",
+        0
+      ]
+    }
+  },
+  "d_d10_pleasure": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_d10_pleasure",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_d10_pleasure": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "master_dp_d10_11_pleasure",
+      "images": [
+        "d_d10_pleasure",
+        0
+      ]
+    }
+  },
+  "e_d10_ahegao": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    }
+  },
+  "k_d10_ahegao": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "lora_depth_d10",
+        0
+      ],
+      "positive": [
+        "p_ahegao",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "e_d10_ahegao",
+        0
+      ]
+    }
+  },
+  "d_d10_ahegao": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_d10_ahegao",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_d10_ahegao": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "master_dp_d10_12_ahegao",
+      "images": [
+        "d_d10_ahegao",
+        0
+      ]
+    }
+  }
+}

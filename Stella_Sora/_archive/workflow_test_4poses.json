@@ -1,0 +1,514 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "latent_shared": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1536,
+      "batch_size": 1
+    }
+  },
+  "clip_skip": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip",
+        0
+      ],
+      "lora_name": "Stella-Virigia-v1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_amazon": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_amazon": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_amazon",
+        0
+      ],
+      "clip": [
+        "lora_depth_amazon",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_amazon": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_amazon",
+        0
+      ],
+      "clip": [
+        "lora_dp_amazon",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_amazon": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, holding mirror, red mirror, mirror",
+      "clip": [
+        "lora_size_amazon",
+        1
+      ]
+    }
+  },
+  "p_amazon": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, doublepen, vaginal, anal, double_penetration, both_holes, (deep penetration:1.4), full_penetration, amazon_position, cowgirl_position, girl_on_top, facing_away, legs_up, feet_in_air, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_amazon",
+        1
+      ]
+    }
+  },
+  "k_amazon": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_amazon",
+        0
+      ],
+      "positive": [
+        "p_amazon",
+        0
+      ],
+      "negative": [
+        "neg_amazon",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_amazon": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_amazon",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_amazon": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "test_amazon_virigia",
+      "images": [
+        "d_amazon",
+        0
+      ]
+    }
+  },
+  "lora_depth_double_vaginal": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_double_vaginal": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_double_vaginal",
+        0
+      ],
+      "clip": [
+        "lora_depth_double_vaginal",
+        1
+      ],
+      "lora_name": "concept_double_vaginal-ill_d.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_double_vaginal": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_double_vaginal",
+        0
+      ],
+      "clip": [
+        "lora_dp_double_vaginal",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_double_vaginal": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, holding mirror, red mirror, mirror",
+      "clip": [
+        "lora_size_double_vaginal",
+        1
+      ]
+    }
+  },
+  "p_double_vaginal": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, double vaginal, two_penises_in_one_pussy, (deep penetration:1.4), full_penetration, double_vaginal, two_penises_in_one_pussy, missionary_position, legs_up, spread_legs, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_double_vaginal",
+        1
+      ]
+    }
+  },
+  "k_double_vaginal": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_double_vaginal",
+        0
+      ],
+      "positive": [
+        "p_double_vaginal",
+        0
+      ],
+      "negative": [
+        "neg_double_vaginal",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_double_vaginal": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_double_vaginal",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_double_vaginal": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "test_double_vaginal_virigia",
+      "images": [
+        "d_double_vaginal",
+        0
+      ]
+    }
+  },
+  "lora_depth_triple_vaginal": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_triple_vaginal": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_triple_vaginal",
+        0
+      ],
+      "clip": [
+        "lora_depth_triple_vaginal",
+        1
+      ],
+      "lora_name": "concept_double_vaginal-ill_d.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_triple_vaginal": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_triple_vaginal",
+        0
+      ],
+      "clip": [
+        "lora_dp_triple_vaginal",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_triple_vaginal": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, holding mirror, red mirror, mirror",
+      "clip": [
+        "lora_size_triple_vaginal",
+        1
+      ]
+    }
+  },
+  "p_triple_vaginal": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, triple vaginal, three_penises_in_one_pussy, (deep penetration:1.4), full_penetration, triple_vaginal, three_penises_in_one_pussy, missionary_position, legs_up, spread_legs, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_triple_vaginal",
+        1
+      ]
+    }
+  },
+  "k_triple_vaginal": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_triple_vaginal",
+        0
+      ],
+      "positive": [
+        "p_triple_vaginal",
+        0
+      ],
+      "negative": [
+        "neg_triple_vaginal",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_triple_vaginal": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_triple_vaginal",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_triple_vaginal": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "test_triple_vaginal_virigia",
+      "images": [
+        "d_triple_vaginal",
+        0
+      ]
+    }
+  },
+  "lora_depth_double_anal": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_double_anal": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_double_anal",
+        0
+      ],
+      "clip": [
+        "lora_depth_double_anal",
+        1
+      ],
+      "lora_name": "double_anal_ilxl_goofy.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_size_double_anal": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_double_anal",
+        0
+      ],
+      "clip": [
+        "lora_dp_double_anal",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_double_anal": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark, holding mirror, red mirror, mirror",
+      "clip": [
+        "lora_size_double_anal",
+        1
+      ]
+    }
+  },
+  "p_double_anal": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_explicit, stell4virigiadef, 1girl, white hair, long hair, red eyes, demon horns, low wings, large breasts, black dress, white cloak, white bonnet, high heels, clothes_lift, disembodied_penis, 2penises, black_penis, dark_penis, double anal, mmf threesome, group sex, two_penises_in_one_ass, (deep penetration:1.4), full_penetration, double_anal, two_penises_in_one_ass, anal_penetration, doggystyle, from_behind, front_view, rolled_back_eyes, tongue_out, drooling, ahegao, dimly_lit, dark_ambiance, (dark lighting:1.5), anime, masterpiece, best_quality",
+      "clip": [
+        "lora_size_double_anal",
+        1
+      ]
+    }
+  },
+  "k_double_anal": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_size_double_anal",
+        0
+      ],
+      "positive": [
+        "p_double_anal",
+        0
+      ],
+      "negative": [
+        "neg_double_anal",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_double_anal": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_double_anal",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_double_anal": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "test_double_anal_virigia",
+      "images": [
+        "d_double_anal",
+        0
+      ]
+    }
+  }
+}

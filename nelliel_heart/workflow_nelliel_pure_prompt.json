@@ -1,0 +1,1282 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "illustriousXL_v01.safetensors"
+    },
+    "_meta": {
+      "title": "Checkpoint Loader (Illustrious XL)"
+    }
+  },
+  "2": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "clip": [
+        "1",
+        1
+      ],
+      "lora_name": "lora_nelliel_heart.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8
+    },
+    "_meta": {
+      "title": "LoRA Personaje: Nelliel (0.8)"
+    }
+  },
+  "3": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "2",
+        0
+      ],
+      "clip": [
+        "2",
+        1
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 0.5
+    },
+    "_meta": {
+      "title": "LoRA Slider Concept (Pussy Adjuster XL)"
+    }
+  },
+  "4": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "3",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    },
+    "_meta": {
+      "title": "CLIP Set Last Layer (CLIP Skip -2)"
+    }
+  },
+  "5": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "4",
+        0
+      ],
+      "text": "2boys, 2men, 2penises, two_penises, multiple_penises, extra_penis, duplicate_penis, group_sex, threesome, gangbang, shallow_penetration, half_inserted, mostly_outside, detached_penis, penis_outside, tip_only, partial_insertion, fear, scared, terrified, horrified, fear_expression, sad, sadness, sorrow, crying_in_sadness, crying_in_fear, frowning, angry, disgusted, distress, rape, resistance, unwilling, color_shift, color_drift, hue_shift, tint, color_cast, washed_out_colors, dull_colors, oversaturated, desaturated, grayscale, sepia, monochrome, yellow_tint, green_tint, purple_tint, inconsistent_lighting, mismatched_skin_tone, blown_out_highlights, overexposed, underexposed, harsh_shadows, worst quality, low quality, bad anatomy, bad hands, missing fingers, extra fingers, clothed male, male clothes, shirt on male, pants on male, underwear on male, boxer shorts, male underwear, sex_toy, dildo, vibrator, strap-on, harness, artificial penis, glass dildo, silicone toy, machine, tentacles, disembodied_penis, floating penis, floating limbs, floating arms, floating legs, fused fingers, too many fingers, mutated hands, poorly drawn hands, poorly drawn face, fused limbs, bad proportions, unnatural body, distorted body, duplicate limbs, overlapping limbs, extra arms, extra legs, poorly drawn eyes, cross-eyed, asymmetrical eyes, detailed background, sharp background, complex background, bright background, white background, flat lighting, sunny, lowres"
+    },
+    "_meta": {
+      "title": "Negative Prompt Master (Anti-Ropa / Anti-Miedo / Anti-Duplicados)"
+    }
+  },
+  "6": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "Base Latent Master (832x1216 Vertical SDXL)"
+    }
+  },
+  "7": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": -0.4,
+      "strength_clip": -0.4
+    },
+    "_meta": {
+      "title": "Slider [01_ancla] (-0.40)"
+    }
+  },
+  "8": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "7",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, nelliel_swimsuit, nelliel tu odelschwanck, bleach, bleach brave souls, tan, dark skin, green hair, wavy hair, long hair, green eyes, ram skull, hollow mask on head, facial mark, red facial stripe, large breasts, massive cleavage, wide hips, 1girl, solo, white bikini, halterneck bikini top, side-tie bikini bottom, yellow sarong, yellow pareo, floral pareo, beaded necklace, flower on waist, fully_clothed, complete_outfit, neat_clothes, (vibrant anime colors:1.3), (rich color palette:1.2), (consistent color tone:1.3), (clean anime coloring:1.3), (smooth anime shading:1.2), (natural skin tone:1.2), (soft lighting:1.2), (balanced contrast:1.2), (blurry background:1.4), (depth of field:1.3), dark background, dim lighting, closed_legs, seductive_smile, light_blush, looking_at_viewer, flirting, parted_lips, teasing_pose, standing, no_penetration"
+    },
+    "_meta": {
+      "title": "📝 [PROMPT 01_ANCLA]: ⭐ Etapa 01: Retrato Ancla (Ropa Completa)"
+    }
+  },
+  "9": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "7",
+        0
+      ],
+      "positive": [
+        "8",
+        0
+      ],
+      "negative": [
+        "5",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424249,
+      "control_after_generate": "fixed",
+      "steps": 24,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "KSampler Puro [01_ancla]"
+    }
+  },
+  "10": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "9",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode [01_ancla]"
+    }
+  },
+  "11": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyUI_Vault_nelliel_pure_01_ancla",
+      "images": [
+        "10",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "💾 Guardar [01_ancla]"
+    }
+  },
+  "12": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": 0.25,
+      "strength_clip": 0.25
+    },
+    "_meta": {
+      "title": "Slider [02_preliminares] (+0.25)"
+    }
+  },
+  "13": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "12",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, nelliel_swimsuit, nelliel tu odelschwanck, bleach, bleach brave souls, tan, dark skin, green hair, wavy hair, long hair, green eyes, ram skull, hollow mask on head, facial mark, red facial stripe, large breasts, massive cleavage, wide hips, 1girl, 1man, naked_man, dark-skinned_male, muscular_male, faceless_male, white bikini, halterneck bikini top, side-tie bikini bottom, yellow sarong, yellow pareo, floral pareo, beaded necklace, flower on waist, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, (vibrant anime colors:1.3), (rich color palette:1.2), (consistent color tone:1.3), (clean anime coloring:1.3), (smooth anime shading:1.2), (natural skin tone:1.2), (soft lighting:1.2), (balanced contrast:1.2), (blurry background:1.4), (depth of field:1.3), dark background, dim lighting, teasing, ((lustful_expression:1.4)), blushing_deeply, heavy_breathing, parted_lips, moaning, anticipation, (imminent_penetration:1.2), tip_touching, thigh_contact, passionate_touch"
+    },
+    "_meta": {
+      "title": "📝 [PROMPT 02_PRELIMINARES]: 🌿 Etapa 02: Preliminares (Ropa Semi-Abierta)"
+    }
+  },
+  "14": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "12",
+        0
+      ],
+      "positive": [
+        "13",
+        0
+      ],
+      "negative": [
+        "5",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424249,
+      "control_after_generate": "fixed",
+      "steps": 24,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "KSampler Puro [02_preliminares]"
+    }
+  },
+  "15": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "14",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode [02_preliminares]"
+    }
+  },
+  "16": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyUI_Vault_nelliel_pure_02_preliminares",
+      "images": [
+        "15",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "💾 Guardar [02_preliminares]"
+    }
+  },
+  "17": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 0.5
+    },
+    "_meta": {
+      "title": "Slider [03_insercion_base] (+0.50)"
+    }
+  },
+  "18": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "17",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, nelliel_swimsuit, nelliel tu odelschwanck, bleach, bleach brave souls, tan, dark skin, green hair, wavy hair, long hair, green eyes, ram skull, hollow mask on head, facial mark, red facial stripe, large breasts, massive cleavage, wide hips, 1girl, 1man, naked_man, dark-skinned_male, muscular_male, faceless_male, white bikini, halterneck bikini top, side-tie bikini bottom, yellow sarong, yellow pareo, floral pareo, beaded necklace, flower on waist, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, (vibrant anime colors:1.3), (rich color palette:1.2), (consistent color tone:1.3), (clean anime coloring:1.3), (smooth anime shading:1.2), (natural skin tone:1.2), (soft lighting:1.2), (balanced contrast:1.2), (blurry background:1.4), (depth of field:1.3), dark background, dim lighting, (spread_pussy:1.2), ((sweet_pain:1.3)), ((crying_with_pleasure:1.4)), blushing_deeply, open_mouth, heavy_breathing, panting, ((penis_in_pussy:1.5)), ((deep_penetration:1.5)), (1penis:1.4), (erect_penis:1.3), (motion_lines:1.2)"
+    },
+    "_meta": {
+      "title": "📝 [PROMPT 03_INSERCION_BASE]: 🌿 Etapa 03: Inserción Vaginal Base (penis_in_pussy)"
+    }
+  },
+  "19": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "17",
+        0
+      ],
+      "positive": [
+        "18",
+        0
+      ],
+      "negative": [
+        "5",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424249,
+      "control_after_generate": "fixed",
+      "steps": 24,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "KSampler Puro [03_insercion_base]"
+    }
+  },
+  "20": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "19",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode [03_insercion_base]"
+    }
+  },
+  "21": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyUI_Vault_nelliel_pure_03_insercion_base",
+      "images": [
+        "20",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "💾 Guardar [03_insercion_base]"
+    }
+  },
+  "22": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": 0.65,
+      "strength_clip": 0.65
+    },
+    "_meta": {
+      "title": "Slider [03_breast_grab] (+0.65)"
+    }
+  },
+  "23": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "22",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, nelliel_swimsuit, nelliel tu odelschwanck, bleach, bleach brave souls, tan, dark skin, green hair, wavy hair, long hair, green eyes, ram skull, hollow mask on head, facial mark, red facial stripe, large breasts, massive cleavage, wide hips, 1girl, 1man, naked_man, dark-skinned_male, muscular_male, faceless_male, white bikini, halterneck bikini top, side-tie bikini bottom, yellow sarong, yellow pareo, floral pareo, beaded necklace, flower on waist, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, (vibrant anime colors:1.3), (rich color palette:1.2), (consistent color tone:1.3), (clean anime coloring:1.3), (smooth anime shading:1.2), (natural skin tone:1.2), (soft lighting:1.2), (balanced contrast:1.2), (blurry background:1.4), (depth of field:1.3), dark background, dim lighting, (spread_pussy:1.3), (stretched_pussy:1.3), ((extreme_ahegao:1.5)), ((tongue_out:1.5)), ((drooling:1.4)), ((heart_pupils:1.4)), ((sweet_pain:1.3)), ((crying_with_pleasure:1.4)), ((grabbing_breasts:1.5)), ((breasts_squeezed:1.5)), ((cleavage:1.4)), ((deep_penetration:1.6)), ((cervix_penetration:1.5)), ((penis_in_pussy:1.5)), (1penis:1.4), ((motion_lines:1.4))"
+    },
+    "_meta": {
+      "title": "📝 [PROMPT 03_BREAST_GRAB]: 🍈 Rama 03-Busto: Agarre & Amasado de Pechos con Penetración Profunda (90% Adentro)"
+    }
+  },
+  "24": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "22",
+        0
+      ],
+      "positive": [
+        "23",
+        0
+      ],
+      "negative": [
+        "5",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424249,
+      "control_after_generate": "fixed",
+      "steps": 24,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "KSampler Puro [03_breast_grab]"
+    }
+  },
+  "25": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "24",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode [03_breast_grab]"
+    }
+  },
+  "26": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyUI_Vault_nelliel_pure_03_breast_grab",
+      "images": [
+        "25",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "💾 Guardar [03_breast_grab]"
+    }
+  },
+  "27": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": 0.7,
+      "strength_clip": 0.7
+    },
+    "_meta": {
+      "title": "Slider [03_clit_masturb] (+0.70)"
+    }
+  },
+  "28": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "27",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, nelliel_swimsuit, nelliel tu odelschwanck, bleach, bleach brave souls, tan, dark skin, green hair, wavy hair, long hair, green eyes, ram skull, hollow mask on head, facial mark, red facial stripe, large breasts, massive cleavage, wide hips, 1girl, 1man, naked_man, dark-skinned_male, muscular_male, faceless_male, white bikini, halterneck bikini top, side-tie bikini bottom, yellow sarong, yellow pareo, floral pareo, beaded necklace, flower on waist, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, (vibrant anime colors:1.3), (rich color palette:1.2), (consistent color tone:1.3), (clean anime coloring:1.3), (smooth anime shading:1.2), (natural skin tone:1.2), (soft lighting:1.2), (balanced contrast:1.2), (blurry background:1.4), (depth of field:1.3), dark background, dim lighting, (spread_pussy:1.3), (clitoris:1.3), ((overstimulated:1.5)), ((extreme_ahegao:1.5)), ((tongue_out:1.5)), ((drooling:1.4)), ((heart_pupils:1.4)), (trembling:1.4), ((clitoral_stimulation:1.5)), ((masturbation_while_penetrated:1.5)), ((deep_penetration:1.6)), ((penis_in_pussy:1.5)), (1penis:1.4), ((motion_lines:1.4))"
+    },
+    "_meta": {
+      "title": "📝 [PROMPT 03_CLIT_MASTURB]: ✨ Rama 03-Clítoris: Masturbación & Estimulación Clitoral con Pene 90% Adentro"
+    }
+  },
+  "29": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "27",
+        0
+      ],
+      "positive": [
+        "28",
+        0
+      ],
+      "negative": [
+        "5",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424249,
+      "control_after_generate": "fixed",
+      "steps": 24,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "KSampler Puro [03_clit_masturb]"
+    }
+  },
+  "30": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "29",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode [03_clit_masturb]"
+    }
+  },
+  "31": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyUI_Vault_nelliel_pure_03_clit_masturb",
+      "images": [
+        "30",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "💾 Guardar [03_clit_masturb]"
+    }
+  },
+  "32": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": 0.65,
+      "strength_clip": 0.65
+    },
+    "_meta": {
+      "title": "Slider [03_delta_thrust] (+0.65)"
+    }
+  },
+  "33": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "32",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, nelliel_swimsuit, nelliel tu odelschwanck, bleach, bleach brave souls, tan, dark skin, green hair, wavy hair, long hair, green eyes, ram skull, hollow mask on head, facial mark, red facial stripe, large breasts, massive cleavage, wide hips, 1girl, 1man, naked_man, dark-skinned_male, muscular_male, faceless_male, white bikini, halterneck bikini top, side-tie bikini bottom, yellow sarong, yellow pareo, floral pareo, beaded necklace, flower on waist, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, (vibrant anime colors:1.3), (rich color palette:1.2), (consistent color tone:1.3), (clean anime coloring:1.3), (smooth anime shading:1.2), (natural skin tone:1.2), (soft lighting:1.2), (balanced contrast:1.2), (blurry background:1.4), (depth of field:1.3), dark background, dim lighting, (spread_pussy:1.3), (stretched_pussy:1.3), ((biting_lip:1.4)), ((sweet_pain:1.3)), ((crying_with_pleasure:1.4)), (blushing_deeply:1.4), (heavy_breathing:1.4), ((deep_penetration:1.6)), ((cervix_penetration:1.5)), ((penis_in_pussy:1.5)), (1penis:1.4), ((thrusting:1.5)), ((impact_lines:1.4)), ((motion_lines:1.5))"
+    },
+    "_meta": {
+      "title": "📝 [PROMPT 03_DELTA_THRUST]: 🔥 Rama 03-Delta A: Deep Penetration Rítmico & Mordisco de Labio (Líneas de Movimiento)"
+    }
+  },
+  "34": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "32",
+        0
+      ],
+      "positive": [
+        "33",
+        0
+      ],
+      "negative": [
+        "5",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424249,
+      "control_after_generate": "fixed",
+      "steps": 24,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "KSampler Puro [03_delta_thrust]"
+    }
+  },
+  "35": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "34",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode [03_delta_thrust]"
+    }
+  },
+  "36": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyUI_Vault_nelliel_pure_03_delta_thrust",
+      "images": [
+        "35",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "💾 Guardar [03_delta_thrust]"
+    }
+  },
+  "37": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": 0.7,
+      "strength_clip": 0.7
+    },
+    "_meta": {
+      "title": "Slider [03_delta_crying] (+0.70)"
+    }
+  },
+  "38": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "37",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, nelliel_swimsuit, nelliel tu odelschwanck, bleach, bleach brave souls, tan, dark skin, green hair, wavy hair, long hair, green eyes, ram skull, hollow mask on head, facial mark, red facial stripe, large breasts, massive cleavage, wide hips, 1girl, 1man, naked_man, dark-skinned_male, muscular_male, faceless_male, white bikini, halterneck bikini top, side-tie bikini bottom, yellow sarong, yellow pareo, floral pareo, beaded necklace, flower on waist, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, (vibrant anime colors:1.3), (rich color palette:1.2), (consistent color tone:1.3), (clean anime coloring:1.3), (smooth anime shading:1.2), (natural skin tone:1.2), (soft lighting:1.2), (balanced contrast:1.2), (blurry background:1.4), (depth of field:1.3), dark background, dim lighting, (spread_pussy:1.3), (stretched_pussy:1.4), ((extreme_ahegao:1.5)), ((tongue_out:1.4)), ((drooling:1.4)), ((crying_with_pleasure:1.5)), ((heart_pupils:1.4)), ((cervix_penetration:1.6)), ((deep_penetration:1.6)), ((penis_in_pussy:1.5)), (1penis:1.4), ((impact_lines:1.5)), ((motion_lines:1.5))"
+    },
+    "_meta": {
+      "title": "📝 [PROMPT 03_DELTA_CRYING]: 🔥 Rama 03-Delta B: Deep Penetration Cervical & Llanto de Placer (Impact Lines)"
+    }
+  },
+  "39": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "37",
+        0
+      ],
+      "positive": [
+        "38",
+        0
+      ],
+      "negative": [
+        "5",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424249,
+      "control_after_generate": "fixed",
+      "steps": 24,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "KSampler Puro [03_delta_crying]"
+    }
+  },
+  "40": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "39",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode [03_delta_crying]"
+    }
+  },
+  "41": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyUI_Vault_nelliel_pure_03_delta_crying",
+      "images": [
+        "40",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "💾 Guardar [03_delta_crying]"
+    }
+  },
+  "42": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": 0.6,
+      "strength_clip": 0.6
+    },
+    "_meta": {
+      "title": "Slider [03_anal_insercion] (+0.60)"
+    }
+  },
+  "43": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "42",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, nelliel_swimsuit, nelliel tu odelschwanck, bleach, bleach brave souls, tan, dark skin, green hair, wavy hair, long hair, green eyes, ram skull, hollow mask on head, facial mark, red facial stripe, large breasts, massive cleavage, wide hips, 1girl, 1man, naked_man, dark-skinned_male, muscular_male, faceless_male, white bikini, halterneck bikini top, side-tie bikini bottom, yellow sarong, yellow pareo, floral pareo, beaded necklace, flower on waist, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, (vibrant anime colors:1.3), (rich color palette:1.2), (consistent color tone:1.3), (clean anime coloring:1.3), (smooth anime shading:1.2), (natural skin tone:1.2), (soft lighting:1.2), (balanced contrast:1.2), (blurry background:1.4), (depth of field:1.3), dark background, dim lighting, (anal_stretch:1.4), ((extreme_ahegao:1.4)), ((tongue_out:1.4)), ((sweet_pain:1.4)), ((crying_with_pleasure:1.4)), (drooling:1.3), ((deep_anal_penetration:1.6)), ((penis_in_anal:1.5)), (1penis:1.4), ((motion_lines:1.4))"
+    },
+    "_meta": {
+      "title": "📝 [PROMPT 03_ANAL_INSERCION]: 🍑 Rama 03-Anal: Inserción Anal Intensa & Dolor-Placer (Líneas de Movimiento)"
+    }
+  },
+  "44": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "42",
+        0
+      ],
+      "positive": [
+        "43",
+        0
+      ],
+      "negative": [
+        "5",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424249,
+      "control_after_generate": "fixed",
+      "steps": 24,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "KSampler Puro [03_anal_insercion]"
+    }
+  },
+  "45": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "44",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode [03_anal_insercion]"
+    }
+  },
+  "46": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyUI_Vault_nelliel_pure_03_anal_insercion",
+      "images": [
+        "45",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "💾 Guardar [03_anal_insercion]"
+    }
+  },
+  "47": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": 0.65,
+      "strength_clip": 0.65
+    },
+    "_meta": {
+      "title": "Slider [04_climax_regular] (+0.65)"
+    }
+  },
+  "48": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "47",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, nelliel_swimsuit, nelliel tu odelschwanck, bleach, bleach brave souls, tan, dark skin, green hair, wavy hair, long hair, green eyes, ram skull, hollow mask on head, facial mark, red facial stripe, large breasts, massive cleavage, wide hips, 1girl, 1man, naked_man, dark-skinned_male, muscular_male, faceless_male, white bikini, halterneck bikini top, side-tie bikini bottom, yellow sarong, yellow pareo, floral pareo, beaded necklace, flower on waist, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, (vibrant anime colors:1.3), (rich color palette:1.2), (consistent color tone:1.3), (clean anime coloring:1.3), (smooth anime shading:1.2), (natural skin tone:1.2), (soft lighting:1.2), (balanced contrast:1.2), (blurry background:1.4), (depth of field:1.3), dark background, dim lighting, (spread_pussy:1.2), ((extreme_ahegao:1.4)), ((tongue_out:1.3)), ((heart_pupils:1.4)), (drooling:1.3), (crying_with_pleasure:1.3), ((deep_penetration:1.5)), ((penis_in_pussy:1.5)), ((creampie:1.4)), (1penis:1.4), (impact_lines:1.3)"
+    },
+    "_meta": {
+      "title": "📝 [PROMPT 04_CLIMAX_REGULAR]: 🌿 Etapa 04: Clímax Regular (penis_in_pussy)"
+    }
+  },
+  "49": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "47",
+        0
+      ],
+      "positive": [
+        "48",
+        0
+      ],
+      "negative": [
+        "5",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424249,
+      "control_after_generate": "fixed",
+      "steps": 24,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "KSampler Puro [04_climax_regular]"
+    }
+  },
+  "50": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "49",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode [04_climax_regular]"
+    }
+  },
+  "51": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyUI_Vault_nelliel_pure_04_climax_regular",
+      "images": [
+        "50",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "💾 Guardar [04_climax_regular]"
+    }
+  },
+  "52": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": 0.7,
+      "strength_clip": 0.7
+    },
+    "_meta": {
+      "title": "Slider [04_hip_grab] (+0.70)"
+    }
+  },
+  "53": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "52",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, nelliel_swimsuit, nelliel tu odelschwanck, bleach, bleach brave souls, tan, dark skin, green hair, wavy hair, long hair, green eyes, ram skull, hollow mask on head, facial mark, red facial stripe, large breasts, massive cleavage, wide hips, 1girl, 1man, naked_man, dark-skinned_male, muscular_male, faceless_male, white bikini, halterneck bikini top, side-tie bikini bottom, yellow sarong, yellow pareo, floral pareo, beaded necklace, flower on waist, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, (vibrant anime colors:1.3), (rich color palette:1.2), (consistent color tone:1.3), (clean anime coloring:1.3), (smooth anime shading:1.2), (natural skin tone:1.2), (soft lighting:1.2), (balanced contrast:1.2), (blurry background:1.4), (depth of field:1.3), dark background, dim lighting, (spread_pussy:1.3), (wide_hips:1.3), ((extreme_ahegao:1.5)), ((tongue_out:1.5)), ((drooling:1.4)), ((biting_lip:1.3)), ((crying_with_pleasure:1.5)), ((holding_hips:1.5)), ((deep_penetration:1.6)), ((cervix_penetration:1.5)), ((penis_in_pussy:1.5)), (1penis:1.4), ((impact_lines:1.5)), ((motion_lines:1.5))"
+    },
+    "_meta": {
+      "title": "📝 [PROMPT 04_HIP_GRAB]: 🍑 Rama 04-Caderas: Agarre Firme de Caderas & Empuje Cervical Máximo"
+    }
+  },
+  "54": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "52",
+        0
+      ],
+      "positive": [
+        "53",
+        0
+      ],
+      "negative": [
+        "5",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424249,
+      "control_after_generate": "fixed",
+      "steps": 24,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "KSampler Puro [04_hip_grab]"
+    }
+  },
+  "55": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "54",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode [04_hip_grab]"
+    }
+  },
+  "56": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyUI_Vault_nelliel_pure_04_hip_grab",
+      "images": [
+        "55",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "💾 Guardar [04_hip_grab]"
+    }
+  },
+  "57": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": 0.75,
+      "strength_clip": 0.75
+    },
+    "_meta": {
+      "title": "Slider [04_delta_extremo] (+0.75)"
+    }
+  },
+  "58": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "57",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, nelliel_swimsuit, nelliel tu odelschwanck, bleach, bleach brave souls, tan, dark skin, green hair, wavy hair, long hair, green eyes, ram skull, hollow mask on head, facial mark, red facial stripe, large breasts, massive cleavage, wide hips, 1girl, 1man, naked_man, dark-skinned_male, muscular_male, faceless_male, white bikini, halterneck bikini top, side-tie bikini bottom, yellow sarong, yellow pareo, floral pareo, beaded necklace, flower on waist, clothing_undone, breasts_exposed, clothes_around_waist, partially_unbuttoned, panties_pulled_aside, bare_breasts, bare_pussy, (vibrant anime colors:1.3), (rich color palette:1.2), (consistent color tone:1.3), (clean anime coloring:1.3), (smooth anime shading:1.2), (natural skin tone:1.2), (soft lighting:1.2), (balanced contrast:1.2), (blurry background:1.4), (depth of field:1.3), dark background, dim lighting, (spread_pussy:1.3), (stretched_pussy:1.4), ((extreme_ahegao:1.5)), ((tongue_out:1.5)), ((drooling:1.4)), ((heart_pupils:1.4)), ((sweet_pain:1.3)), ((crying_with_pleasure:1.4)), ((deep_penetration:1.6)), ((cervix_penetration:1.5)), ((penis_in_pussy:1.5)), ((massive_creampie:1.4)), ((cum_overflow:1.4)), (1penis:1.4), (impact_lines:1.3)"
+    },
+    "_meta": {
+      "title": "📝 [PROMPT 04_DELTA_EXTREMO]: 🔥 Rama 04-Delta: Éxtasis Extremo & Deep Penetration Full (Sin Balls)"
+    }
+  },
+  "59": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "57",
+        0
+      ],
+      "positive": [
+        "58",
+        0
+      ],
+      "negative": [
+        "5",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424249,
+      "control_after_generate": "fixed",
+      "steps": 24,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "KSampler Puro [04_delta_extremo]"
+    }
+  },
+  "60": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "59",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode [04_delta_extremo]"
+    }
+  },
+  "61": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyUI_Vault_nelliel_pure_04_delta_extremo",
+      "images": [
+        "60",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "💾 Guardar [04_delta_extremo]"
+    }
+  },
+  "62": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": 0.65,
+      "strength_clip": 0.65
+    },
+    "_meta": {
+      "title": "Slider [05_climax_orina] (+0.65)"
+    }
+  },
+  "63": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "62",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, nelliel_swimsuit, nelliel tu odelschwanck, bleach, bleach brave souls, tan, dark skin, green hair, wavy hair, long hair, green eyes, ram skull, hollow mask on head, facial mark, red facial stripe, large breasts, massive cleavage, wide hips, 1girl, 1man, naked_man, dark-skinned_male, muscular_male, faceless_male, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, (vibrant anime colors:1.3), (rich color palette:1.2), (consistent color tone:1.3), (clean anime coloring:1.3), (smooth anime shading:1.2), (natural skin tone:1.2), (soft lighting:1.2), (balanced contrast:1.2), (blurry background:1.4), (depth of field:1.3), dark background, dim lighting, (spread_pussy:1.2), (gaping:1.2), ((extreme_ahegao:1.4)), ((tongue_out:1.4)), ((drooling:1.3)), ((crying_with_pleasure:1.4)), (sweat:1.3), ((deep_penetration:1.5)), ((penis_in_pussy:1.5)), (1penis:1.4), ((squirt:1.4)), ((peeing:1.3)), (puddle:1.2), (semen_drip:1.2)"
+    },
+    "_meta": {
+      "title": "📝 [PROMPT 05_CLIMAX_ORINA]: 🌿 Etapa 05: Clímax Continuo & Orina / Squirt"
+    }
+  },
+  "64": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "62",
+        0
+      ],
+      "positive": [
+        "63",
+        0
+      ],
+      "negative": [
+        "5",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424249,
+      "control_after_generate": "fixed",
+      "steps": 24,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "KSampler Puro [05_climax_orina]"
+    }
+  },
+  "65": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "64",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode [05_climax_orina]"
+    }
+  },
+  "66": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyUI_Vault_nelliel_pure_05_climax_orina",
+      "images": [
+        "65",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "💾 Guardar [05_climax_orina]"
+    }
+  },
+  "67": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "3",
+        0
+      ],
+      "clip": [
+        "4",
+        0
+      ],
+      "lora_name": "pussy_adjuster_xl.safetensors",
+      "strength_model": 0.75,
+      "strength_clip": 0.75
+    },
+    "_meta": {
+      "title": "Slider [05_delta_desborde] (+0.75)"
+    }
+  },
+  "68": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "67",
+        1
+      ],
+      "text": "score_9, score_8_up, score_7_up, source_anime, rating_explicit, masterpiece, best quality, highly detailed, perfect anatomy, accurate anatomy, detailed eyes, detailed face, nelliel_swimsuit, nelliel tu odelschwanck, bleach, bleach brave souls, tan, dark skin, green hair, wavy hair, long hair, green eyes, ram skull, hollow mask on head, facial mark, red facial stripe, large breasts, massive cleavage, wide hips, 1girl, 1man, naked_man, dark-skinned_male, muscular_male, faceless_male, completely nude, naked, bare breasts, bare nipples, bare pussy, nipples, areolae, navel, discarded clothes, (vibrant anime colors:1.3), (rich color palette:1.2), (consistent color tone:1.3), (clean anime coloring:1.3), (smooth anime shading:1.2), (natural skin tone:1.2), (soft lighting:1.2), (balanced contrast:1.2), (blurry background:1.4), (depth of field:1.3), dark background, dim lighting, (spread_pussy:1.3), (gaping:1.3), ((extreme_ahegao:1.5)), ((tongue_out:1.5)), ((drooling:1.5)), ((heart_pupils:1.4)), ((sweet_pain:1.3)), ((crying_with_pleasure:1.4)), ((deep_penetration:1.6)), ((cervix_penetration:1.5)), ((penis_in_pussy:1.5)), (1penis:1.4), ((massive_creampie:1.4)), ((cum_overflow:1.4)), ((squirt:1.4)), ((peeing:1.3)), (puddle:1.3)"
+    },
+    "_meta": {
+      "title": "📝 [PROMPT 05_DELTA_DESBORDE]: 🔥 Rama 05-Delta: Clímax Máximo, Orina & Desborde Total"
+    }
+  },
+  "69": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "67",
+        0
+      ],
+      "positive": [
+        "68",
+        0
+      ],
+      "negative": [
+        "5",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "seed": 42424249,
+      "control_after_generate": "fixed",
+      "steps": 24,
+      "cfg": 5.0,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "KSampler Puro [05_delta_desborde]"
+    }
+  },
+  "70": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "69",
+        0
+      ],
+      "vae": [
+        "1",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "VAE Decode [05_delta_desborde]"
+    }
+  },
+  "71": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "ComfyUI_Vault_nelliel_pure_05_delta_desborde",
+      "images": [
+        "70",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "💾 Guardar [05_delta_desborde]"
+    }
+  }
+}

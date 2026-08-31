@@ -1,0 +1,1554 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "lora_name": "ryuuou_yashajin_ai.safetensors",
+      "strength_model": 0.8,
+      "strength_clip": 0.8
+    }
+  },
+  "lora_face": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "Face_Detailed_v2.safetensors",
+      "strength_model": 0.85,
+      "strength_clip": 0.85
+    }
+  },
+  "lora_ohogao": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_face",
+        0
+      ],
+      "clip": [
+        "lora_face",
+        1
+      ],
+      "lora_name": "Ohogao_illustrious_v1.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 0.5
+    }
+  },
+  "lora_bukkake": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_ohogao",
+        0
+      ],
+      "clip": [
+        "lora_ohogao",
+        1
+      ],
+      "lora_name": "excessivecum.safetensors",
+      "strength_model": 0.6,
+      "strength_clip": 0.6
+    }
+  },
+  "lora_uterus": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_bukkake",
+        0
+      ],
+      "clip": [
+        "lora_bukkake",
+        1
+      ],
+      "lora_name": "uterus_1.0.safetensors",
+      "strength_model": 0.4,
+      "strength_clip": 0.4
+    }
+  },
+  "lora_xray_vag": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_uterus",
+        0
+      ],
+      "clip": [
+        "lora_uterus",
+        1
+      ],
+      "lora_name": "xray (1).safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 0.5
+    }
+  },
+  "lora_legs": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_xray_vag",
+        0
+      ],
+      "clip": [
+        "lora_xray_vag",
+        1
+      ],
+      "lora_name": "danglinglegs.safetensors",
+      "strength_model": 0.4,
+      "strength_clip": 0.4
+    }
+  },
+  "lora_depth": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_legs",
+        0
+      ],
+      "clip": [
+        "lora_legs",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 0.35,
+      "strength_clip": 0.35
+    }
+  },
+  "lora_pullout": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth",
+        0
+      ],
+      "clip": [
+        "lora_depth",
+        1
+      ],
+      "lora_name": "cumtrail_pullingout_v4_for_ILXL.safetensors",
+      "strength_model": 0.4,
+      "strength_clip": 0.4
+    }
+  },
+  "lora_dp": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_pullout",
+        0
+      ],
+      "clip": [
+        "lora_pullout",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 0.5,
+      "strength_clip": 0.5
+    }
+  },
+  "lora_lactation": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp",
+        0
+      ],
+      "clip": [
+        "lora_dp",
+        1
+      ],
+      "lora_name": "lactationAlpha_2_Illustrious_DIM-16_sv_fro_0.95.safetensors",
+      "strength_model": 0.4,
+      "strength_clip": 0.4
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "lowres, bad anatomy, bad eyes, deformed eyes, asymmetrical_eyes, bad hands, extra fingers, worst_quality, blurry, ugly, censored, thick lines, lineart",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "100": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, standing, looking at viewer, full body, front view, simple background, smile, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "101": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "102": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "100",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "101",
+        0
+      ]
+    }
+  },
+  "103": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "102",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "104": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/01_standing",
+      "images": [
+        "103",
+        0
+      ]
+    }
+  },
+  "105": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, sitting, chair, looking at viewer, shy, blush, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "106": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "107": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "105",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "106",
+        0
+      ]
+    }
+  },
+  "108": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "107",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "109": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/02_sitting",
+      "images": [
+        "108",
+        0
+      ]
+    }
+  },
+  "110": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, from behind, looking back, skirt, pleated_skirt, school_background, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "111": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "112": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "110",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "111",
+        0
+      ]
+    }
+  },
+  "113": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "112",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "114": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/03_back",
+      "images": [
+        "113",
+        0
+      ]
+    }
+  },
+  "115": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, kissing, close-up, eyes_closed, romantic, hands_on_face, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "116": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "117": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "115",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "116",
+        0
+      ]
+    }
+  },
+  "118": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "117",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "119": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/04_kiss",
+      "images": [
+        "118",
+        0
+      ]
+    }
+  },
+  "120": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, breast_groping, fondling, blush, ahegao_start, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "121": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "122": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "120",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "121",
+        0
+      ]
+    }
+  },
+  "123": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "122",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "124": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/05_groping",
+      "images": [
+        "123",
+        0
+      ]
+    }
+  },
+  "125": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, lying, on_back, legs_up, spread_legs, vaginal, tip_in_pussy, first_insertion, stretching, pain, tears, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "126": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "127": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "125",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "126",
+        0
+      ]
+    }
+  },
+  "128": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "127",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "129": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/06_missionary_entry",
+      "images": [
+        "128",
+        0
+      ]
+    }
+  },
+  "130": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, lying, on_back, legs_up, spread_legs, vaginal, deep, balls_deep, ahegao, rolled_back_eyes, penetrating, cervix, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "131": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "132": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "130",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "131",
+        0
+      ]
+    }
+  },
+  "133": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "132",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "134": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/07_missionary_deep",
+      "images": [
+        "133",
+        0
+      ]
+    }
+  },
+  "135": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, cowgirl_position, girl_on_top, straddling, vaginal, bouncing, dominant, ahegao, hands_on_chest, dangling_legs, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "136": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "137": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "135",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "136",
+        0
+      ]
+    }
+  },
+  "138": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "137",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "139": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/08_cowgirl",
+      "images": [
+        "138",
+        0
+      ]
+    }
+  },
+  "140": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, doggystyle, from_behind, arched_back, vaginal, double_penetration, hair_pulling, grabbing_hips, ahegao, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "141": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "142": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "140",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "141",
+        0
+      ]
+    }
+  },
+  "143": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "142",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "144": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/09_doggystyle",
+      "images": [
+        "143",
+        0
+      ]
+    }
+  },
+  "145": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, standing_sex, held_up, legs_around_waist, vaginal, wall_pin, lifted, dangling_legs, ahegao, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "146": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "147": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "145",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "146",
+        0
+      ]
+    }
+  },
+  "148": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "147",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "149": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/10_standing_carry",
+      "images": [
+        "148",
+        0
+      ]
+    }
+  },
+  "150": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, mating_press, folded, legs_on_shoulders, vaginal, deep, pinned, penetration_depth, ahegao, drooling, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "151": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "152": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "150",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "151",
+        0
+      ]
+    }
+  },
+  "153": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "152",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "154": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/11_mating_press",
+      "images": [
+        "153",
+        0
+      ]
+    }
+  },
+  "155": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, fellatio, blowjob, penis_in_mouth, deepthroat, on_knees, looking_up, saliva_string, teary_eyes, ahegao, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "156": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "157": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "155",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "156",
+        0
+      ]
+    }
+  },
+  "158": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "157",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "159": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/12_oral",
+      "images": [
+        "158",
+        0
+      ]
+    }
+  },
+  "160": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, paizuri, titfuck, between_breasts, breast_sandwich, penis_between_breasts, licking_tip, ahegao, lactation, milk, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "161": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "162": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "160",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "161",
+        0
+      ]
+    }
+  },
+  "163": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "162",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "164": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/13_paizuri",
+      "images": [
+        "163",
+        0
+      ]
+    }
+  },
+  "165": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, full_nelson, restrained, legs_folded, vaginal, suspended, helpless, tears, penetrating, cervix, ahegao, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "166": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "167": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "165",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "166",
+        0
+      ]
+    }
+  },
+  "168": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "167",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "169": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/14_full_nelson",
+      "images": [
+        "168",
+        0
+      ]
+    }
+  },
+  "170": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, lying, on_back, legs_up, spread_legs, climax, cum_in_pussy, creampie, x-ray, internal_cumshot, forced_orgasm, convulsing, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "171": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "172": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "170",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "171",
+        0
+      ]
+    }
+  },
+  "173": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "172",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "174": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/15_climax_xray",
+      "images": [
+        "173",
+        0
+      ]
+    }
+  },
+  "175": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, cowgirl_position, girl_on_top, pulling_out, cum_on_body, cum_string, ahegao, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "176": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "177": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "175",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "176",
+        0
+      ]
+    }
+  },
+  "178": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "177",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "179": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/16_pullout",
+      "images": [
+        "178",
+        0
+      ]
+    }
+  },
+  "180": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, lying, on_back, exhausted, cum_on_face, excessive_cum, bukkake, ahegao, mind_break, tongue_out, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "181": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "182": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "180",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "181",
+        0
+      ]
+    }
+  },
+  "183": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "182",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "184": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/17_bukkake",
+      "images": [
+        "183",
+        0
+      ]
+    }
+  },
+  "185": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, lying, on_back, legs_up, spread_legs, double_penetration, vaginal, anal, two_cocks, ahegao, forced_orgasm, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "186": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "187": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "185",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "186",
+        0
+      ]
+    }
+  },
+  "188": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "187",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "189": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/18_double_pen",
+      "images": [
+        "188",
+        0
+      ]
+    }
+  },
+  "190": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, spooning, spoon_position, lying, on_side, from_behind, vaginal, intimate, kissing, ahegao, 1boy, male, huge_penis, head_out_of_frame, faceless_male, male_from_neck_down, male_body_only, female_focus, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "191": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "192": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "190",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "191",
+        0
+      ]
+    }
+  },
+  "193": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "192",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "194": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/19_spooning",
+      "images": [
+        "193",
+        0
+      ]
+    }
+  },
+  "195": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best_quality, absurdres, Yashajin Ai, 1girl, school_uniform, serafuku, lying, on_side, exhausted, half-closed_eyes, afterglow, peaceful_expression, cum_dripping, bedroom, bed, dark_room, dim_lighting, film_grain, game cg, semi-realistic, soft shading, masterpiece, best_quality",
+      "clip": [
+        "lora_lactation",
+        1
+      ]
+    }
+  },
+  "196": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "197": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424242,
+      "steps": 30,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_lactation",
+        0
+      ],
+      "positive": [
+        "195",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "196",
+        0
+      ]
+    }
+  },
+  "198": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "197",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "199": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "yashajin_ai_20/20_afterglow",
+      "images": [
+        "198",
+        0
+      ]
+    }
+  }
+}

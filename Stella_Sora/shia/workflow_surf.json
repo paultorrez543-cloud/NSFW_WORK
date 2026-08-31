@@ -1,0 +1,652 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip",
+        0
+      ],
+      "lora_name": "Shia_Stella_Sora.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "latent_shared": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1536,
+      "batch_size": 1
+    }
+  },
+  "p_01_llegada": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_safe, shia, stella sora, 1girl, bunny girl, (large breasts:1.3), bunny ears, sailor collar, bikini, covered midriff, standing, looking at viewer, full body, holding surfboard, smile, happy, blush, beach, sand, sunny, blue sky, surfing, surfboard, bikini, anime, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_01_llegada": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424252,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_01_llegada",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_01_llegada": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_01_llegada",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_01_llegada": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "shia_surf_01_llegada",
+      "images": [
+        "d_01_llegada",
+        0
+      ]
+    }
+  },
+  "p_02_caminata": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_safe, shia, stella sora, 1girl, bunny girl, (large breasts:1.3), bunny ears, sailor collar, bikini, covered midriff, walking, from_behind, full body, holding surfboard, surfboard_under_arm, looking_back, smile, beach, shoreline, wet sand, ocean, waves, surfing, surfboard, footprints, anime, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_02_caminata": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424252,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_02_caminata",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_02_caminata": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_02_caminata",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_02_caminata": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "shia_surf_02_caminata",
+      "images": [
+        "d_02_caminata",
+        0
+      ]
+    }
+  },
+  "p_03_entrando": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_safe, shia, stella sora, 1girl, bunny girl, (large breasts:1.3), bunny ears, sailor collar, bikini, covered midriff, walking, in_water, depth_of_field, holding surfboard, smile, excited, ocean, shallow_water, waves, splashing, surfing, surfboard, water_splash, anime, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_03_entrando": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424252,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_03_entrando",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_03_entrando": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_03_entrando",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_03_entrando": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "shia_surf_03_entrando",
+      "images": [
+        "d_03_entrando",
+        0
+      ]
+    }
+  },
+  "p_04_remando": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_safe, shia, stella sora, 1girl, bunny girl, (large breasts:1.3), bunny ears, sailor collar, bikini, covered midriff, lying, on_surfboard, paddling, from_above, surfboard, lying_on_surfboard, focused, determined, ocean, deep_water, waves, foam, surfing, surfboard, paddling, anime, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_04_remando": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424252,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_04_remando",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_04_remando": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_04_remando",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_04_remando": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "shia_surf_04_remando",
+      "images": [
+        "d_04_remando",
+        0
+      ]
+    }
+  },
+  "p_05_esperando": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_safe, shia, stella sora, 1girl, bunny girl, (large breasts:1.3), bunny ears, sailor collar, bikini, covered midriff, sitting, on_surfboard, side_view, sitting_on_surfboard, relaxed, looking_at_horizon, smile, ocean, calm_sea, horizon, sunset_glow, surfing, surfboard, waiting_for_wave, anime, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_05_esperando": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424252,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_05_esperando",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_05_esperando": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_05_esperando",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_05_esperando": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "shia_surf_05_esperando",
+      "images": [
+        "d_05_esperando",
+        0
+      ]
+    }
+  },
+  "p_06_ola": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_safe, shia, stella sora, 1girl, bunny girl, (large breasts:1.3), bunny ears, sailor collar, bikini, covered midriff, standing, on_surfboard, dynamic_pose, arms_out, surfboard, standing_on_surfboard, excited, open_mouth, smile, ocean, big_wave, riding_wave, water_splash, motion_lines, surfing, surfboard, riding_wave, anime, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_06_ola": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424252,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_06_ola",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_06_ola": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_06_ola",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_06_ola": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "shia_surf_06_ola",
+      "images": [
+        "d_06_ola",
+        0
+      ]
+    }
+  },
+  "p_07_maniobra": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_safe, shia, stella sora, 1girl, bunny girl, (large breasts:1.3), bunny ears, sailor collar, bikini, covered midriff, surfing_trick, crouching, one_arm_back, dynamic, surfboard, surfing, concentrated, biting_lip, ocean, wave_crest, water_spray, speed_lines, surfing, surfboard, trick, carve, anime, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_07_maniobra": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424252,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_07_maniobra",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_07_maniobra": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_07_maniobra",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_07_maniobra": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "shia_surf_07_maniobra",
+      "images": [
+        "d_07_maniobra",
+        0
+      ]
+    }
+  },
+  "p_08_caida": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_safe, shia, stella sora, 1girl, bunny girl, (large breasts:1.3), bunny ears, sailor collar, bikini, covered midriff, falling, in_air, splash, from_side, surfboard, flying_surfboard, surprised, wide_eyes, open_mouth, ocean, water_splash, wave, foam, surfing, surfboard, wipeout, splash, anime, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_08_caida": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424252,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_08_caida",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_08_caida": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_08_caida",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_08_caida": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "shia_surf_08_caida",
+      "images": [
+        "d_08_caida",
+        0
+      ]
+    }
+  },
+  "p_09_emergiendo": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_safe, shia, stella sora, 1girl, bunny girl, (large breasts:1.3), bunny ears, sailor collar, bikini, covered midriff, emerging_from_water, half_body, close-up, surfboard, floating_surfboard, laughing, smile, wet_hair, ocean, water_surface, wet, dripping, surfing, surfboard, wet, water_droplets, anime, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_09_emergiendo": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424252,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_09_emergiendo",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_09_emergiendo": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_09_emergiendo",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_09_emergiendo": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "shia_surf_09_emergiendo",
+      "images": [
+        "d_09_emergiendo",
+        0
+      ]
+    }
+  },
+  "p_10_descanso": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_9, score_8_up, source_anime, rating_safe, shia, stella sora, 1girl, bunny girl, (large breasts:1.3), bunny ears, sailor collar, bikini, covered midriff, sitting, on_surfboard, on_shore, sunset, sitting_on_surfboard, satisfied, relaxed, gentle_smile, blush, beach, sunset, golden_hour, warm_light, orange_sky, surfing, surfboard, sunset, golden_hour, anime, masterpiece, best_quality",
+      "clip": [
+        "lora_char",
+        1
+      ]
+    }
+  },
+  "k_10_descanso": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424252,
+      "steps": 20,
+      "cfg": 3.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_char",
+        0
+      ],
+      "positive": [
+        "p_10_descanso",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent_shared",
+        0
+      ]
+    }
+  },
+  "d_10_descanso": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_10_descanso",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_10_descanso": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "shia_surf_10_descanso",
+      "images": [
+        "d_10_descanso",
+        0
+      ]
+    }
+  },
+  "clip_skip": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  }
+}

@@ -1,0 +1,538 @@
+{
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "waiIllustriousSDXL_v170.safetensors"
+    }
+  },
+  "lora_char": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        0
+      ],
+      "clip": [
+        "clip_skip",
+        0
+      ],
+      "lora_name": "Stella-Virigia-v1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_dp_0": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_0",
+        0
+      ],
+      "clip": [
+        "lora_depth_0",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_ps_0": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_0",
+        0
+      ],
+      "clip": [
+        "lora_dp_0",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 4.5,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_0": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_ps_0",
+        1
+      ]
+    }
+  },
+  "e_0": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1216,
+      "height": 832,
+      "batch_size": 1
+    }
+  },
+  "p_0": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, see-through dress, white cloak, frilled cloak, white bonnet, black gloves, white pantyhose, high heels, holding mirror, clothes_lift, skirt_lift, disembodied_penis, floating_penis, invisible_man, penis, 2penises, doublepen, vaginal, anal, double_(deep penetration:1.5), (imminent penetration:1.2),  (balls deep:1.4), (stomach bulge:1.3), penetration, both_holes, pussy_and_ass, cowgirl_position, girl_on_top, straddling, erect_penis, penis_visible, (deep penetration:1.5), (imminent penetration:1.2),  (balls deep:1.4), (stomach bulge:1.3), penetration, blush, sweat, dimly_lit, dark_ambiance, soft_lighting, (dark lighting:1.5), (dim room:1.4), anime, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_ps_0",
+        1
+      ]
+    }
+  },
+  "k_0": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_ps_0",
+        0
+      ],
+      "positive": [
+        "p_0",
+        0
+      ],
+      "negative": [
+        "neg_0",
+        0
+      ],
+      "latent_image": [
+        "e_0",
+        0
+      ]
+    }
+  },
+  "d_0": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_0",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_0": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_dp_maximo",
+      "images": [
+        "d_0",
+        0
+      ]
+    }
+  },
+  "lora_dp_1": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_1",
+        0
+      ],
+      "clip": [
+        "lora_depth_1",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_ps_1": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_1",
+        0
+      ],
+      "clip": [
+        "lora_dp_1",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 2.0,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_ps_1",
+        1
+      ]
+    }
+  },
+  "e_1": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1216,
+      "height": 832,
+      "batch_size": 1
+    }
+  },
+  "p_1": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, see-through dress, white cloak, frilled cloak, white bonnet, black gloves, white pantyhose, high heels, holding mirror, clothes_lift, skirt_lift, disembodied_penis, floating_penis, invisible_man, penis, 2penises, doublepen, vaginal, anal, double_(deep penetration:1.5), (imminent penetration:1.2),  (balls deep:1.4), (stomach bulge:1.3), penetration, both_holes, pussy_and_ass, cowgirl_position, girl_on_top, straddling, erect_penis, penis_visible, (deep penetration:1.5), (imminent penetration:1.2),  (balls deep:1.4), (stomach bulge:1.3), penetration, blush, sweat, dimly_lit, dark_ambiance, soft_lighting, (dark lighting:1.5), (dim room:1.4), anime, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_ps_1",
+        1
+      ]
+    }
+  },
+  "k_1": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_ps_1",
+        0
+      ],
+      "positive": [
+        "p_1",
+        0
+      ],
+      "negative": [
+        "neg_1",
+        0
+      ],
+      "latent_image": [
+        "e_1",
+        0
+      ]
+    }
+  },
+  "d_1": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_1",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_1": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_dp_grande",
+      "images": [
+        "d_1",
+        0
+      ]
+    }
+  },
+  "lora_dp_2": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_2",
+        0
+      ],
+      "clip": [
+        "lora_depth_2",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_ps_2": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_2",
+        0
+      ],
+      "clip": [
+        "lora_dp_2",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": 0.0,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_ps_2",
+        1
+      ]
+    }
+  },
+  "e_2": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1216,
+      "height": 832,
+      "batch_size": 1
+    }
+  },
+  "p_2": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, see-through dress, white cloak, frilled cloak, white bonnet, black gloves, white pantyhose, high heels, holding mirror, clothes_lift, skirt_lift, disembodied_penis, floating_penis, invisible_man, penis, 2penises, doublepen, vaginal, anal, double_(deep penetration:1.5), (imminent penetration:1.2),  (balls deep:1.4), (stomach bulge:1.3), penetration, both_holes, pussy_and_ass, cowgirl_position, girl_on_top, straddling, erect_penis, penis_visible, (deep penetration:1.5), (imminent penetration:1.2),  (balls deep:1.4), (stomach bulge:1.3), penetration, blush, sweat, dimly_lit, dark_ambiance, soft_lighting, (dark lighting:1.5), (dim room:1.4), anime, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_ps_2",
+        1
+      ]
+    }
+  },
+  "k_2": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_ps_2",
+        0
+      ],
+      "positive": [
+        "p_2",
+        0
+      ],
+      "negative": [
+        "neg_2",
+        0
+      ],
+      "latent_image": [
+        "e_2",
+        0
+      ]
+    }
+  },
+  "d_2": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_2",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_2": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_dp_normal",
+      "images": [
+        "d_2",
+        0
+      ]
+    }
+  },
+  "lora_dp_3": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_depth_3",
+        0
+      ],
+      "clip": [
+        "lora_depth_3",
+        1
+      ],
+      "lora_name": "doublepenetration_r1.safetensors",
+      "strength_model": 1.0,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_ps_3": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_dp_3",
+        0
+      ],
+      "clip": [
+        "lora_dp_3",
+        1
+      ],
+      "lora_name": "Penis Size Slider - Illustrious - V5_alpha1.0_rank4_noxattn_last.safetensors",
+      "strength_model": -2.0,
+      "strength_clip": 1.0
+    }
+  },
+  "neg_3": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "score_4, score_5, score_6, lowres, bad anatomy, bad hands, bad eyes, deformed eyes, extra eyes, crossed eyes, missing fingers, extra digits, fewer digits, worst quality, low quality, blurry, ugly, censored, (bright lighting:1.5), overexposed, glare, flash, bloom, glowing, x-ray, internal_shot, cross-section, text_bubbles, speech_bubble, signature, watermark",
+      "clip": [
+        "lora_ps_3",
+        1
+      ]
+    }
+  },
+  "e_3": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1216,
+      "height": 832,
+      "batch_size": 1
+    }
+  },
+  "p_3": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "stell4virigiadef, 1girl, white hair, long hair, blunt bangs, double-parted bangs, red eyes, demon horns, low wings, large breasts, black dress, see-through dress, white cloak, frilled cloak, white bonnet, black gloves, white pantyhose, high heels, holding mirror, clothes_lift, skirt_lift, disembodied_penis, floating_penis, invisible_man, penis, 2penises, doublepen, vaginal, anal, double_(deep penetration:1.5), (imminent penetration:1.2),  (balls deep:1.4), (stomach bulge:1.3), penetration, both_holes, pussy_and_ass, cowgirl_position, girl_on_top, straddling, erect_penis, penis_visible, (deep penetration:1.5), (imminent penetration:1.2),  (balls deep:1.4), (stomach bulge:1.3), penetration, blush, sweat, dimly_lit, dark_ambiance, soft_lighting, (dark lighting:1.5), (dim room:1.4), anime, masterpiece, best_quality, absurdres",
+      "clip": [
+        "lora_ps_3",
+        1
+      ]
+    }
+  },
+  "k_3": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42424249,
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "lora_ps_3",
+        0
+      ],
+      "positive": [
+        "p_3",
+        0
+      ],
+      "negative": [
+        "neg_3",
+        0
+      ],
+      "latent_image": [
+        "e_3",
+        0
+      ]
+    }
+  },
+  "d_3": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "k_3",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        2
+      ]
+    }
+  },
+  "s_3": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "virigia_dp_chico",
+      "images": [
+        "d_3",
+        0
+      ]
+    }
+  },
+  "lora_depth_0": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_1": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_2": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "lora_depth_3": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "lora_char",
+        0
+      ],
+      "clip": [
+        "lora_char",
+        1
+      ],
+      "lora_name": "penetration_depth.safetensors",
+      "strength_model": 1.5,
+      "strength_clip": 1.0
+    }
+  },
+  "clip_skip": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        1
+      ],
+      "stop_at_clip_layer": -2
+    }
+  }
+}
