@@ -1,0 +1,62 @@
+================================================================================
+FICHA TÉCNICA, TAGS Y CONFIGURACIÓN DE ENTRENAMIENTO / INFERENCIA
+Personaje: Elisia | Franquicia: Make Drama
+================================================================================
+
+[ 1. TRIGGER WORDS PRINCIPALES ]
+elisia_(make_drama), elisia, make drama
+
+[ 2. ETIQUETAS VISUALES / DANBOORU TAGS ]
+* Físico / Rasgos:
+  1girl, solo, demon girl, demon horns, curved horns, black horns, pointy ears, long hair, wavy hair, bangs, delicate face
+
+* Vestimenta Principal:
+  gothic dress, black dress, red accents, gold trim, corset, bare shoulders, cleavage, detached sleeves, thighhighs
+
+* Control Anti-Armas / Objetos (Solo ropa limpia):
+  empty hands, arms at sides, simple background, white background
+
+--------------------------------------------------------------------------------
+[ 3. CONFIGURACIÓN DE ENTRENAMIENTO (Google Colab / Kohya sd-scripts) ]
+--------------------------------------------------------------------------------
+* Modelo Base: Illustrious-XL v0.1 (SDXL)
+* Archivo ZIP del Dataset: dataset_elisia.zip
+* Carpeta de Concepto en Colab: /content/dataset/8_elisia
+* Repeticiones por Imagen (Repeats): 8
+* Archivo LoRA de Salida: lora_elisia_make_drama.safetensors
+* Network Dim (Rank): 16
+* Network Alpha: 8.0 (0.5x del Rank)
+* Optimizador: AdamW8bit
+* Learning Rate U-Net: 1e-4
+* LR Scheduler: cosine
+* Epochs: 10 (guardado cada 2 épocas)
+* Batch Size: 1
+* Resolución: 1024x1024 con Bucketing (512 - 2048)
+* Precisiones: FP8 Base, FP16 Mixed Precision, Unet Only
+
+--------------------------------------------------------------------------------
+[ 4. PROMPTS RECOMENDADOS PARA INFERENCIA (ComfyUI / WebUI) ]
+--------------------------------------------------------------------------------
+> Prompt Positivo Estándar (Cuerpo y Ropa Limpia):
+masterpiece, best quality, 1girl, elisia_(make_drama), elisia, make drama, solo, demon girl, demon horns, curved horns, pointy ears, long hair, wavy hair, gothic dress, black dress, red accents, gold trim, corset, bare shoulders, cleavage, detached sleeves, empty hands, arms at sides, looking at viewer, gentle smile, detailed illustration
+
+> Negative Prompt Universal (Anti-Armas y Calidad):
+(holding weapon:1.4), (weapon:1.4), (staff:1.4), (holding staff:1.4), (sword:1.4), (water gun:1.4), (holding object:1.3), worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digits, fewer digits, blurry, watermark, signature, artist name, text, error, cropped
+
+> Variantes y Poses Especiales:
+
+* [En Trono Gótico]:
+  masterpiece, best quality, 1girl, elisia_(make_drama), elisia, make drama, solo, demon girl, demon horns, curved horns, gothic dress, black dress, corset, cleavage, sitting on gothic throne, dark throne, queen, smug smile, looking at viewer, dark fantasy lighting, masterpiece
+
+* [Lanzando Magia Oscura]:
+  masterpiece, best quality, 1girl, elisia_(make_drama), elisia, make drama, solo, demon girl, demon horns, curved horns, gothic dress, casting spell, dark magic, purple energy aura, glowing eyes, dynamic pose, looking at viewer, epic composition
+
+--------------------------------------------------------------------------------
+[ 5. PARÁMETROS RECOMENDADOS EN COMFYUI / WEBUI ]
+--------------------------------------------------------------------------------
+* LoRA Weight / Strength: 0.8 - 0.85 (para máxima fidelidad sin deformar el estilo base)
+* Sampler: Euler a (Ancestral) o DPM++ 2M Karras
+* Steps: 24 - 28
+* CFG Scale: 5.0 - 6.5
+* Resoluciones Ideales: 832x1216 (Retrato 2:3), 1024x1024 (Cuadrado), 1216x832 (Paisaje)
+================================================================================

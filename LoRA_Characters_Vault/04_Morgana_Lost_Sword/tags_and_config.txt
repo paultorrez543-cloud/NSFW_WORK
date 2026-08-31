@@ -1,0 +1,59 @@
+================================================================================
+FICHA TÉCNICA, TAGS Y CONFIGURACIÓN DE ENTRENAMIENTO / INFERENCIA
+Personaje: Morgana (Reina de las Hadas) | Franquicia: Lost Sword
+================================================================================
+
+[ 1. TRIGGER WORDS PRINCIPALES ]
+morgana_(lost_sword), morgana
+
+[ 2. ETIQUETAS VISUALES / DANBOORU TAGS ]
+* Físico / Rasgos:
+  1girl, solo, fairy queen, fairy wings, translucent wings, long blonde hair, green eyes, tiara, crown, delicate face
+
+* Vestimenta Principal:
+  black dress, black fairy dress, black corset, gold trim, detached sleeves, bare shoulders, detailed fabric
+
+* Control Anti-Armas / Objetos (Solo ropa limpia):
+  empty hands, arms at sides, simple background, white background
+
+--------------------------------------------------------------------------------
+[ 3. CONFIGURACIÓN DE ENTRENAMIENTO (Google Colab / Kohya sd-scripts) ]
+--------------------------------------------------------------------------------
+* Modelo Base: Illustrious-XL v0.1 (SDXL)
+* Archivo ZIP del Dataset: dataset_morgana.zip
+* Carpeta de Concepto en Colab: /content/dataset/8_morgana
+* Repeticiones por Imagen (Repeats): 8
+* Archivo LoRA de Salida: lora_morgana_lost_sword.safetensors
+* Network Dim (Rank): 16
+* Network Alpha: 8.0 (0.5x del Rank)
+* Optimizador: AdamW8bit
+* Learning Rate U-Net: 1e-4
+* LR Scheduler: cosine
+* Epochs: 10 (guardado cada 2 épocas)
+* Batch Size: 1
+* Resolución: 1024x1024 con Bucketing (512 - 2048)
+* Precisiones: FP8 Base, FP16 Mixed Precision, Unet Only
+
+--------------------------------------------------------------------------------
+[ 4. PROMPTS RECOMENDADOS PARA INFERENCIA (ComfyUI / WebUI) ]
+--------------------------------------------------------------------------------
+> Prompt Positivo Estándar (Cuerpo y Ropa Limpia):
+masterpiece, best quality, 1girl, morgana_(lost_sword), morgana, solo, fairy queen, fairy wings, long blonde hair, green eyes, crown, tiara, black dress, black fairy dress, black corset, gold trim, detached sleeves, empty hands, arms at sides, full body, standing, gentle smile, looking at viewer, simple background, white background, detailed illustration
+
+> Negative Prompt Universal (Anti-Armas y Calidad):
+(holding weapon:1.4), (weapon:1.4), (staff:1.4), (holding staff:1.4), (sword:1.4), (water gun:1.4), (holding object:1.3), worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digits, fewer digits, blurry, watermark, signature, artist name, text, error, cropped
+
+> Variantes y Poses Especiales:
+
+* [Reina de las Hadas en Bosque Mágico]:
+  masterpiece, best quality, 1girl, morgana_(lost_sword), morgana, solo, fairy queen, glowing fairy wings, long blonde hair, tiara, black dress, gold trim, floating in enchanted forest, glowing particles, magical night, gentle smile, looking at viewer, masterpiece
+
+--------------------------------------------------------------------------------
+[ 5. PARÁMETROS RECOMENDADOS EN COMFYUI / WEBUI ]
+--------------------------------------------------------------------------------
+* LoRA Weight / Strength: 0.8 - 0.85 (para máxima fidelidad sin deformar el estilo base)
+* Sampler: Euler a (Ancestral) o DPM++ 2M Karras
+* Steps: 24 - 28
+* CFG Scale: 5.0 - 6.5
+* Resoluciones Ideales: 832x1216 (Retrato 2:3), 1024x1024 (Cuadrado), 1216x832 (Paisaje)
+================================================================================

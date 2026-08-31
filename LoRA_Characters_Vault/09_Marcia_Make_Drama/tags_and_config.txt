@@ -1,0 +1,45 @@
+================================================================================
+FICHA TÉCNICA, TAGS Y CONFIGURACIÓN DE ENTRENAMIENTO / INFERENCIA
+Personaje: Marcia | Franquicia: Make Drama
+================================================================================
+
+[ 1. TRIGGER WORDS PRINCIPALES ]
+marcia_(make_drama), marcia, make drama, 1girl, solo
+
+[ 2. ETIQUETAS VISUALES / DANBOORU TAGS ]
+* Físico / Rasgos:
+  pink hair, twintails, high twintails, long hair, heart ahoge, purple eyes, fang, smirking, cute, petite, chubby thighs, barcode on thigh, bandaid on knee
+
+* Vestimenta Principal:
+  futuristic bodysuit, highleg leotard, black and white bodysuit, cleavage cutout, white jacket, crop jacket, detached jacket, black gloves, asymmetric legwear, black thighhigh, single thighhigh, garter strap, mechanical boots, oversized cannon
+
+* Control Anti-Armas / Objetos (Solo ropa limpia):
+  empty hands, arms at sides, simple background, white background
+
+--------------------------------------------------------------------------------
+[ 3. CONFIGURACIÓN DE ENTRENAMIENTO (Google Colab / Kohya sd-scripts) ]
+--------------------------------------------------------------------------------
+* Modelo Base: Illustrious-XL v0.1 (SDXL)
+* Archivo ZIP del Dataset: dataset_marcia.zip
+* Carpeta de Concepto en Colab: /content/dataset/8_marcia_make_drama
+* Repeticiones por Imagen (Repeats): 40 (2,000 pasos totales)
+* Archivo LoRA de Salida: lora_marcia_make_drama.safetensors
+* Network Dim (Rank): 32 (o 16)
+* Network Alpha: 16 (0.5x del Rank)
+* Optimizador: AdamW8bit
+* Learning Rate U-Net: 1e-4
+* LR Scheduler: cosine
+* Epochs: 10 (guardado cada 2 épocas)
+* Batch Size: 1
+* Resolución: 1024x1024 con Bucketing (512 - 1536)
+* Precisiones: FP16 Mixed Precision
+
+--------------------------------------------------------------------------------
+[ 4. PROMPTS RECOMENDADOS PARA INFERENCIA (ComfyUI / WebUI) ]
+--------------------------------------------------------------------------------
+> Prompt Positivo Estándar:
+score_9, score_8_up, source_anime, rating_explicit, 1girl, marcia_(make_drama), marcia, make drama, solo, pink hair, high twintails, heart ahoge, purple eyes, fang, futuristic bodysuit, highleg leotard, cleavage cutout, white jacket, black thighhigh, boots, masterpiece, best quality
+
+> Negative Prompt Universal:
+worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digits, fewer digits, blurry, watermark, signature, artist name, text, error, cropped
+================================================================================

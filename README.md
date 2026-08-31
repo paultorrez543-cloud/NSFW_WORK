@@ -80,6 +80,25 @@ graph TD
 
 ---
 
+## 🏋️‍♂️ Suite de Entrenamiento LoRA & Datasets (`LoRA_Characters_Vault/`)
+
+El repositorio incluye la suite completa de datasets curados y cuadernos de Google Colab listos para entrenar los LoRAs de los 10 personajes desde cero con Kohya ss / SD-Scripts en GPU T4/A100:
+
+| Personaje | Carpeta de Entrenamiento | Cuaderno de Colab (.ipynb) | Dataset Comprimido (.zip) |
+| :--- | :--- | :--- | :--- |
+| **Elisia** | [`LoRA_Characters_Vault/01_Elisia_Make_Drama`](./LoRA_Characters_Vault/01_Elisia_Make_Drama/) | `Entrenar_LoRA_Elisia_Make_Drama_Colab.ipynb` | `dataset_elisia.zip` |
+| **Isolda** | [`LoRA_Characters_Vault/02_Isolda_Lost_Sword`](./LoRA_Characters_Vault/02_Isolda_Lost_Sword/) | `Entrenar_LoRA_Isolda_Lost_Sword_Colab.ipynb` | `dataset_isolda.zip` |
+| **Orihime** | [`LoRA_Characters_Vault/03_Orihime_Swimsuit`](./LoRA_Characters_Vault/03_Orihime_Swimsuit/) | `Entrenar_LoRA_Orihime_Swimsuit_Colab.ipynb` | `dataset_orihime.zip` |
+| **Morgana** | [`LoRA_Characters_Vault/04_Morgana_Lost_Sword`](./LoRA_Characters_Vault/04_Morgana_Lost_Sword/) | `Entrenar_LoRA_Morgana_Lost_Sword_Colab.ipynb` | `dataset_morgana.zip` |
+| **Ran** | [`LoRA_Characters_Vault/05_Ran_Lost_Sword`](./LoRA_Characters_Vault/05_Ran_Lost_Sword/) | `Entrenar_LoRA_Ran_Lost_Sword_Colab.ipynb` | `dataset_ran.zip` |
+| **Claire** | [`LoRA_Characters_Vault/06_Claire_Lost_Sword`](./LoRA_Characters_Vault/06_Claire_Lost_Sword/) | `Entrenar_LoRA_Claire_Lost_Sword_Colab.ipynb` | `dataset_claire.zip` |
+| **Nelliel Parasol** | [`LoRA_Characters_Vault/07_Nelliel_Parasol`](./LoRA_Characters_Vault/07_Nelliel_Parasol/) | `Entrenar_LoRA_Nelliel_Parasol_Colab.ipynb` | `dataset_nelliel.zip` |
+| **Jennie** | [`LoRA_Characters_Vault/08_Jennie_Make_Drama`](./LoRA_Characters_Vault/08_Jennie_Make_Drama/) | `Entrenar_LoRA_Jennie_Make_Drama_Colab.ipynb` | `dataset_jennie.zip` |
+| **Marcia** | [`LoRA_Characters_Vault/09_Marcia_Make_Drama`](./LoRA_Characters_Vault/09_Marcia_Make_Drama/) | `Entrenar_LoRA_Marcia_Make_Drama_Colab.ipynb` | `dataset_marcia.zip` |
+| **Nelliel Heart** | [`LoRA_Characters_Vault/10_Nelliel_Heart`](./LoRA_Characters_Vault/10_Nelliel_Heart/) | `Entrenar_LoRA_Nelliel_Heart_Colab.ipynb` | `dataset_nelliel_heart.zip` |
+
+---
+
 ## 🚀 Guía de Inicio Rápido
 
 ### 1. Requisitos

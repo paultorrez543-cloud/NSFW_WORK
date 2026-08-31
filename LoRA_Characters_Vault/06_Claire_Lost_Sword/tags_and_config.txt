@@ -1,0 +1,59 @@
+================================================================================
+FICHA TÉCNICA, TAGS Y CONFIGURACIÓN DE ENTRENAMIENTO / INFERENCIA
+Personaje: Claire (Monja Vendedora) | Franquicia: Lost Sword
+================================================================================
+
+[ 1. TRIGGER WORDS PRINCIPALES ]
+claire_(lost_sword), claire
+
+[ 2. ETIQUETAS VISUALES / DANBOORU TAGS ]
+* Físico / Rasgos:
+  1girl, solo, gray hair, long hair, blindfold, blindfold covering eyes, not visible eyes, serene smile
+
+* Vestimenta Principal:
+  nun, veil, white veil, nun habit, detached sleeves, detailed white dress, gold accents
+
+* Control Anti-Armas / Objetos (Solo ropa limpia):
+  empty hands, arms at sides, simple background, white background
+
+--------------------------------------------------------------------------------
+[ 3. CONFIGURACIÓN DE ENTRENAMIENTO (Google Colab / Kohya sd-scripts) ]
+--------------------------------------------------------------------------------
+* Modelo Base: Illustrious-XL v0.1 (SDXL)
+* Archivo ZIP del Dataset: dataset_claire.zip
+* Carpeta de Concepto en Colab: /content/dataset/8_claire
+* Repeticiones por Imagen (Repeats): 8
+* Archivo LoRA de Salida: lora_claire_lost_sword.safetensors
+* Network Dim (Rank): 16
+* Network Alpha: 8.0 (0.5x del Rank)
+* Optimizador: AdamW8bit
+* Learning Rate U-Net: 1e-4
+* LR Scheduler: cosine
+* Epochs: 10 (guardado cada 2 épocas)
+* Batch Size: 1
+* Resolución: 1024x1024 con Bucketing (512 - 2048)
+* Precisiones: FP8 Base, FP16 Mixed Precision, Unet Only
+
+--------------------------------------------------------------------------------
+[ 4. PROMPTS RECOMENDADOS PARA INFERENCIA (ComfyUI / WebUI) ]
+--------------------------------------------------------------------------------
+> Prompt Positivo Estándar (Cuerpo y Ropa Limpia):
+masterpiece, best quality, 1girl, claire_(lost_sword), claire, solo, gray hair, long hair, blindfold, not visible eyes, nun, veil, white veil, nun habit, detached sleeves, empty hands, arms at sides, standing, gentle smile, looking at viewer, holy light, cathedral background, detailed illustration
+
+> Negative Prompt Universal (Anti-Armas y Calidad):
+(holding weapon:1.4), (weapon:1.4), (staff:1.4), (holding staff:1.4), (sword:1.4), (water gun:1.4), (holding object:1.3), worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digits, fewer digits, blurry, watermark, signature, artist name, text, error, cropped
+
+> Variantes y Poses Especiales:
+
+* [Con Báculo Sagrado (Opcional)]:
+  masterpiece, best quality, 1girl, claire_(lost_sword), claire, solo, gray hair, blindfold, white veil, nun habit, holding holy staff, golden staff, divine aura, standing in church, serene expression
+
+--------------------------------------------------------------------------------
+[ 5. PARÁMETROS RECOMENDADOS EN COMFYUI / WEBUI ]
+--------------------------------------------------------------------------------
+* LoRA Weight / Strength: 0.8 - 0.85 (para máxima fidelidad sin deformar el estilo base)
+* Sampler: Euler a (Ancestral) o DPM++ 2M Karras
+* Steps: 24 - 28
+* CFG Scale: 5.0 - 6.5
+* Resoluciones Ideales: 832x1216 (Retrato 2:3), 1024x1024 (Cuadrado), 1216x832 (Paisaje)
+================================================================================

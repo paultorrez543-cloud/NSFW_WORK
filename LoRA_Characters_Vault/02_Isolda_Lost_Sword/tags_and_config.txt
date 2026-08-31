@@ -1,0 +1,59 @@
+================================================================================
+FICHA TÉCNICA, TAGS Y CONFIGURACIÓN DE ENTRENAMIENTO / INFERENCIA
+Personaje: Isolda | Franquicia: Lost Sword
+================================================================================
+
+[ 1. TRIGGER WORDS PRINCIPALES ]
+isolda_(lost_sword), isolda
+
+[ 2. ETIQUETAS VISUALES / DANBOORU TAGS ]
+* Físico / Rasgos:
+  1girl, solo, long hair, platinum blonde hair, wavy hair, magenta eyes, pink flower hair ornament, hair flower, delicate face
+
+* Vestimenta Principal:
+  white dress, slit wrap dress, high slit, bare shoulders, green scarf, green shawl, floating fabrics, gold bracelets, gold armlet, gold jewelry
+
+* Control Anti-Armas / Objetos (Solo ropa limpia):
+  empty hands, arms at sides, simple background, white background
+
+--------------------------------------------------------------------------------
+[ 3. CONFIGURACIÓN DE ENTRENAMIENTO (Google Colab / Kohya sd-scripts) ]
+--------------------------------------------------------------------------------
+* Modelo Base: Illustrious-XL v0.1 (SDXL)
+* Archivo ZIP del Dataset: dataset_isolda.zip
+* Carpeta de Concepto en Colab: /content/dataset/8_isolda
+* Repeticiones por Imagen (Repeats): 8
+* Archivo LoRA de Salida: lora_isolda_lost_sword.safetensors
+* Network Dim (Rank): 16
+* Network Alpha: 8.0 (0.5x del Rank)
+* Optimizador: AdamW8bit
+* Learning Rate U-Net: 1e-4
+* LR Scheduler: cosine
+* Epochs: 10 (guardado cada 2 épocas)
+* Batch Size: 1
+* Resolución: 1024x1024 con Bucketing (512 - 2048)
+* Precisiones: FP8 Base, FP16 Mixed Precision, Unet Only
+
+--------------------------------------------------------------------------------
+[ 4. PROMPTS RECOMENDADOS PARA INFERENCIA (ComfyUI / WebUI) ]
+--------------------------------------------------------------------------------
+> Prompt Positivo Estándar (Cuerpo y Ropa Limpia):
+masterpiece, best quality, 1girl, isolda_(lost_sword), isolda, solo, long hair, platinum blonde hair, wavy hair, pink flower hair ornament, magenta eyes, white dress, slit wrap dress, green shawl, floating fabrics, bare shoulders, high slit, gold bracelets, empty hands, arms at sides, looking at viewer, gentle smile, divine atmosphere, detailed illustration
+
+> Negative Prompt Universal (Anti-Armas y Calidad):
+(holding weapon:1.4), (weapon:1.4), (staff:1.4), (holding staff:1.4), (sword:1.4), (water gun:1.4), (holding object:1.3), worst quality, low quality, bad anatomy, bad hands, missing fingers, extra digits, fewer digits, blurry, watermark, signature, artist name, text, error, cropped
+
+> Variantes y Poses Especiales:
+
+* [Vestido con Anillo Arcano]:
+  masterpiece, best quality, 1girl, isolda_(lost_sword), isolda, solo, platinum blonde hair, pink flower hair ornament, magenta eyes, white slit dress, green floating shawl, divine crystal ring floating behind back, glowing arcane ring, holy light, gentle smile, looking at viewer
+
+--------------------------------------------------------------------------------
+[ 5. PARÁMETROS RECOMENDADOS EN COMFYUI / WEBUI ]
+--------------------------------------------------------------------------------
+* LoRA Weight / Strength: 0.8 - 0.85 (para máxima fidelidad sin deformar el estilo base)
+* Sampler: Euler a (Ancestral) o DPM++ 2M Karras
+* Steps: 24 - 28
+* CFG Scale: 5.0 - 6.5
+* Resoluciones Ideales: 832x1216 (Retrato 2:3), 1024x1024 (Cuadrado), 1216x832 (Paisaje)
+================================================================================
